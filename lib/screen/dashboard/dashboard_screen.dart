@@ -1,1 +1,109 @@
-// ignore_for_file: must_be_immutableimport 'package:flutter/material.dart';import 'package:fw_vendor/controller/app_controller.dart';import 'package:fw_vendor/controller/dashboard_controller.dart';import 'package:fw_vendor/core/theme/index.dart';import 'package:fw_vendor/core/widgets/common_widgets/common_chips.dart';import 'package:fw_vendor/core/widgets/common_widgets/common_note_card.dart';import 'package:fw_vendor/core/widgets/common_widgets/custom_statistics_card.dart';import 'package:get/get.dart';class DashBoardScreen extends StatelessWidget {  DashBoardScreen({Key? key}) : super(key: key);  DashboardController dashboardController = Get.put(DashboardController());  @override  Widget build(BuildContext context) {    return GetBuilder<DashboardController>(      builder: (_) => Column(        crossAxisAlignment: CrossAxisAlignment.start,        children: [          SizedBox(height: Get.height * 0.02),          Row(            children: [              Text(                "Vendor Orders",                style: AppCss.h1.copyWith(                  fontWeight: FontWeight.bold,                  color: AppController().appTheme.primary1.withOpacity(0.3),                ),              ).paddingOnly(left: 5),              const Spacer(),              for (int i = 0; i < dashboardController.filters.length; i++)                CommonChips(                  onTap: () => dashboardController.onChange(i),                  color: dashboardController.filters[i]["isActive"] ? AppController().appTheme.primary.withOpacity(.8) : Colors.white,                  text: dashboardController.filters[i]["label"],                  textColor: dashboardController.filters[i]["isActive"] ? Colors.white : AppController().appTheme.primary1.withOpacity(.8),                ),            ],          ),          SizedBox(height: Get.height * 0.02),          Row(            children: [              Expanded(                child: CustomStatisticsCard(                  title: "Pending Orders",                  distrction: "0",                  onTap: () {},                  context: context,                  icon: Icons.pending_actions,                ),              ),              SizedBox(width: Get.width * 0.03),              Expanded(                child: CustomStatisticsCard(                  title: "On Hold Orders",                  distrction: "0",                  onTap: () {},                  context: context,                  icon: Icons.running_with_errors,                ),              ),            ],          ),          SizedBox(height: Get.height * 0.03),          Row(            children: [              Expanded(                child: CustomStatisticsCard(                  title: "Completed Orders",                  distrction: "0",                  onTap: () {},                  context: context,                  icon: Icons.fact_check_outlined,                ),              ),              SizedBox(width: Get.width * 0.03),              Expanded(                child: CustomStatisticsCard(                  title: "Cancelled Orders",                  distrction: "0",                  onTap: () {},                  context: context,                  icon: Icons.cancel,                ),              ),            ],          ),          SizedBox(height: Get.height * 0.03),          CommonNoteCard(            text: "DELIVERY TIMING SLOTS:"                "MORNING TIMINGS 11:00 am"                " AFTERNOON TIMINGS 4:00 pm"                "AFTER THIS TIMMINGS NO ORDER WILL BE ENTERTAIN"                "THE DELIVERY WILL BE SCHEDULE FOR NEXT ROUTE AVAILABLE SLOT"                "New Rates for delivery from 1st May 2022 Onwards are mentioned below :-"                "In city per parcel - 12 Rs"                "In city per box - 20 Rs (small size )****"                "Out city per parcel - 20 Rs"                "Out city per box - 40 Rs",            note: dashboardController.note,          ),        ],      ).paddingSymmetric(horizontal: Get.height * 0.01),    );  }}
+// ignore_for_file: must_be_immutable
+import 'package:flutter/material.dart';
+import 'package:fw_vendor/controller/app_controller.dart';
+import 'package:fw_vendor/controller/dashboard_controller.dart';
+import 'package:fw_vendor/core/widgets/common_widgets/common_chips.dart';
+import 'package:fw_vendor/core/widgets/common_widgets/common_note_card.dart';
+import 'package:fw_vendor/core/widgets/common_widgets/common_package.dart';
+import 'package:fw_vendor/core/widgets/common_widgets/custom_statistics_card.dart';
+import 'package:get/get.dart';
+
+class DashBoardScreen extends StatelessWidget {
+  DashBoardScreen({Key? key}) : super(key: key);
+  DashboardController dashboardController = Get.put(DashboardController());
+
+  @override
+  Widget build(BuildContext context) {
+    return GetBuilder<DashboardController>(
+      builder: (_) {
+        return Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Row(
+              children: [
+                for (int i = 0; i < dashboardController.filters.length; i++)
+                  CommonChips(
+                    onTap: () => dashboardController.onChange(i),
+                    color: dashboardController.filters[i]["isActive"] ? AppController().appTheme.primary.withOpacity(.8) : Colors.white,
+                    text: dashboardController.filters[i]["label"].toString().capitalizeFirst,
+                    textColor: dashboardController.filters[i]["isActive"] ? Colors.white : AppController().appTheme.primary1.withOpacity(.8),
+                  ),
+                const Spacer(),
+                if (dashboardController.vendorgetPKGDetails != null && dashboardController.vendorgetPKGDetails["totalPkg"] != null)
+                  CommonPackage(
+                    packageLable: "PKGs",
+                    count: dashboardController.vendorgetPKGDetails != null && dashboardController.vendorgetPKGDetails["totalPkg"] != "" ? dashboardController.vendorgetPKGDetails["totalPkg"] : "00",
+                  ).paddingOnly(right: 5),
+                if (dashboardController.vendorgetPKGDetails != null && dashboardController.vendorgetPKGDetails["totalLocations"] != null)
+                  CommonPackage(
+                    packageLable: "ADDs",
+                    count: dashboardController.vendorgetPKGDetails != null && dashboardController.vendorgetPKGDetails["totalLocations"] != "" ? dashboardController.vendorgetPKGDetails["totalPkg"] : "00",
+                  ),
+              ],
+            ).paddingSymmetric(vertical: Get.height * 0.02),
+            SizedBox(height: Get.height * 0.01),
+            if (dashboardController.vendorRevenue != null)
+              Row(
+                children: [
+                  Expanded(
+                    child: CustomStatisticsCard(
+                      title: "Pending Orders",
+                      count: dashboardController.vendorRevenue["pendingOrders"] != null ? dashboardController.vendorRevenue["pendingOrders"].toString() : "00",
+                      onTap: () => dashboardController.onOrdersClick("pending"),
+                      context: context,
+                      color: Colors.blueGrey,
+                      icon: Icons.pending_actions,
+                    ),
+                  ),
+                  SizedBox(width: Get.width * 0.03),
+                  Expanded(
+                    child: CustomStatisticsCard(
+                      title: "On Hold Orders",
+                      count: dashboardController.vendorRevenue["runningOrders"] != null ? dashboardController.vendorRevenue["runningOrders"].toString() : "00",
+                      onTap: () => dashboardController.onOrdersClick("running"),
+                      context: context,
+                      color: Colors.amber.shade500,
+                      icon: Icons.running_with_errors,
+                    ),
+                  ),
+                ],
+              ),
+            SizedBox(height: Get.height * 0.03),
+            if (dashboardController.vendorRevenue != null)
+              Row(
+                children: [
+                  Expanded(
+                    child: CustomStatisticsCard(
+                      title: "Completed Orders",
+                      count: "00",
+                      onTap: () => dashboardController.onOrdersClick("completed"),
+                      context: context,
+                      color: Colors.green.shade500,
+                      icon: Icons.fact_check_outlined,
+                    ),
+                  ),
+                  SizedBox(width: Get.width * 0.03),
+                  Expanded(
+                    child: CustomStatisticsCard(
+                      title: "Cancelled Orders",
+                      count: dashboardController.vendorRevenue["cancelledOrders"] != null ? dashboardController.vendorRevenue["cancelledOrders"].toString() : "00",
+                      onTap: () => dashboardController.onOrdersClick("cancelled"),
+                      context: context,
+                      color: Colors.red.shade500,
+                      icon: Icons.cancel,
+                    ),
+                  ),
+                ],
+              ),
+            SizedBox(height: Get.height * 0.03),
+            Expanded(
+              child: CommonNoteCard(
+                note: dashboardController.bannersNote,
+              ),
+            )
+          ],
+        ).paddingSymmetric(horizontal: Get.height * 0.01);
+      },
+    );
+  }
+}
