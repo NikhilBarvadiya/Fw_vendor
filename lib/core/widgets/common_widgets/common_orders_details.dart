@@ -8,16 +8,18 @@ class CommonOrdersDetails extends StatelessWidget {
   final String? orderNo;
   final String? orderType;
   final String? locations;
-  final String? statusLocations;
   final String? date;
+  final Widget? items;
+  void Function()? locationClick;
 
-  const CommonOrdersDetails({
+  CommonOrdersDetails({
     Key? key,
     this.orderNo,
     this.orderType,
-    this.statusLocations,
     this.locations,
     this.date,
+    this.items,
+    this.locationClick,
   }) : super(key: key);
 
   @override
@@ -48,7 +50,7 @@ class CommonOrdersDetails extends StatelessWidget {
               ),
               const Spacer(),
               TextButton(
-                onPressed: () {},
+                onPressed: locationClick,
                 style: TextButton.styleFrom(
                   primary: Colors.blue,
                 ),
@@ -72,28 +74,12 @@ class CommonOrdersDetails extends StatelessWidget {
             style: AppCss.footnote,
           ).paddingOnly(bottom: 10),
           Text(
-            "Location report",
+            "Delivery report",
             style: AppCss.h3,
           ).paddingOnly(bottom: 10),
-          GestureDetector(
-            onTap: () {},
-            child: Container(
-              padding: const EdgeInsets.symmetric(horizontal: 5, vertical: 2),
-              alignment: Alignment.center,
-              decoration: BoxDecoration(
-                borderRadius: const BorderRadius.all(
-                  Radius.circular(2),
-                ),
-                border: Border.all(
-                  width: .5,
-                ),
-              ),
-              child: Text(
-                statusLocations ?? "",
-                style: AppCss.poppins,
-              ),
-            ),
-          ).paddingOnly(bottom: 10),
+          Container(
+            child: items,
+          ),
         ],
       ),
     ).paddingOnly(bottom: 8);

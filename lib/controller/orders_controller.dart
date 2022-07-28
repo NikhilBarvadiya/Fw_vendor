@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:fw_vendor/common/config.dart';
+import 'package:fw_vendor/core/configuration/app_routes.dart';
 import 'package:fw_vendor/networking/index.dart';
 import 'package:fw_vendor/core/widgets/common_dialog/scale_dialog.dart';
 import 'package:get/get.dart';
@@ -15,6 +16,7 @@ class OrdersController extends GetxController {
   @override
   void onInit() {
     status = Get.arguments;
+    _vendorOrders();
     super.onInit();
   }
 
@@ -61,7 +63,21 @@ class OrdersController extends GetxController {
       );
       if (resData.isSuccess && resData.data != 0) {
         ordersDetailsList = resData.data["docs"];
-        update();
+        for (var e in ordersDetailsList) {
+          e['deliveryReport'] = deliveryReport(e);
+          for (int i = 0; i < e['deliveryReport']["delivered"].length; i++) {
+            e["deliveredCount"] = e['deliveryReport']["delivered"][i]["status"].toString().capitalizeFirst;
+          }
+          for (int i = 0; i < e['deliveryReport']["running"].length; i++) {
+            e["runningCount"] = e['deliveryReport']["running"][i]["status"].toString().capitalizeFirst;
+          }
+          for (int i = 0; i < e['deliveryReport']["returned"].length; i++) {
+            e["returnedCount"] = e['deliveryReport']["returned"][i]["status"].toString().capitalizeFirst;
+          }
+          for (int i = 0; i < e['deliveryReport']["cancelled"].length; i++) {
+            e["cancelledCount"] = e['deliveryReport']["cancelled"][i]["status"].toString().capitalizeFirst;
+          }
+        }
       }
     } catch (e) {
       snackBar("No pacakge data found", Colors.red);
@@ -69,6 +85,20 @@ class OrdersController extends GetxController {
       update();
     }
     isLoading = false;
+    update();
+  }
+
+  deliveryReport(e) {
+    List delivered = e["orderStatus"].where((a) => a['status'] == 'delivered').toList();
+    List running = e["orderStatus"].where((a) => a['status'] == 'running').toList();
+    List returned = e["orderStatus"].where((a) => a['status'] == 'returned').toList();
+    List cancelled = e["orderStatus"].where((a) => a['status'] == 'cancelled').toList();
+    dynamic output = {"delivered": delivered, "running": running, "returned": returned, "cancelled": cancelled};
+    return output;
+  }
+
+  onLocationClick(data) {
+    Get.toNamed(AppRoutes.locationScreen, arguments: data);
     update();
   }
 }

@@ -37,6 +37,7 @@ class GlobalDirectoryScreen extends StatelessWidget {
                     widget: SearchableListView(
                       isLive: false,
                       isOnSearch: false,
+                      isOnheder: false,
                       itemList: const [],
                       bindText: 'title',
                       bindValue: '_id',

@@ -130,7 +130,9 @@ class _HomeScreenState extends State<HomeScreen> {
                         MenuCard(
                           icon: FontAwesomeIcons.box,
                           title: "Orders",
-                          onPress: () => homeController.onOrdersClick(),
+                          onPress: () {
+                            //homeController.onOrdersClick()
+                          },
                         ),
                         MenuCard(
                           icon: FontAwesomeIcons.rightFromBracket,

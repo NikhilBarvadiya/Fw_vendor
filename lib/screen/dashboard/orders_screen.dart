@@ -2,6 +2,7 @@
 import 'package:flutter/material.dart';
 import 'package:fw_vendor/controller/orders_controller.dart';
 import 'package:fw_vendor/core/widgets/common_bottom_sheet/common_bottom_sheet.dart';
+import 'package:fw_vendor/core/widgets/common_widgets/common_action_chip.dart';
 import 'package:fw_vendor/core/widgets/common_widgets/common_orders_details.dart';
 import 'package:fw_vendor/core/widgets/common_widgets/searchable_list.dart';
 import 'package:fw_vendor/core/widgets/custom_widgets/custom_nodata.dart';
@@ -34,7 +35,7 @@ class OrderScreen extends StatelessWidget {
                 onPressed: () {
                   commonBottomSheet(
                     context: context,
-                    height: MediaQuery.of(context).size.height * 0.4,
+                    height: MediaQuery.of(context).size.height * 0.341,
                     margin: 0.0,
                     widget: Column(
                       children: [
@@ -95,13 +96,47 @@ class OrderScreen extends StatelessWidget {
                       (e) {
                         return Column(
                           children: [
-                            CommonOrdersDetails(
-                              orderNo: e["orderNo"] != "" ? e["orderNo"].toString() : "",
-                              orderType: e["orderType"] != "" ? e["orderType"].toString().toUpperCase() : "",
-                              date: e["updatedAt"] != "" ? getFormattedDate(e["updatedAt"].toString()) : "",
-                              locations: e["orderStatus"] != "" ? e["orderStatus"].length.toString() : "",
-                              statusLocations: e["orderStatus"][0]["status"] != "" ? e["orderStatus"][0]["status"].toString() : "",
-                            ),
+                            if (ordersController.ordersDetailsList != null)
+                              CommonOrdersDetails(
+                                orderNo: e["orderNo"] != "" ? e["orderNo"].toString() : "",
+                                orderType: e["orderType"] != "" ? e["orderType"].toString().toUpperCase() : "",
+                                date: e["updatedAt"] != "" ? getFormattedDate(e["updatedAt"].toString()) : "",
+                                locations: e["orderStatus"] != "" ? e["orderStatus"].length.toString() : "",
+                                locationClick: () => ordersController.onLocationClick(e["deliveryReport"]),
+                                items: Wrap(
+                                  direction: Axis.horizontal,
+                                  children: [
+                                    if (e["deliveredCount"] != null)
+                                      CommonActionChip(
+                                        count: e['deliveryReport']["delivered"].length.toString(),
+                                        status: e["deliveredCount"].toString(),
+                                        color: Colors.green,
+                                        onTap: () => ordersController.onLocationClick(e["deliveryReport"]["delivered"]),
+                                      ),
+                                    if (e["runningCount"] != null)
+                                      CommonActionChip(
+                                        count: e['deliveryReport']["running"].length.toString(),
+                                        status: e["runningCount"].toString(),
+                                        color: Colors.blueAccent,
+                                        onTap: () {},
+                                      ),
+                                    if (e["returnedCount"] != null)
+                                      CommonActionChip(
+                                        count: e['deliveryReport']["returned"].length.toString(),
+                                        status: e["returnedCount"].toString(),
+                                        color: Colors.deepOrange.shade500,
+                                        onTap: () {},
+                                      ),
+                                    if (e["cancelledCount"] != null)
+                                      CommonActionChip(
+                                        count: e['deliveryReport']["cancelled"].length.toString(),
+                                        status: e["cancelledCount"].toString(),
+                                        color: Colors.red,
+                                        onTap: () {},
+                                      ),
+                                  ],
+                                ),
+                              ),
                           ],
                         );
                       },
