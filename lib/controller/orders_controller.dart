@@ -7,16 +7,16 @@ import 'package:get/get.dart';
 
 class OrdersController extends GetxController {
   TextEditingController txtSearch = TextEditingController();
+  dynamic status;
   bool isLoading = false;
   bool searchButton = false;
-  String status = "";
   String filterSelected = "";
   List ordersDetailsList = [];
 
   @override
-  void onInit() {
+  void onInit() async {
     status = Get.arguments;
-    _vendorOrders();
+    _orderControllerStart();
     super.onInit();
   }
 
@@ -27,6 +27,57 @@ class OrdersController extends GetxController {
     {"title": "Amount", "_id": 4}
   ];
 
+  List filters = [
+    {
+      "label": "pending",
+      "isActive": true,
+    },
+    {
+      "label": "running",
+      "isActive": false,
+    },
+    {
+      "label": "completed",
+      "isActive": false,
+    },
+    {
+      "label": "cancelled",
+      "isActive": false,
+    },
+  ];
+
+  _orderControllerStart() {
+    onChange(
+      status == "pending"
+          ? 0
+          : status == "running"
+              ? 1
+              : status == "completed"
+                  ? 2
+                  : status == "cancelled"
+                      ? 3
+                      : 0,
+    );
+  }
+
+  onChange(int i) {
+    for (int a = 0; a < filters.length; a++) {
+      if (a == i) {
+        filters[a]["isActive"] = true;
+        status = filters[a]["label"];
+      } else {
+        filters[a]["isActive"] = false;
+      }
+    }
+    _vendorOrdersCalling();
+    update();
+  }
+
+  _vendorOrdersCalling() async {
+    await _vendorOrders();
+    update();
+  }
+
   onSearchButtonTapped() {
     if (searchButton && txtSearch.text != "") {
       txtSearch.text = "";
@@ -35,11 +86,11 @@ class OrdersController extends GetxController {
     update();
   }
 
-  onFilterSelected(String name) {
+  onFilterSelected(String name) async {
     filterSelected = name;
     if (filterSelected != "") {
-      _vendorOrders();
       Get.back();
+      await _vendorOrders();
     }
     update();
   }
@@ -48,36 +99,23 @@ class OrdersController extends GetxController {
     try {
       isLoading = true;
       update();
+      var body = {
+        "page": 1,
+        "limit": 10,
+        "searchType": filterSelected != "" ? filterSelected : "Order No",
+        "search": "",
+        "status": status ?? "pending",
+        "fromDate": "",
+        "toDate": "",
+      };
       var resData = await apis.call(
         apiMethods.vendorOrders,
-        {
-          "page": 1,
-          "limit": 10,
-          "searchType": filterSelected,
-          "search": "",
-          "status": status,
-          "fromDate": "",
-          "toDate": "",
-        },
+        body,
         ApiType.post,
       );
       if (resData.isSuccess && resData.data != 0) {
         ordersDetailsList = resData.data["docs"];
-        for (var e in ordersDetailsList) {
-          e['deliveryReport'] = deliveryReport(e);
-          for (int i = 0; i < e['deliveryReport']["delivered"].length; i++) {
-            e["deliveredCount"] = e['deliveryReport']["delivered"][i]["status"].toString().capitalizeFirst;
-          }
-          for (int i = 0; i < e['deliveryReport']["running"].length; i++) {
-            e["runningCount"] = e['deliveryReport']["running"][i]["status"].toString().capitalizeFirst;
-          }
-          for (int i = 0; i < e['deliveryReport']["returned"].length; i++) {
-            e["returnedCount"] = e['deliveryReport']["returned"][i]["status"].toString().capitalizeFirst;
-          }
-          for (int i = 0; i < e['deliveryReport']["cancelled"].length; i++) {
-            e["cancelledCount"] = e['deliveryReport']["cancelled"][i]["status"].toString().capitalizeFirst;
-          }
-        }
+        _reportPart();
       }
     } catch (e) {
       snackBar("No pacakge data found", Colors.red);
@@ -88,7 +126,25 @@ class OrdersController extends GetxController {
     update();
   }
 
-  deliveryReport(e) {
+  _reportPart() {
+    for (var e in ordersDetailsList) {
+      e['deliveryReport'] = _deliveryReport(e);
+      for (int i = 0; i < e['deliveryReport']["delivered"].length; i++) {
+        e["deliveredCount"] = e['deliveryReport']["delivered"][i]["status"].toString().capitalizeFirst;
+      }
+      for (int i = 0; i < e['deliveryReport']["running"].length; i++) {
+        e["runningCount"] = e['deliveryReport']["running"][i]["status"].toString().capitalizeFirst;
+      }
+      for (int i = 0; i < e['deliveryReport']["returned"].length; i++) {
+        e["returnedCount"] = e['deliveryReport']["returned"][i]["status"].toString().capitalizeFirst;
+      }
+      for (int i = 0; i < e['deliveryReport']["cancelled"].length; i++) {
+        e["cancelledCount"] = e['deliveryReport']["cancelled"][i]["status"].toString().capitalizeFirst;
+      }
+    }
+  }
+
+  _deliveryReport(e) {
     List delivered = e["orderStatus"].where((a) => a['status'] == 'delivered').toList();
     List running = e["orderStatus"].where((a) => a['status'] == 'running').toList();
     List returned = e["orderStatus"].where((a) => a['status'] == 'returned').toList();

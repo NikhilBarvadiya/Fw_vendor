@@ -13,27 +13,30 @@ class CommonPackage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: const EdgeInsets.all(5),
+      padding: const EdgeInsets.all(2),
       decoration: BoxDecoration(
         color: Theme.of(context).secondaryHeaderColor,
         border: Border.all(width: 1, color: Colors.grey),
         borderRadius: BorderRadius.circular(2),
       ),
       child: Row(
+        crossAxisAlignment: CrossAxisAlignment.end,
         children: [
           Text(
             count.toString(),
             style: TextStyle(
               color: Theme.of(context).indicatorColor,
+              fontWeight: FontWeight.w500,
             ),
           ),
           const SizedBox(
-            width: 5,
+            width: 1,
           ),
           Text(
             packageLable,
             style: TextStyle(
               color: Theme.of(context).indicatorColor,
+              fontSize: 12,
             ),
           ),
         ],

@@ -15,7 +15,8 @@ class LocationScreen extends StatelessWidget {
           appBar: AppBar(
             elevation: 1,
             automaticallyImplyLeading: false,
-            title: Text(locationController.deliveredStatus),
+            foregroundColor: Colors.white,
+            title: Text("${locationController.deliveredStatus}\tOrders\t${locationController.status.length}"),
           ),
         );
       },

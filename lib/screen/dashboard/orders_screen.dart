@@ -1,8 +1,11 @@
 // ignore_for_file: must_be_immutable, unnecessary_null_comparison
 import 'package:flutter/material.dart';
+import 'package:fw_vendor/controller/app_controller.dart';
 import 'package:fw_vendor/controller/orders_controller.dart';
+import 'package:fw_vendor/core/theme/app_css.dart';
 import 'package:fw_vendor/core/widgets/common_bottom_sheet/common_bottom_sheet.dart';
 import 'package:fw_vendor/core/widgets/common_widgets/common_action_chip.dart';
+import 'package:fw_vendor/core/widgets/common_widgets/common_chips.dart';
 import 'package:fw_vendor/core/widgets/common_widgets/common_orders_details.dart';
 import 'package:fw_vendor/core/widgets/common_widgets/searchable_list.dart';
 import 'package:fw_vendor/core/widgets/custom_widgets/custom_nodata.dart';
@@ -23,7 +26,7 @@ class OrderScreen extends StatelessWidget {
             elevation: 1,
             automaticallyImplyLeading: false,
             foregroundColor: Colors.white,
-            title: Text(ordersController.status.capitalizeFirst.toString()),
+            title: Text(ordersController.status != null ? ordersController.status.toString().capitalizeFirst.toString() : "Pending"),
             actions: [
               IconButton(
                 onPressed: () {
@@ -89,6 +92,25 @@ class OrderScreen extends StatelessWidget {
           ),
           body: Stack(
             children: [
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  for (int i = 0; i < ordersController.filters.length; i++)
+                    SizedBox(
+                      height: 25,
+                      child: CommonChips(
+                        onTap: () => ordersController.onChange(i),
+                        borderRadius: 2,
+                        padding: const EdgeInsets.symmetric(horizontal: 5),
+                        color: ordersController.filters[i]["isActive"] ? AppController().appTheme.primary.withOpacity(.8) : Colors.white,
+                        text: ordersController.filters[i]["label"].toString().capitalizeFirst,
+                        style: AppCss.poppins.copyWith(
+                          color: ordersController.filters[i]["isActive"] ? Colors.white : AppController().appTheme.primary1.withOpacity(.8),
+                        ),
+                      ),
+                    )
+                ],
+              ),
               ListView(
                 children: [
                   if (ordersController.ordersDetailsList.length != null)
@@ -102,7 +124,7 @@ class OrderScreen extends StatelessWidget {
                                 orderType: e["orderType"] != "" ? e["orderType"].toString().toUpperCase() : "",
                                 date: e["updatedAt"] != "" ? getFormattedDate(e["updatedAt"].toString()) : "",
                                 locations: e["orderStatus"] != "" ? e["orderStatus"].length.toString() : "",
-                                locationClick: () => ordersController.onLocationClick(e["deliveryReport"]),
+                                locationClick: () => ordersController.onLocationClick(e["orderStatus"]),
                                 items: Wrap(
                                   direction: Axis.horizontal,
                                   children: [
@@ -118,21 +140,21 @@ class OrderScreen extends StatelessWidget {
                                         count: e['deliveryReport']["running"].length.toString(),
                                         status: e["runningCount"].toString(),
                                         color: Colors.blueAccent,
-                                        onTap: () {},
+                                        onTap: () => ordersController.onLocationClick(e["deliveryReport"]["running"]),
                                       ),
                                     if (e["returnedCount"] != null)
                                       CommonActionChip(
                                         count: e['deliveryReport']["returned"].length.toString(),
                                         status: e["returnedCount"].toString(),
                                         color: Colors.deepOrange.shade500,
-                                        onTap: () {},
+                                        onTap: () => ordersController.onLocationClick(e["deliveryReport"]["returned"]),
                                       ),
                                     if (e["cancelledCount"] != null)
                                       CommonActionChip(
                                         count: e['deliveryReport']["cancelled"].length.toString(),
                                         status: e["cancelledCount"].toString(),
                                         color: Colors.red,
-                                        onTap: () {},
+                                        onTap: () => ordersController.onLocationClick(e["deliveryReport"]["cancelled"]),
                                       ),
                                   ],
                                 ),
@@ -142,7 +164,7 @@ class OrderScreen extends StatelessWidget {
                       },
                     ),
                 ],
-              ),
+              ).paddingOnly(top: 45),
               if (ordersController.ordersDetailsList.isEmpty || ordersController.ordersDetailsList.length == null)
                 Column(
                   mainAxisAlignment: MainAxisAlignment.center,
