@@ -4,10 +4,10 @@ import 'package:flutter/material.dart';
 import 'package:fw_vendor/controller/app_controller.dart';
 import 'package:fw_vendor/controller/global_directory_controller.dart';
 import 'package:fw_vendor/core/theme/index.dart';
+import 'package:fw_vendor/core/widgets/common/common_button.dart';
+import 'package:fw_vendor/core/widgets/common/order_address_card.dart';
+import 'package:fw_vendor/core/widgets/common/searchable_list.dart';
 import 'package:fw_vendor/core/widgets/common_bottom_sheet/common_bottom_sheet.dart';
-import 'package:fw_vendor/core/widgets/common_widgets/common_button.dart';
-import 'package:fw_vendor/core/widgets/common_widgets/order_address_card.dart';
-import 'package:fw_vendor/core/widgets/common_widgets/searchable_list.dart';
 import 'package:get/get.dart';
 
 class GlobalDirectoryScreen extends StatelessWidget {

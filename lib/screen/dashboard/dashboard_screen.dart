@@ -2,10 +2,10 @@
 import 'package:flutter/material.dart';
 import 'package:fw_vendor/controller/app_controller.dart';
 import 'package:fw_vendor/controller/dashboard_controller.dart';
-import 'package:fw_vendor/core/widgets/common_widgets/common_chips.dart';
-import 'package:fw_vendor/core/widgets/common_widgets/common_note_card.dart';
-import 'package:fw_vendor/core/widgets/common_widgets/common_package.dart';
-import 'package:fw_vendor/core/widgets/common_widgets/custom_statistics_card.dart';
+import 'package:fw_vendor/core/widgets/common/common_chips.dart';
+import 'package:fw_vendor/core/widgets/common/common_note_card.dart';
+import 'package:fw_vendor/core/widgets/common/common_package.dart';
+import 'package:fw_vendor/core/widgets/common/custom_statistics_card.dart';
 import 'package:get/get.dart';
 
 class DashBoardScreen extends StatelessWidget {

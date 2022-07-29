@@ -9,7 +9,7 @@ import 'package:fw_vendor/controller/home_controller.dart';
 import 'package:fw_vendor/controller/login_controller.dart';
 import 'package:fw_vendor/core/assets/index.dart';
 import 'package:fw_vendor/core/utilities/index.dart';
-import 'package:fw_vendor/core/widgets/common_widgets/menu_card.dart';
+import 'package:fw_vendor/core/widgets/common/menu_card.dart';
 import 'package:get/get.dart';
 import 'package:url_launcher/url_launcher.dart';
 

@@ -65,6 +65,7 @@ class OrdersController extends GetxController {
       if (a == i) {
         filters[a]["isActive"] = true;
         status = filters[a]["label"];
+        filterSelected = "";
       } else {
         filters[a]["isActive"] = false;
       }
@@ -87,6 +88,7 @@ class OrdersController extends GetxController {
   }
 
   onFilterSelected(String name) async {
+    filterSelected = "";
     filterSelected = name;
     if (filterSelected != "") {
       Get.back();

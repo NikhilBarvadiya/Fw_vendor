@@ -3,15 +3,17 @@ import 'package:flutter/material.dart';
 import 'package:fw_vendor/controller/app_controller.dart';
 import 'package:fw_vendor/controller/orders_controller.dart';
 import 'package:fw_vendor/core/theme/app_css.dart';
+import 'package:fw_vendor/core/widgets/common/common_action_chip.dart';
+import 'package:fw_vendor/core/widgets/common/common_chips.dart';
+import 'package:fw_vendor/core/widgets/common/common_orders_details.dart';
+import 'package:fw_vendor/core/widgets/common/searchable_list.dart';
 import 'package:fw_vendor/core/widgets/common_bottom_sheet/common_bottom_sheet.dart';
-import 'package:fw_vendor/core/widgets/common_widgets/common_action_chip.dart';
-import 'package:fw_vendor/core/widgets/common_widgets/common_chips.dart';
-import 'package:fw_vendor/core/widgets/common_widgets/common_orders_details.dart';
-import 'package:fw_vendor/core/widgets/common_widgets/searchable_list.dart';
 import 'package:fw_vendor/core/widgets/custom_widgets/custom_nodata.dart';
 import 'package:fw_vendor/core/widgets/custom_widgets/custom_textformfield.dart';
 import 'package:fw_vendor/extensions/date_exensions.dart';
 import 'package:get/get.dart';
+
+import '../../core/widgets/common_dialog/scale_dialog.dart';
 
 class OrderScreen extends StatelessWidget {
   OrderScreen({Key? key}) : super(key: key);
@@ -124,7 +126,13 @@ class OrderScreen extends StatelessWidget {
                                 orderType: e["orderType"] != "" ? e["orderType"].toString().toUpperCase() : "",
                                 date: e["updatedAt"] != "" ? getFormattedDate(e["updatedAt"].toString()) : "",
                                 locations: e["orderStatus"] != "" ? e["orderStatus"].length.toString() : "",
-                                locationClick: () => ordersController.onLocationClick(e["orderStatus"]),
+                                locationClick: () {
+                                  if (e["orderStatus"] != null) {
+                                    ordersController.onLocationClick(e["orderStatus"]);
+                                  } else {
+                                    snackBar("No pacakge data found", Colors.deepOrange);
+                                  }
+                                },
                                 items: Wrap(
                                   direction: Axis.horizontal,
                                   children: [
@@ -164,7 +172,7 @@ class OrderScreen extends StatelessWidget {
                       },
                     ),
                 ],
-              ).paddingOnly(top: 45),
+              ).paddingOnly(top: 30),
               if (ordersController.ordersDetailsList.isEmpty || ordersController.ordersDetailsList.length == null)
                 Column(
                   mainAxisAlignment: MainAxisAlignment.center,
