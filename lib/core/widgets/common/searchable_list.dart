@@ -16,6 +16,8 @@ class SearchableListView extends StatefulWidget {
     this.hederText,
     this.isOnSearch,
     this.isOnheder,
+    this.hederColor,
+    this.hederTxtColor,
   }) : super(key: key);
   final List itemList;
   final String? bindText;
@@ -28,6 +30,8 @@ class SearchableListView extends StatefulWidget {
   final String? hederText;
   final bool? isOnheder;
   final bool? isOnSearch;
+  final Color? hederColor;
+  final Color? hederTxtColor;
 
   @override
   State<SearchableListView> createState() => _SearchableListViewState();
@@ -113,20 +117,26 @@ class _SearchableListViewState extends State<SearchableListView> {
   }
 
   Widget _buildMe() {
-    return ListView(
-      shrinkWrap: true,
+    return Column(
       children: [
         widget.isOnheder!
             ? Container(
                 height: 50,
                 padding: const EdgeInsets.symmetric(horizontal: 10),
+                decoration: BoxDecoration(
+                  color: widget.hederColor,
+                  borderRadius: const BorderRadius.only(
+                    topLeft: Radius.circular(8),
+                    topRight: Radius.circular(8),
+                  ),
+                ),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     Text(
                       widget.hederText ?? "",
                       style: AppCss.h3.copyWith(
-                        color: Colors.black,
+                        color: widget.hederTxtColor,
                         fontWeight: FontWeight.bold,
                         fontSize: 18,
                         letterSpacing: 1,
@@ -136,24 +146,31 @@ class _SearchableListViewState extends State<SearchableListView> {
                 ),
               )
             : Container(),
-        ...resultList.map(
-          (e) {
-            return ListTile(
-              onTap: () {
-                if (widget.bindValue != null && widget.bindText != null) {
-                  widget.onSelect!(e[widget.bindValue], e[widget.bindText]);
-                } else if (widget.bindValue != null) {
-                  widget.onSelect!(e[widget.bindValue]);
-                } else {
-                  widget.onSelect!(e);
-                }
-              },
-              title: Text(
-                widget.bindText != null ? e[widget.bindText] : e,
-                style: AppCss.body1,
+        Expanded(
+          child: ListView(
+            shrinkWrap: true,
+            children: [
+              ...resultList.map(
+                (e) {
+                  return ListTile(
+                    onTap: () {
+                      if (widget.bindValue != null && widget.bindText != null) {
+                        widget.onSelect!(e[widget.bindValue], e[widget.bindText]);
+                      } else if (widget.bindValue != null) {
+                        widget.onSelect!(e[widget.bindValue]);
+                      } else {
+                        widget.onSelect!(e);
+                      }
+                    },
+                    title: Text(
+                      widget.bindText != null ? e[widget.bindText] : e,
+                      style: AppCss.body1,
+                    ),
+                  );
+                },
               ),
-            );
-          },
+            ],
+          ),
         ),
       ],
     );

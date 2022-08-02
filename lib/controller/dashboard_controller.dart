@@ -115,7 +115,6 @@ class DashboardController extends GetxController {
         update();
       }
     } catch (e) {
-      snackBar("No pacakge data found", Colors.red);
       isLoading = false;
       update();
     }

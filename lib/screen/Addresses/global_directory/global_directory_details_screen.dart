@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:fw_vendor/controller/global_directory_controller.dart';
 import 'package:fw_vendor/core/widgets/common/common_button.dart';
 import 'package:fw_vendor/core/widgets/common/order_address_card.dart';
+import 'package:fw_vendor/extensions/date_exensions.dart';
 import 'package:get/get.dart';
 
 class GlobalDirectoryDetailsScreen extends StatelessWidget {
@@ -35,8 +36,10 @@ class GlobalDirectoryDetailsScreen extends StatelessWidget {
                   ...globalDirectoryController.selectedOrderTrueList.map(
                     (e) {
                       return OrderAddressCard(
-                        addressHeder: e["shopName"],
-                        personName: e["personName"] + "\t\t\t(${e["number"]})",
+                        addressHeder: e["name"].toString(),
+                        personName: e["person"].toString(),
+                        mobileNumber: e["mobile"].toString(),
+                        date: getFormattedDate(e["updatedAt"].toString()),
                         address: e["address"],
                         onTap: () {
                           globalDirectoryController.removeToSelectedList(e);

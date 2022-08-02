@@ -20,6 +20,10 @@ class OrdersController extends GetxController {
     super.onInit();
   }
 
+  willPopScope() {
+    Get.offNamed(AppRoutes.home);
+  }
+
   List searchFilter = [
     {"title": "Order No", "_id": 1},
     {"title": "Bill No", "_id": 2},

@@ -6,7 +6,6 @@ import 'package:fw_vendor/core/configuration/app_routes.dart';
 import 'package:fw_vendor/core/utilities/storage_utils.dart';
 import 'package:fw_vendor/core/widgets/common_dialog/scale_dialog.dart';
 import 'package:fw_vendor/networking/index.dart';
-import 'package:fw_vendor/screen/Addresses/global_directory_screen.dart';
 import 'package:fw_vendor/screen/dashboard/dashboard_screen.dart';
 import 'package:get/get.dart';
 
@@ -34,16 +33,6 @@ class HomeController extends GetxController {
       "pageName": "Dashboard",
       "icon": FontAwesomeIcons.dashboard,
       "screen": DashBoardScreen(),
-    },
-    {
-      "pageName": "Addresses",
-      "icon": FontAwesomeIcons.addressCard,
-      "screen": GlobalDirectoryScreen(),
-    },
-    {
-      "pageName": "Masters",
-      "icon": FontAwesomeIcons.marsAndVenus,
-      "screen": "",
     },
   ];
 
@@ -114,6 +103,26 @@ class HomeController extends GetxController {
       isLoading = false;
       update();
     }
+  }
+
+  onAddressesClick() {
+    Get.toNamed(AppRoutes.globalDirectoryScreen);
+    update();
+  }
+
+  onSaveAddressesClick() {
+    Get.toNamed(AppRoutes.saveAddressScreen);
+    update();
+  }
+
+  onRequestAddressesClick() {
+    Get.toNamed(AppRoutes.requestAddressScreen);
+    update();
+  }
+
+  onCreateOrderClick() {
+    Get.toNamed(AppRoutes.createOrders);
+    update();
   }
 
   onOrdersClick() {

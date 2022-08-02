@@ -9,22 +9,33 @@ class MenuCard extends StatelessWidget {
   final Color? iconColor;
   final bool? showArrow;
   final String? subtitle;
+  final dynamic iconSize;
 
-  const MenuCard({Key? key, this.title, this.onPress, this.icon, this.iconColor = Colors.grey, this.showArrow = true, this.subtitle})
-      : super(key: key);
+  const MenuCard({
+    Key? key,
+    this.title,
+    this.onPress,
+    this.icon,
+    this.iconColor = Colors.grey,
+    this.showArrow = true,
+    this.subtitle,
+    this.iconSize,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return ListTile(
       onTap: onPress!,
-      leading: CircleAvatar(backgroundColor: Colors.transparent, child: Icon(icon, color: iconColor, size: 20)),
+      leading: CircleAvatar(
+        backgroundColor: Colors.transparent,
+        child: Icon(
+          icon,
+          color: iconColor,
+          size: iconSize ?? 20,
+        ),
+      ),
       title: Text("$title"),
       subtitle: subtitle != null ? Text("${subtitle.toString()}") : null,
-      trailing: const Icon(
-        Icons.arrow_forward_ios_rounded,
-        size: 14,
-        color: Colors.grey,
-      ),
     );
   }
 }

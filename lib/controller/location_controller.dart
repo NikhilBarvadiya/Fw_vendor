@@ -12,7 +12,6 @@ class LocationController extends GetxController {
   }
 
   locationStatusData() {
-    print(status);
     for (int i = 0; i < status.length; i++) {
       deliveredStatus = status[i]["status"].toString().capitalizeFirst.toString();
     }

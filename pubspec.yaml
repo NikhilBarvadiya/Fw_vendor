@@ -50,6 +50,8 @@ dependencies:
   font_awesome_flutter: ^10.1.0
   flutter_switch: ^0.3.2
   flutter_html: ^3.0.0-alpha.5
+  geolocator: ^9.0.1
+  location: ^4.4.0
 
 dev_dependencies:
   flutter_test:
