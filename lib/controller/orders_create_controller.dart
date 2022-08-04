@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:fw_vendor/common/config.dart';
 import 'package:fw_vendor/core/configuration/app_routes.dart';
+import 'package:fw_vendor/core/theme/index.dart';
+import 'package:fw_vendor/core/utilities/storage_utils.dart';
 import 'package:fw_vendor/core/widgets/common_dialog/scale_dialog.dart';
 import 'package:fw_vendor/networking/index.dart';
-import 'package:geolocator/geolocator.dart';
 import 'package:get/get.dart';
 
 class OrdersCreateController extends GetxController {
@@ -16,21 +17,60 @@ class OrdersCreateController extends GetxController {
   TextEditingController txtNotes = TextEditingController();
   TextEditingController txtAmount = TextEditingController();
   TextEditingController txtBillAmount = TextEditingController();
-  TextEditingController txtLatitueLongitudeController = TextEditingController();
-  dynamic latitude;
-  dynamic longitude;
+  TextEditingController txtLatLng = TextEditingController();
   bool isLoading = false;
+  bool isPaymentMode = false;
   List vendorRoutesList = [];
+  List customerAddressNameList = [];
+  List saveShopOrder = [];
+  List createList = [];
   String routesSelected = "";
   String routesSelectedId = "";
+  String nameSelectedId = "";
+  String areaId = "";
+
   @override
   void onInit() {
     _vendorRoutes();
+    _getAllCustomerAddressName();
     super.onInit();
+  }
+
+  onCLear() {
+    txtName.clear();
+    txtAdress.clear();
+    routesSelected = "";
+    txtMobile.clear();
+    txtBillNo.clear();
+    txtLoosePkg.clear();
+    txtBoxPkg.clear();
+    txtNotes.clear();
+    txtAmount.clear();
+    txtBillAmount.clear();
+    txtLatLng.clear();
+    routesSelectedId = "";
+    nameSelectedId = "";
+    areaId = "";
+    isPaymentMode = false;
+    update();
   }
 
   willPopScope() {
     Get.offNamed(AppRoutes.home);
+  }
+
+  willPopScopeCreateOrdersFroms() {
+    onCLear();
+    update();
+    Get.back();
+  }
+
+  onAdd() {
+    Get.toNamed(AppRoutes.ordersFromScreen);
+  }
+
+  onShowAdrresBook() {
+    Get.toNamed(AppRoutes.showAdrresBookScreen);
   }
 
   _vendorRoutes() async {
@@ -55,11 +95,12 @@ class OrdersCreateController extends GetxController {
     update();
   }
 
-  onRoutesSelected(String id, String name) {
+  onRoutesSelected(String id, String name, e) {
     routesSelected = "";
     routesSelectedId = "";
     routesSelected = name;
     routesSelectedId = id;
+    areaId = e["areaId"]["_id"].toString();
     if (routesSelectedId != "") {
       Get.back();
     } else {
@@ -74,17 +115,228 @@ class OrdersCreateController extends GetxController {
     update();
   }
 
-  void onTapLocation() async {
-    isLoading = true;
+  _getAllCustomerAddressName() async {
+    try {
+      isLoading = true;
+      update();
+      var body = {};
+      var resData = await apis.call(
+        apiMethods.getAllCustomerAddressName,
+        body,
+        ApiType.post,
+      );
+      if (resData.isSuccess && resData.data != 0) {
+        customerAddressNameList = resData.data;
+      }
+    } catch (e) {
+      snackBar("No pacakge data found", Colors.red);
+      isLoading = false;
+      update();
+    }
+    isLoading = false;
     update();
-    await Geolocator.getCurrentPosition(desiredAccuracy: LocationAccuracy.high).then(
-      (value) async {
-        isLoading = false;
-        latitude = double.parse(value.latitude.toString());
-        longitude = double.parse(value.longitude.toString());
-        txtLatitueLongitudeController.text = "$latitude\t-\t$longitude";
+  }
+
+  onNameSelected(String id, String name) async {
+    nameSelectedId = "";
+    txtName.text = name;
+    nameSelectedId = id;
+    if (nameSelectedId != "") {
+      Get.back();
+      await _getCustomerAddressById();
+    } else {
+      Get.snackbar(
+        "Error",
+        "Please try again ?",
+        backgroundColor: Colors.white,
+        colorText: Colors.black,
+      );
+      Get.back();
+    }
+    update();
+  }
+
+  _getCustomerAddressById() async {
+    try {
+      isLoading = true;
+      update();
+      var body = {
+        "id": nameSelectedId,
+      };
+      var resData = await apis.call(
+        apiMethods.getCustomerAddressById,
+        body,
+        ApiType.post,
+      );
+      if (resData.isSuccess && resData.data != 0) {
+        txtAdress.text = resData.data["address"].toString().capitalizeFirst.toString();
+        txtMobile.text = resData.data["mobile"];
+        txtLatLng.text = "${resData.data["lat"]}\t-\t${resData.data["lng"]}";
+      }
+    } catch (e) {
+      snackBar("No pacakge data found", Colors.red);
+      isLoading = false;
+      update();
+    }
+    isLoading = false;
+    update();
+  }
+
+  onCredit() {
+    if (txtAmount.text.isNotEmpty) {
+      txtBillAmount.text = txtAmount.text;
+    } else {
+      txtAmount.text = txtBillAmount.text;
+    }
+    if (txtAmount.text.isNotEmpty && txtBillAmount.text.isNotEmpty) {
+      isPaymentMode = true;
+    }
+    update();
+  }
+
+  onCash() {
+    if (txtBoxPkg.text.isNotEmpty || txtBillAmount.text.isNotEmpty) {
+      txtAmount.text = "";
+    }
+    isPaymentMode = false;
+    update();
+  }
+
+  _saveShopOrder() async {
+    try {
+      isLoading = true;
+      update();
+      var body = createList;
+      var resData = await apis.call(
+        apiMethods.saveShopOrder,
+        body,
+        ApiType.post,
+      );
+      await _saveCustomerAddress();
+      if (resData.isSuccess && resData.data != 0) {
+        await _saveCustomerAddress();
+        snackBar(resData.message.toString(), Colors.green);
+        onCLear();
+      }
+    } catch (e) {
+      snackBar("No pacakge data found", Colors.red);
+      isLoading = false;
+      update();
+    }
+    isLoading = false;
+    update();
+  }
+
+  _saveCustomerAddress() async {
+    try {
+      isLoading = true;
+      update();
+      var body = {"addresses": addresses};
+      var resData = await apis.call(
+        apiMethods.saveCustomerAddress,
+        body,
+        ApiType.post,
+      );
+      if (resData.isSuccess && resData.data != 0) {
+        createList.clear();
+        addresses.clear();
+        onCLear();
+        Get.toNamed(AppRoutes.home);
+      }
+    } catch (e) {
+      snackBar("No pacakge data found", Colors.red);
+      isLoading = false;
+      update();
+    }
+    isLoading = false;
+    update();
+  }
+
+  List addresses = [];
+
+  onCreateOrder() async {
+    List finalCreateList = [];
+    var getData = await getStorage(Session.userData);
+    var data = {
+      "name": txtName.text.toString(),
+      "address": txtAdress.text.toString(),
+      "routeId": routesSelectedId,
+      "routeName": routesSelected,
+      "mobile": txtMobile.text.toString(),
+      "billNo": txtBillNo.text.toString(),
+      "amount": txtBillAmount.text.toString(),
+      "cash": txtAmount.text.toString(),
+      "paymentMethod": isPaymentMode != true ? "credit" : "cod",
+      "notes": txtNotes.text.toString(),
+      "latLong": txtLatLng.text.toString().replaceAll("\t-\t", ","),
+      "nOfPackages": txtLoosePkg.text.toString(),
+      "nOfBoxes": txtBoxPkg.text.toString(),
+      "orderType": getData["businessType"],
+      "businessCategoryId": getData["businessCategoryId"]["_id"].toString(),
+    };
+    var secondData = {
+      "name": txtName.text.toString(),
+      "address": txtAdress.text.toString(),
+      "areaId": areaId.toString(),
+      "mobile": txtMobile.text.toString(),
+      "latLong": txtLatLng.text.toString().replaceAll("\t-\t", ","),
+    };
+    if (txtName.text.isNotEmpty && txtBillAmount.text.isNotEmpty) {
+      finalCreateList = createList
+          .where(
+            (element) => (element["name"] == data["name"]),
+          )
+          .toList();
+      if (finalCreateList.isEmpty) {
+        createList.add(data);
+        addresses.add(secondData);
+        onCLear();
+        Get.back();
+      } else {
+        onCLear();
         update();
-      },
-    );
+        snackBar("Orders is allready available", Colors.deepOrange);
+      }
+    } else {
+      snackBar("Name & BillNo not available", Colors.deepOrange);
+    }
+    update();
+  }
+
+  onRemoveOrders(orders) {
+    if (orders != null) {
+      Get.dialog(
+        AlertDialog(
+          title: Text(
+            'Remove',
+            style: AppCss.h1,
+          ),
+          content: Text(
+            'Do you remove this location?',
+            style: AppCss.h3,
+          ),
+          actions: [
+            TextButton(
+              child: const Text("Ok"),
+              onPressed: () {
+                createList.remove(orders);
+                update();
+                Get.back();
+              },
+            ),
+            TextButton(
+              child: const Text("Close"),
+              onPressed: () => Get.back(),
+            ),
+          ],
+        ),
+      );
+      update();
+    }
+  }
+
+  onProceedOrder() async {
+    await _saveShopOrder();
+    update();
   }
 }

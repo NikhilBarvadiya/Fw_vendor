@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:fw_vendor/controller/request_address_controller.dart';
 import 'package:fw_vendor/core/widgets/common/request_address_card.dart';
+import 'package:fw_vendor/core/widgets/custom_widgets/custom_nodata.dart';
 import 'package:fw_vendor/core/widgets/custom_widgets/custom_textformfield.dart';
 import 'package:fw_vendor/extensions/date_exensions.dart';
 import 'package:get/get.dart';
@@ -82,6 +83,25 @@ class _RequestAddressScreenState extends State<RequestAddressScreen> {
                   ),
                 ],
               ),
+              if (requestAddressControler.vendorRequestAddressList.isEmpty)
+                Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: const [
+                    NoDataWidget(
+                      title: "No data !",
+                      body: "No orders available",
+                    ),
+                  ],
+                ),
+              if (requestAddressControler.isLoading)
+                Container(
+                  width: MediaQuery.of(context).size.width,
+                  height: MediaQuery.of(context).size.height,
+                  color: Colors.white.withOpacity(.8),
+                  child: const Center(
+                    child: CircularProgressIndicator(),
+                  ),
+                ),
             ],
           ).paddingAll(10),
         ),

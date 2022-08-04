@@ -5,10 +5,12 @@ import 'package:fw_vendor/screen/Addresses/request_addresses/request_address_scr
 import 'package:fw_vendor/screen/Addresses/save_addresses/save_address_screen.dart';
 import 'package:fw_vendor/screen/dashboard/location_screen.dart';
 import 'package:fw_vendor/screen/orders/orders_create_screen.dart';
+import 'package:fw_vendor/screen/orders/orders_from_screen.dart';
 import 'package:fw_vendor/screen/orders/orders_screen.dart';
 import 'package:fw_vendor/screen/home/home_screen.dart';
 import 'package:fw_vendor/screen/login/login_screen.dart';
 import 'package:fw_vendor/screen/login/splash_screen.dart';
+import 'package:fw_vendor/screen/orders/show_address_book_screen.dart';
 import 'package:get/get.dart';
 
 class AppRoutes {
@@ -17,6 +19,8 @@ class AppRoutes {
   static String home = "/homeScreen";
   static String orders = "/orders";
   static String createOrders = "/createOrders";
+  static String ordersFromScreen = "/ordersFromScreen";
+  static String showAdrresBookScreen = "/showAdrresBookScreen";
   static String locationScreen = "/locationScreen";
   static String globalDirectoryScreen = "/globalDirectoryScreen";
   static String globalDirectoryDetailsScreen = "/globalDirectoryDetailsScreen";
@@ -30,10 +34,12 @@ class AppRoutes {
     GetPage(name: home, page: () => const HomeScreen()),
     GetPage(name: orders, page: () => OrderScreen()),
     GetPage(name: createOrders, page: () => const CreateOrderScreen()),
+    GetPage(name: ordersFromScreen, page: () => const OrdersFromScreen()),
     GetPage(name: locationScreen, page: () => LocationScreen()),
     GetPage(name: globalDirectoryScreen, page: () => GlobalDirectoryScreen()),
     GetPage(name: globalDirectoryDetailsScreen, page: () => GlobalDirectoryDetailsScreen()),
     GetPage(name: saveAddressScreen, page: () => SaveAddressScreen()),
+    GetPage(name: showAdrresBookScreen, page: () => const ShowAdrresBookScreen()),
     GetPage(name: requestAddressScreen, page: () => const RequestAddressScreen()),
     GetPage(name: noInternet, page: () => const Center(child: Text("No internet found"))),
   ];

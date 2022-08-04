@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:fw_vendor/controller/orders_create_controller.dart';
-import 'package:fw_vendor/core/widgets/common/common_orders_text_card.dart';
-import 'package:fw_vendor/core/widgets/common/searchable_list.dart';
-import 'package:fw_vendor/core/widgets/common_bottom_sheet/common_bottom_sheet.dart';
+import 'package:fw_vendor/core/widgets/common/common_button.dart';
+import 'package:fw_vendor/core/widgets/common/create_orders_card.dart';
+import 'package:fw_vendor/core/widgets/custom_widgets/custom_nodata.dart';
 import 'package:get/get.dart';
 
 class CreateOrderScreen extends StatefulWidget {
@@ -13,6 +13,7 @@ class CreateOrderScreen extends StatefulWidget {
 
 class _CreateOrderScreenState extends State<CreateOrderScreen> {
   OrdersCreateController ordersCreateController = Get.put(OrdersCreateController());
+
   @override
   Widget build(BuildContext context) {
     return GetBuilder<OrdersCreateController>(
@@ -26,132 +27,81 @@ class _CreateOrderScreenState extends State<CreateOrderScreen> {
             automaticallyImplyLeading: false,
             foregroundColor: Colors.white,
             title: const Text(
-              "Create orders",
+              "Orders view",
             ),
+            actions: [
+              IconButton(
+                onPressed: () {
+                  ordersCreateController.onAdd();
+                },
+                icon: const Icon(
+                  Icons.add,
+                ),
+              ),
+              IconButton(
+                onPressed: () {
+                  ordersCreateController.onShowAdrresBook();
+                },
+                icon: const Icon(
+                  Icons.book,
+                ),
+              ),
+            ],
           ),
-          body: RefreshIndicator(
-            onRefresh: () async {},
-            child: ListView(
-              physics: const BouncingScrollPhysics(),
-              children: [
-                const CommonOrdersTextCard(
-                  name: "Name",
-                  keyboardType: TextInputType.name,
-                ),
-                const CommonOrdersTextCard(
-                  name: "Address",
-                  keyboardType: TextInputType.streetAddress,
-                  minLines: 1,
-                  maxLines: 4,
-                ),
-                CommonOrdersTextCard(
-                  name: "Area",
-                  hintText: ordersCreateController.routesSelected != "" ? ordersCreateController.routesSelected.capitalizeFirst.toString() : "",
-                  readOnly: true,
-                  suffixIcon: ordersCreateController.routesSelected != ""
-                      ? null
-                      : const Icon(
-                          Icons.arrow_drop_down,
-                        ),
-                  onTap: () {
-                    commonBottomSheet(
-                      context: context,
-                      height: MediaQuery.of(context).size.height * 0.6,
-                      widget: SearchableListView(
-                        isLive: false,
-                        isOnSearch: false,
-                        isOnheder: true,
-                        hederColor: Theme.of(context).primaryColor,
-                        hederTxtColor: Colors.white,
-                        itemList: ordersCreateController.vendorRoutesList,
-                        hederText: "Routes",
-                        bindText: 'name',
-                        bindValue: '_id',
-                        labelText: 'Listing of global addresses.',
-                        hintText: 'Please Select',
-                        onSelect: (val, text) {
-                          ordersCreateController.onRoutesSelected(val, text);
-                        },
-                      ),
-                    );
-                  },
-                ),
-                const CommonOrdersTextCard(
-                  name: "Mobile",
-                  keyboardType: TextInputType.number,
-                ),
-                const CommonOrdersTextCard(
-                  name: "Bill No",
-                ),
-                Row(
-                  children: const [
-                    Expanded(
-                      child: CommonOrdersTextCard(
-                        name: "Loose Pkg",
-                        keyboardType: TextInputType.number,
-                      ),
-                    ),
-                    Expanded(
-                      child: CommonOrdersTextCard(
-                        name: "Box Pkg",
-                        keyboardType: TextInputType.number,
-                      ),
-                    ),
-                  ],
-                ),
-                const CommonOrdersTextCard(
-                  name: "Notes",
-                ),
-                Row(
-                  children: const [
-                    Expanded(
-                      child: CommonOrdersTextCard(
-                        name: "Amount",
-                        keyboardType: TextInputType.number,
-                      ),
-                    ),
-                    Expanded(
-                      child: CommonOrdersTextCard(
-                        name: "Bill Amount",
-                        keyboardType: TextInputType.number,
-                      ),
-                    ),
-                  ],
-                ),
-                CommonOrdersTextCard(
-                  name: "lat-Long",
-                  readOnly: true,
-                  controller: ordersCreateController.txtLatitueLongitudeController,
-                  suffixIcon: SizedBox(
-                    height: 50,
-                    width: 50,
-                    child: Stack(
+          body: Stack(
+            children: [
+              Column(
+                children: [
+                  Expanded(
+                    child: ListView(
                       children: [
-                        VerticalDivider(
-                          thickness: 1.5,
-                          indent: 7,
-                          endIndent: 7,
-                          width: 5,
-                          color: Theme.of(context).primaryColor.withOpacity(0.5),
-                        ),
-                        IconButton(
-                          icon: ordersCreateController.isLoading
-                              ? Transform.scale(
-                                  scale: 0.5,
-                                  child: const CircularProgressIndicator(),
-                                )
-                              : Icon(
-                                  Icons.location_pin,
-                                  color: Theme.of(context).primaryColor,
-                                ),
-                          onPressed: () => ordersCreateController.onTapLocation(),
-                        ),
+                        if (ordersCreateController.createList.isNotEmpty)
+                          ...ordersCreateController.createList.map(
+                            (e) {
+                              return CreateOrdersCard(
+                                name: e["name"].toString().capitalizeFirst.toString(),
+                                billNo: e["billNo"].toString(),
+                                mobileNumber: e["mobile"].toString(),
+                                address: e["address"].toString()..capitalizeFirst.toString(),
+                                area: e["routeName"].toString().capitalizeFirst.toString(),
+                                amount: e["cash"].toString(),
+                                billAmount: e["amount"].toString(),
+                                type: e["paymentMethod"].toString().capitalizeFirst.toString(),
+                                onTap: () => ordersCreateController.onRemoveOrders(e),
+                              );
+                            },
+                          )
                       ],
                     ),
                   ),
+                  if (ordersCreateController.createList.isNotEmpty)
+                    commonButton(
+                      onTap: () => ordersCreateController.onProceedOrder(),
+                      text: "Proceed order",
+                      height: 50.0,
+                    ).paddingOnly(left: 10, right: 10, top: 5, bottom: 5),
+                ],
+              ).paddingAll(10),
+              if (ordersCreateController.createList.isEmpty)
+                Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: const [
+                    NoDataWidget(
+                      title: "Please add new orders!",
+                      body: "No orders available",
+                    ),
+                  ],
                 ),
-              ],
-            ),
+              if (ordersCreateController.isLoading)
+                Container(
+                  width: MediaQuery.of(context).size.width,
+                  height: MediaQuery.of(context).size.height,
+                  color: Colors.white.withOpacity(.8),
+                  child: const Center(
+                    child: CircularProgressIndicator(),
+                  ),
+                ),
+            ],
           ),
         ),
       ),

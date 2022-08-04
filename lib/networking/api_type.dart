@@ -24,5 +24,10 @@ class ApiMethods {
   final String vendorRemoveMappedAddress = "vendor/removeMappedAddress";
   final String vendorToggleCreditCash = "vendor/toggleCreditCash";
   final String vendorRequestedAddress = "vendor/getRequestedAddress";
-  final String vendordeleteRequestedAddress = "vendor/deleteRequestedAddress";
+  final String vendorDeleteRequestedAddress = "vendor/deleteRequestedAddress";
+  final String getAllCustomerAddressName = "vendor/address/getAllCustomerAddressName";
+  final String getCustomerAddressById = "vendor/address/getCustomerAddressById";
+  final String saveShopOrder = "vendor/saveShopOrder";
+  final String saveCustomerAddress = "vendor/address/saveCustomerAddress";
+  final String getCustomerAddress = "vendor/address/getCustomerAddress";
 }

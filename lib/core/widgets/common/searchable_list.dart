@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:fw_vendor/core/theme/index.dart';
+import 'package:fw_vendor/core/widgets/common/common_button.dart';
 import 'package:get/get.dart';
 
 class SearchableListView extends StatefulWidget {
@@ -18,6 +19,7 @@ class SearchableListView extends StatefulWidget {
     this.isOnheder,
     this.hederColor,
     this.hederTxtColor,
+    this.txtController,
   }) : super(key: key);
   final List itemList;
   final String? bindText;
@@ -32,6 +34,7 @@ class SearchableListView extends StatefulWidget {
   final bool? isOnSearch;
   final Color? hederColor;
   final Color? hederTxtColor;
+  final TextEditingController? txtController;
 
   @override
   State<SearchableListView> createState() => _SearchableListViewState();
@@ -67,6 +70,7 @@ class _SearchableListViewState extends State<SearchableListView> {
             mainAxisSize: MainAxisSize.min,
             children: [
               TextFormField(
+                controller: widget.txtController,
                 onChanged: (search) async {
                   if (widget.isLive && widget.fetchApi != null) {
                     resultList = await widget.fetchApi!(search);
@@ -155,7 +159,7 @@ class _SearchableListViewState extends State<SearchableListView> {
                   return ListTile(
                     onTap: () {
                       if (widget.bindValue != null && widget.bindText != null) {
-                        widget.onSelect!(e[widget.bindValue], e[widget.bindText]);
+                        widget.onSelect!(e[widget.bindValue], e[widget.bindText], e);
                       } else if (widget.bindValue != null) {
                         widget.onSelect!(e[widget.bindValue]);
                       } else {
@@ -163,8 +167,10 @@ class _SearchableListViewState extends State<SearchableListView> {
                       }
                     },
                     title: Text(
-                      widget.bindText != null ? e[widget.bindText] : e,
-                      style: AppCss.body1,
+                      widget.bindText != null ? e[widget.bindText].toString().capitalizeFirst : e,
+                      style: AppCss.footnote.copyWith(
+                        fontSize: 12,
+                      ),
                     ),
                   );
                 },
@@ -172,6 +178,14 @@ class _SearchableListViewState extends State<SearchableListView> {
             ],
           ),
         ),
+        if (resultList.isEmpty)
+          commonButton(
+            onTap: () {
+              Get.back();
+            },
+            text: "New add",
+            height: 50.0,
+          ).paddingSymmetric(horizontal: 10, vertical: 5),
       ],
     );
   }

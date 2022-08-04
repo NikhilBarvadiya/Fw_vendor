@@ -33,7 +33,7 @@ class _CommonOrdersTextCardState extends State<CommonOrdersTextCard> {
   @override
   Widget build(BuildContext context) {
     return Card(
-      elevation: 2,
+      elevation: 1,
       clipBehavior: Clip.antiAlias,
       surfaceTintColor: Theme.of(context).canvasColor,
       semanticContainer: true,
@@ -50,7 +50,7 @@ class _CommonOrdersTextCardState extends State<CommonOrdersTextCard> {
             style: AppCss.footnote,
           ).paddingOnly(left: 5, top: 5),
           Container(
-            color: Theme.of(context).primaryColor.withOpacity(.1),
+            color: Theme.of(context).canvasColor.withOpacity(.1),
             child: TextFormField(
               readOnly: widget.readOnly ?? false,
               onTap: widget.onTap,
@@ -58,16 +58,21 @@ class _CommonOrdersTextCardState extends State<CommonOrdersTextCard> {
               keyboardType: widget.keyboardType ?? TextInputType.text,
               maxLines: widget.maxLines,
               minLines: widget.minLines,
+              cursorHeight: 20,
               decoration: InputDecoration(
                 suffixIcon: widget.suffixIcon,
                 hintText: widget.hintText,
-                hintStyle: AppCss.body3.copyWith(
+                hintStyle: AppCss.caption.copyWith(
                   fontSize: 14,
                   color: Colors.black,
                 ),
                 contentPadding: const EdgeInsets.symmetric(
                   horizontal: 10,
                 ),
+              ),
+              style: AppCss.caption.copyWith(
+                fontSize: 14,
+                color: Colors.black,
               ),
             ),
           ),

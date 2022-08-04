@@ -56,7 +56,7 @@ class OrderScreen extends StatelessWidget {
                         bindValue: '_id',
                         labelText: 'Listing of global addresses.',
                         hintText: 'Please Select',
-                        onSelect: (val, text) {
+                        onSelect: (val, text, e) {
                           ordersController.onFilterSelected(text);
                         },
                       ),

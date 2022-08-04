@@ -19,7 +19,7 @@ class RequestAddressControler extends GetxController {
   }
 
   willPopScope() {
-    Get.toNamed(AppRoutes.home);
+    Get.offNamed(AppRoutes.home);
   }
 
   onSearchButtonTapped() {
@@ -64,7 +64,7 @@ class RequestAddressControler extends GetxController {
         "_id": id,
       };
       var resData = await apis.call(
-        apiMethods.vendordeleteRequestedAddress,
+        apiMethods.vendorDeleteRequestedAddress,
         body,
         ApiType.post,
       );

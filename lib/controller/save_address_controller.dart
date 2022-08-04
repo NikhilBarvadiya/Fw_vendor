@@ -25,7 +25,7 @@ class SaveAddressController extends GetxController {
       isMapper = false;
       update();
     } else {
-      Get.toNamed(AppRoutes.home);
+      Get.offNamed(AppRoutes.home);
     }
   }
 

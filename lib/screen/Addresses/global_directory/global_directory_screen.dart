@@ -54,7 +54,7 @@ class GlobalDirectoryScreen extends StatelessWidget {
                       bindValue: '_id',
                       hederColor: Theme.of(context).primaryColor,
                       hederTxtColor: Colors.white,
-                      onSelect: (val, text) {
+                      onSelect: (val, text, e) {
                         globalDirectoryController.onRouteSelected(val, text);
                       },
                     ),
@@ -147,7 +147,7 @@ class GlobalDirectoryScreen extends StatelessWidget {
                       text: "Selected location (${globalDirectoryController.selectedOrderTrueList.length})",
                       height: 50.0,
                     ),
-                  )
+                  ),
                 ],
               ).paddingAll(10),
               if (globalDirectoryController.globalAddressesList.isEmpty)

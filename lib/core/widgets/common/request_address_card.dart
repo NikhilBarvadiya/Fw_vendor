@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:fw_vendor/core/theme/index.dart';
 import 'package:fw_vendor/core/widgets/common/common_request_address_chip.dart';
 import 'package:get/get.dart';
@@ -112,11 +113,13 @@ class _RequestAddressCardState extends State<RequestAddressCard> {
                 CommonRequestAddressChips(
                   status: "Edit",
                   color: Colors.blue,
+                  icon: FontAwesomeIcons.penToSquare,
                   onTap: widget.onEditClick,
                 ),
                 CommonRequestAddressChips(
                   status: "Delete",
                   color: Colors.red,
+                  icon: FontAwesomeIcons.deleteLeft,
                   onTap: widget.onDeleteClick,
                 ),
               ],
