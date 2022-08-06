@@ -208,15 +208,14 @@ class PlaceOrdersController extends GetxController {
       var data = {
         "ordersRequest": ordersRequest,
       };
-      print(data);
-      // var resData = await apis.call(
-      //   apiMethods.saveOrder,
-      //   data,
-      //   ApiType.post,
-      // );
-      // if (resData.isSuccess && resData.data != 0) {
-      //   willPopScope();
-      // }
+      var resData = await apis.call(
+        apiMethods.saveOrder,
+        data,
+        ApiType.post,
+      );
+      if (resData.isSuccess && resData.data != 0) {
+        willPopScope();
+      }
     } catch (e) {
       snackBar("No pacakge data found", Colors.red);
       isLoading = false;

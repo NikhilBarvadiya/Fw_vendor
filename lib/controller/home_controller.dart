@@ -130,6 +130,16 @@ class HomeController extends GetxController {
     update();
   }
 
+  onCashSettementClick() {
+    Get.toNamed(AppRoutes.cashSettlementScreen);
+    update();
+  }
+
+  onReturnSettementClick() {
+    Get.toNamed(AppRoutes.returnSettlementScreen);
+    update();
+  }
+
   onOrdersClick() {
     Get.toNamed(AppRoutes.orders);
     update();

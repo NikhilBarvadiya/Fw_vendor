@@ -115,6 +115,18 @@ class _CustomDrawerState extends State<CustomDrawer> {
                         onPress: () => homeController.onCreateGlobalOrderClick(),
                       ),
                       MenuCard(
+                        title: "Cash settlement",
+                        icon: Icons.circle,
+                        iconSize: 8.0,
+                        onPress: () => homeController.onCashSettementClick(),
+                      ),
+                      MenuCard(
+                        title: "Return settlement",
+                        icon: Icons.circle,
+                        iconSize: 8.0,
+                        onPress: () => homeController.onReturnSettementClick(),
+                      ),
+                      MenuCard(
                         icon: Icons.circle,
                         title: "Orders view",
                         iconSize: 8.0,

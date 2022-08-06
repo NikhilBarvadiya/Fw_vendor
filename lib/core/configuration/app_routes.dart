@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:fw_vendor/core/widgets/custom_widgets/custom_nodata.dart';
 import 'package:fw_vendor/screen/Addresses/global_directory/global_directory_details_screen.dart';
 import 'package:fw_vendor/screen/Addresses/global_directory/global_directory_screen.dart';
 import 'package:fw_vendor/screen/Addresses/request_addresses/request_address_screen.dart';
@@ -7,6 +8,7 @@ import 'package:fw_vendor/screen/dashboard/location_screen.dart';
 import 'package:fw_vendor/screen/home/home_screen.dart';
 import 'package:fw_vendor/screen/login/login_screen.dart';
 import 'package:fw_vendor/screen/login/splash_screen.dart';
+import 'package:fw_vendor/screen/orders/cash_settlement/cash_settlement.dart';
 import 'package:fw_vendor/screen/orders/create_global_orders/create_global_orders_details_screen.dart';
 import 'package:fw_vendor/screen/orders/create_global_orders/create_global_orders_screen.dart';
 import 'package:fw_vendor/screen/orders/create_global_orders/place_orders_screen.dart';
@@ -14,6 +16,7 @@ import 'package:fw_vendor/screen/orders/create_orders/orders_create_screen.dart'
 import 'package:fw_vendor/screen/orders/create_orders/orders_from_screen.dart';
 import 'package:fw_vendor/screen/orders/create_orders/orders_screen.dart';
 import 'package:fw_vendor/screen/orders/create_orders/show_address_book_screen.dart';
+import 'package:fw_vendor/screen/orders/return_settlement/return_order_settlement.dart';
 import 'package:get/get.dart';
 
 class AppRoutes {
@@ -27,11 +30,13 @@ class AppRoutes {
   static String createGlobalOrdersScreen = "/createGlobalOrdersScreen";
   static String createGlobalOrdersDetailsScreen = "/createGlobalOrdersDetailsScreen";
   static String placeOrderScreen = "/placeOrderScreen";
-  static String locationScreen = "/locationScreen";
   static String globalDirectoryScreen = "/globalDirectoryScreen";
   static String globalDirectoryDetailsScreen = "/globalDirectoryDetailsScreen";
+  static String locationScreen = "/locationScreen";
   static String saveAddressScreen = "/saveAddressScreen";
   static String requestAddressScreen = "/requestAddressScreen";
+  static String cashSettlementScreen = "/cashSettlementScreen";
+  static String returnSettlementScreen = "/returnSettlementScreen";
   static String noInternet = "/noInternet";
 
   static List<GetPage> getPages = [
@@ -44,12 +49,25 @@ class AppRoutes {
     GetPage(name: createGlobalOrdersScreen, page: () => const CreateGlobalOrdersScreen()),
     GetPage(name: createGlobalOrdersDetailsScreen, page: () => const CreateGlobalOrdersDetailsScreen()),
     GetPage(name: placeOrderScreen, page: () => const PlaceOrderScreen()),
-    GetPage(name: locationScreen, page: () => LocationScreen()),
     GetPage(name: globalDirectoryScreen, page: () => GlobalDirectoryScreen()),
     GetPage(name: globalDirectoryDetailsScreen, page: () => GlobalDirectoryDetailsScreen()),
+    GetPage(name: locationScreen, page: () => LocationScreen()),
     GetPage(name: saveAddressScreen, page: () => SaveAddressScreen()),
     GetPage(name: showAdrresBookScreen, page: () => const ShowAdrresBookScreen()),
     GetPage(name: requestAddressScreen, page: () => const RequestAddressScreen()),
-    GetPage(name: noInternet, page: () => const Center(child: Text("No internet found"))),
+    GetPage(name: cashSettlementScreen, page: () => const CashSettlementScreen()),
+    GetPage(name: returnSettlementScreen, page: () => const ReturnOrderSettlementScreen()),
+    GetPage(
+      name: noInternet,
+      page: () => Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: const [
+          NoDataWidget(
+            title: "No data !",
+            body: "No internet found",
+          ),
+        ],
+      ),
+    ),
   ];
 }

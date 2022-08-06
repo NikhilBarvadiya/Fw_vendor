@@ -252,7 +252,7 @@ class _PlaceOrdersCardState extends State<PlaceOrdersCard> {
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
                       Text(
-                        "Loose package",
+                        "Loose Pkg",
                         style: AppCss.poppins.copyWith(
                           color: Colors.black,
                           fontWeight: FontWeight.bold,
@@ -280,7 +280,7 @@ class _PlaceOrdersCardState extends State<PlaceOrdersCard> {
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
                       Text(
-                        "Box package",
+                        "Box Pkg",
                         style: AppCss.poppins.copyWith(
                           color: Colors.black,
                           fontWeight: FontWeight.bold,
