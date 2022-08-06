@@ -109,6 +109,12 @@ class _CustomDrawerState extends State<CustomDrawer> {
                         onPress: () => homeController.onCreateOrderClick(),
                       ),
                       MenuCard(
+                        title: "Create global order",
+                        icon: Icons.circle,
+                        iconSize: 8.0,
+                        onPress: () => homeController.onCreateGlobalOrderClick(),
+                      ),
+                      MenuCard(
                         icon: Icons.circle,
                         title: "Orders view",
                         iconSize: 8.0,

@@ -6,13 +6,15 @@ class ShowAddressBookCard extends StatefulWidget {
   final String? name;
   final String? mobileNumber;
   final String? address;
-  final void Function()? onTap;
+  final void Function()? onDelete;
+  final void Function()? onAdd;
   const ShowAddressBookCard({
     Key? key,
     this.name,
     this.mobileNumber,
     this.address,
-    this.onTap,
+    this.onDelete,
+    this.onAdd,
   }) : super(key: key);
 
   @override
@@ -70,7 +72,7 @@ class _ShowAddressBookCardState extends State<ShowAddressBookCard> {
           Column(
             children: [
               GestureDetector(
-                onTap: widget.onTap,
+                onTap: widget.onAdd,
                 child: AnimatedContainer(
                   duration: const Duration(milliseconds: 100),
                   alignment: Alignment.center,
@@ -89,7 +91,7 @@ class _ShowAddressBookCardState extends State<ShowAddressBookCard> {
                 ),
               ).paddingOnly(bottom: 10),
               GestureDetector(
-                onTap: widget.onTap,
+                onTap: widget.onDelete,
                 child: AnimatedContainer(
                   duration: const Duration(milliseconds: 100),
                   alignment: Alignment.center,

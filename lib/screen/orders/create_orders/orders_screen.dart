@@ -8,12 +8,11 @@ import 'package:fw_vendor/core/widgets/common/common_chips.dart';
 import 'package:fw_vendor/core/widgets/common/common_orders_details.dart';
 import 'package:fw_vendor/core/widgets/common/searchable_list.dart';
 import 'package:fw_vendor/core/widgets/common_bottom_sheet/common_bottom_sheet.dart';
+import 'package:fw_vendor/core/widgets/common_dialog/scale_dialog.dart';
 import 'package:fw_vendor/core/widgets/custom_widgets/custom_nodata.dart';
 import 'package:fw_vendor/core/widgets/custom_widgets/custom_textformfield.dart';
 import 'package:fw_vendor/extensions/date_exensions.dart';
 import 'package:get/get.dart';
-
-import '../../core/widgets/common_dialog/scale_dialog.dart';
 
 class OrderScreen extends StatelessWidget {
   OrderScreen({Key? key}) : super(key: key);

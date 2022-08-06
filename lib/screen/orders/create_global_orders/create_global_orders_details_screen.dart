@@ -1,18 +1,21 @@
-// ignore_for_file: must_be_immutable
 import 'package:flutter/material.dart';
-import 'package:fw_vendor/controller/global_directory_controller.dart';
+import 'package:fw_vendor/controller/create_global_orders_controller.dart';
 import 'package:fw_vendor/core/widgets/common/common_button.dart';
 import 'package:fw_vendor/core/widgets/common/order_address_card.dart';
 import 'package:fw_vendor/extensions/date_exensions.dart';
 import 'package:get/get.dart';
 
-class GlobalDirectoryDetailsScreen extends StatelessWidget {
-  GlobalDirectoryDetailsScreen({Key? key}) : super(key: key);
-  GlobalDirectoryController globalDirectoryController = Get.put(GlobalDirectoryController());
+class CreateGlobalOrdersDetailsScreen extends StatefulWidget {
+  const CreateGlobalOrdersDetailsScreen({Key? key}) : super(key: key);
+  @override
+  State<CreateGlobalOrdersDetailsScreen> createState() => _CreateGlobalOrdersDetailsScreenState();
+}
 
+class _CreateGlobalOrdersDetailsScreenState extends State<CreateGlobalOrdersDetailsScreen> {
+  CreateGlobalOrdersCntroller createGlobalOrdersCntroller = Get.put(CreateGlobalOrdersCntroller());
   @override
   Widget build(BuildContext context) {
-    return GetBuilder<GlobalDirectoryController>(
+    return GetBuilder<CreateGlobalOrdersCntroller>(
       builder: (_) => Scaffold(
         appBar: AppBar(
           elevation: 1,
@@ -33,16 +36,16 @@ class GlobalDirectoryDetailsScreen extends StatelessWidget {
             Expanded(
               child: ListView(
                 children: [
-                  ...globalDirectoryController.selectedOrderTrueList.map(
+                  ...createGlobalOrdersCntroller.selectedOrderTrueList.map(
                     (e) {
                       return OrderAddressCard(
-                        addressHeder: e["name"].toString(),
-                        personName: e["person"].toString(),
-                        mobileNumber: e["mobile"].toString(),
-                        date: getFormattedDate(e["updatedAt"].toString()),
-                        address: e["address"],
+                        addressHeder: e["globalAddressId"]["name"].toString(),
+                        personName: e["globalAddressId"]["person"].toString(),
+                        mobileNumber: e["globalAddressId"]["mobile"].toString(),
+                        date: getFormattedDate(e["globalAddressId"]["updatedAt"].toString()),
+                        address: e["globalAddressId"]["address"],
                         onTap: () {
-                          globalDirectoryController.removeToSelectedList(e);
+                          createGlobalOrdersCntroller.removeToSelectedList(e);
                         },
                         deleteIcon: Icons.clear,
                         deleteIconBoxColor: Colors.red,
@@ -53,9 +56,8 @@ class GlobalDirectoryDetailsScreen extends StatelessWidget {
               ),
             ),
             commonButton(
-              onTap: () => globalDirectoryController.onSaveLocation(),
-              color: Colors.green,
-              text: "Save location",
+              onTap: () => createGlobalOrdersCntroller.onProceed(createGlobalOrdersCntroller.selectedOrderTrueList),
+              text: "Proceed",
               height: 50.0,
             ),
           ],

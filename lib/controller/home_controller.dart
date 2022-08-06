@@ -125,6 +125,11 @@ class HomeController extends GetxController {
     update();
   }
 
+  onCreateGlobalOrderClick() {
+    Get.toNamed(AppRoutes.createGlobalOrdersScreen);
+    update();
+  }
+
   onOrdersClick() {
     Get.toNamed(AppRoutes.orders);
     update();

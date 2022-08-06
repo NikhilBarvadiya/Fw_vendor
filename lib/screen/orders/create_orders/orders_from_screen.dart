@@ -29,7 +29,7 @@ class _OrdersFromScreenState extends State<OrdersFromScreen> {
             automaticallyImplyLeading: false,
             foregroundColor: Colors.white,
             title: const Text(
-              "Create orders",
+              "Create B2C Order",
             ),
           ),
           body: ListView(

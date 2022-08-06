@@ -20,6 +20,7 @@ class SearchableListView extends StatefulWidget {
     this.hederColor,
     this.hederTxtColor,
     this.txtController,
+    this.bindTextStyle,
   }) : super(key: key);
   final List itemList;
   final String? bindText;
@@ -35,6 +36,7 @@ class SearchableListView extends StatefulWidget {
   final Color? hederColor;
   final Color? hederTxtColor;
   final TextEditingController? txtController;
+  final TextStyle? bindTextStyle;
 
   @override
   State<SearchableListView> createState() => _SearchableListViewState();
@@ -168,9 +170,10 @@ class _SearchableListViewState extends State<SearchableListView> {
                     },
                     title: Text(
                       widget.bindText != null ? e[widget.bindText].toString().capitalizeFirst : e,
-                      style: AppCss.footnote.copyWith(
-                        fontSize: 12,
-                      ),
+                      style: widget.bindTextStyle ??
+                          AppCss.footnote.copyWith(
+                            fontSize: 12,
+                          ),
                     ),
                   );
                 },

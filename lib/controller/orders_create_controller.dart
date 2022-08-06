@@ -24,6 +24,8 @@ class OrdersCreateController extends GetxController {
   List customerAddressNameList = [];
   List saveShopOrder = [];
   List createList = [];
+  List addresses = [];
+  dynamic secondData;
   String routesSelected = "";
   String routesSelectedId = "";
   String nameSelectedId = "";
@@ -56,6 +58,9 @@ class OrdersCreateController extends GetxController {
   }
 
   willPopScope() {
+    createList.clear();
+    addresses.clear();
+    onCLear();
     Get.offNamed(AppRoutes.home);
   }
 
@@ -212,7 +217,6 @@ class OrdersCreateController extends GetxController {
         body,
         ApiType.post,
       );
-      await _saveCustomerAddress();
       if (resData.isSuccess && resData.data != 0) {
         await _saveCustomerAddress();
         snackBar(resData.message.toString(), Colors.green);
@@ -241,7 +245,7 @@ class OrdersCreateController extends GetxController {
         createList.clear();
         addresses.clear();
         onCLear();
-        Get.toNamed(AppRoutes.home);
+        Get.offNamed(AppRoutes.home);
       }
     } catch (e) {
       snackBar("No pacakge data found", Colors.red);
@@ -252,10 +256,9 @@ class OrdersCreateController extends GetxController {
     update();
   }
 
-  List addresses = [];
-
   onCreateOrder() async {
     List finalCreateList = [];
+    List finalCreateAddressList = [];
     var getData = await getStorage(Session.userData);
     var data = {
       "name": txtName.text.toString(),
@@ -274,20 +277,25 @@ class OrdersCreateController extends GetxController {
       "orderType": getData["businessType"],
       "businessCategoryId": getData["businessCategoryId"]["_id"].toString(),
     };
-    var secondData = {
+    secondData = {
       "name": txtName.text.toString(),
       "address": txtAdress.text.toString(),
       "areaId": areaId.toString(),
       "mobile": txtMobile.text.toString(),
       "latLong": txtLatLng.text.toString().replaceAll("\t-\t", ","),
     };
-    if (txtName.text.isNotEmpty && txtBillAmount.text.isNotEmpty) {
+    if (txtName.text.isNotEmpty && txtBillAmount.text.isNotEmpty && routesSelectedId.isNotEmpty) {
       finalCreateList = createList
           .where(
             (element) => (element["name"] == data["name"]),
           )
           .toList();
-      if (finalCreateList.isEmpty) {
+      finalCreateAddressList = addresses
+          .where(
+            (element) => (element["name"] == secondData["name"]),
+          )
+          .toList();
+      if (finalCreateList.isEmpty && finalCreateAddressList.isEmpty) {
         createList.add(data);
         addresses.add(secondData);
         onCLear();
@@ -298,7 +306,17 @@ class OrdersCreateController extends GetxController {
         snackBar("Orders is allready available", Colors.deepOrange);
       }
     } else {
-      snackBar("Name & BillNo not available", Colors.deepOrange);
+      if (txtName.text.isEmpty) {
+        snackBar("Name is not available", Colors.deepOrange);
+      } else if (txtBillAmount.text.isEmpty) {
+        snackBar("BillAmount is not available", Colors.deepOrange);
+      } else if (routesSelectedId.isEmpty) {
+        snackBar("Area not available", Colors.deepOrange);
+      } else if (routesSelectedId.isEmpty || txtBillAmount.text.isEmpty) {
+        snackBar("Area & BillAmount not available", Colors.deepOrange);
+      } else {
+        snackBar("Name & BillNo & Area not available", Colors.deepOrange);
+      }
     }
     update();
   }
@@ -312,7 +330,7 @@ class OrdersCreateController extends GetxController {
             style: AppCss.h1,
           ),
           content: Text(
-            'Do you remove this location?',
+            'Do you remove this orders?',
             style: AppCss.h3,
           ),
           actions: [
@@ -320,6 +338,7 @@ class OrdersCreateController extends GetxController {
               child: const Text("Ok"),
               onPressed: () {
                 createList.remove(orders);
+                addresses.remove(secondData);
                 update();
                 Get.back();
               },

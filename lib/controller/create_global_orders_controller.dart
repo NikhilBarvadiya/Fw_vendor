@@ -6,17 +6,13 @@ import 'package:fw_vendor/core/widgets/common_dialog/scale_dialog.dart';
 import 'package:fw_vendor/networking/index.dart';
 import 'package:get/get.dart';
 
-class GlobalDirectoryController extends GetxController {
-  TextEditingController txtSearch = TextEditingController();
-
+class CreateGlobalOrdersCntroller extends GetxController {
   bool isLoading = false;
-  bool isSearch = false;
+  List vendorAreaList = [];
+  List vendorAddressesByAreaList = [];
+  List selectedOrderTrueList = [];
   String areaSelected = "";
   String areaSelectedId = "";
-  List requestsList = [];
-  List vendorAreaList = [];
-  List selectedOrderTrueList = [];
-  List globalAddressesList = [];
 
   @override
   void onInit() {
@@ -28,9 +24,8 @@ class GlobalDirectoryController extends GetxController {
   _onClean() {
     areaSelected = "";
     areaSelectedId = "";
-    globalAddressesList.clear();
+    vendorAddressesByAreaList.clear();
     selectedOrderTrueList.clear();
-    requestsList.clear();
     update();
   }
 
@@ -42,14 +37,6 @@ class GlobalDirectoryController extends GetxController {
       _onClean();
       Get.offNamed(AppRoutes.home);
     }
-  }
-
-  onSearchButtonTapped() {
-    if (isSearch && txtSearch.text != "") {
-      txtSearch.text = "";
-    }
-    isSearch = !isSearch;
-    update();
   }
 
   _vendorArea() async {
@@ -94,28 +81,25 @@ class GlobalDirectoryController extends GetxController {
 
   onOpenArea() async {
     if (areaSelectedId != "" && areaSelected != "") {
-      await _vendorGlobalAddresses();
+      await _vendorAddressesByArea();
       _autoSelector();
     } else {}
   }
 
-  _vendorGlobalAddresses() async {
+  _vendorAddressesByArea() async {
     try {
       isLoading = true;
       update();
-      var body = {
-        "page": 1,
-        "limit": 10,
-        "search": "",
+      var data = {
         "areaId": areaSelected,
       };
       var resData = await apis.call(
-        apiMethods.vendorGlobalAddresses,
-        body,
+        apiMethods.vendorAddressesByArea,
+        data,
         ApiType.post,
       );
       if (resData.isSuccess && resData.data != 0) {
-        globalAddressesList = resData.data["docs"];
+        vendorAddressesByAreaList = resData.data;
       }
     } catch (e) {
       snackBar("No pacakge data found", Colors.red);
@@ -128,7 +112,7 @@ class GlobalDirectoryController extends GetxController {
 
   onSelectedLocation() {
     if (selectedOrderTrueList.isNotEmpty) {
-      Get.toNamed(AppRoutes.globalDirectoryDetailsScreen);
+      Get.toNamed(AppRoutes.createGlobalOrdersDetailsScreen);
     } else {
       snackBar("No data selected", Colors.amber);
     }
@@ -168,7 +152,7 @@ class GlobalDirectoryController extends GetxController {
                 if (selectedOrderTrueList.isEmpty) {
                   areaSelected = "";
                   areaSelectedId = "";
-                  Get.toNamed(AppRoutes.globalDirectoryScreen);
+                  Get.toNamed(AppRoutes.createGlobalOrdersScreen);
                 }
               },
             ),
@@ -183,53 +167,22 @@ class GlobalDirectoryController extends GetxController {
   }
 
   _autoSelector() {
-    requestsList = [];
-    for (int i = 0; i < globalAddressesList.length; i++) {
-      var data = selectedOrderTrueList.where((element) => element['_id'] == globalAddressesList[i]['_id']);
+    for (int i = 0; i < vendorAddressesByAreaList.length; i++) {
+      var data = selectedOrderTrueList.where((element) => element['_id'] == vendorAddressesByAreaList[i]['_id']);
       if (data.isNotEmpty) {
-        globalAddressesList[i]['selected'] = true;
-        var globalAddressId = globalAddressesList[i]["_id"];
-        requestsList.add({"globalAddressId": globalAddressId});
+        vendorAddressesByAreaList[i]['selected'] = true;
       } else {
-        globalAddressesList[i]['selected'] = false;
-        var globalAddressId = globalAddressesList[i]["_id"];
-        requestsList.remove({"globalAddressId": globalAddressId});
+        vendorAddressesByAreaList[i]['selected'] = false;
       }
       update();
     }
   }
 
-  _vendorSaveAddress() async {
-    try {
-      isLoading = true;
-      update();
-      var data = {
-        "requests": requestsList,
-      };
-      var resData = await apis.call(
-        apiMethods.vendorsaveAddress,
-        data,
-        ApiType.post,
-      );
-      if (resData.isSuccess && resData.data != 0) {
-        _onClean();
-        Get.back();
-        snackBar(resData.message.toString(), Colors.green);
-      }
-    } catch (e) {
-      snackBar("No pacakge data found", Colors.red);
-      isLoading = false;
-      update();
-    }
-    isLoading = false;
+  onProceed(selectedAddress) {
+    areaSelected = "";
+    areaSelectedId = "";
+    vendorAddressesByAreaList.clear();
     update();
-  }
-
-  onSaveLocation() async {
-    if (selectedOrderTrueList.isNotEmpty) {
-      await _vendorSaveAddress();
-      Get.offNamed(AppRoutes.globalDirectoryScreen);
-      snackBar("Location successfully save!", Colors.green);
-    }
+    Get.toNamed(AppRoutes.placeOrderScreen, arguments: selectedAddress);
   }
 }

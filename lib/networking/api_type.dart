@@ -30,4 +30,7 @@ class ApiMethods {
   final String saveShopOrder = "vendor/saveShopOrder";
   final String saveCustomerAddress = "vendor/address/saveCustomerAddress";
   final String getCustomerAddress = "vendor/address/getCustomerAddress";
+  final String deleteCustomerAddress = "vendor/address/deleteCustomerAddress";
+  final String vendorAddressesByArea = "vendor/vendorAddressesByArea";
+  final String saveOrder = "vendor/saveOrder";
 }

@@ -12,6 +12,7 @@ class CommonOrdersTextCard extends StatefulWidget {
   final void Function()? onTap;
   final TextEditingController? controller;
   final TextInputType? keyboardType;
+  final TextStyle? hederStyle;
   const CommonOrdersTextCard({
     Key? key,
     this.name,
@@ -23,6 +24,7 @@ class CommonOrdersTextCard extends StatefulWidget {
     this.keyboardType,
     this.maxLines,
     this.minLines,
+    this.hederStyle,
   }) : super(key: key);
 
   @override
@@ -47,7 +49,7 @@ class _CommonOrdersTextCardState extends State<CommonOrdersTextCard> {
         children: [
           Text(
             widget.name ?? "",
-            style: AppCss.footnote,
+            style: widget.hederStyle ?? AppCss.footnote,
           ).paddingOnly(left: 5, top: 5),
           Container(
             color: Theme.of(context).canvasColor.withOpacity(.1),
