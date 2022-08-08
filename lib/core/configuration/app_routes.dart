@@ -7,8 +7,8 @@ import 'package:fw_vendor/screen/Addresses/save_addresses/save_address_screen.da
 import 'package:fw_vendor/screen/dashboard/location_screen.dart';
 import 'package:fw_vendor/screen/home/home_screen.dart';
 import 'package:fw_vendor/screen/login/login_screen.dart';
+import 'package:fw_vendor/screen/login/profile.dart/profile_screen.dart';
 import 'package:fw_vendor/screen/login/splash_screen.dart';
-import 'package:fw_vendor/screen/orders/cash_settlement/cash_settlement.dart';
 import 'package:fw_vendor/screen/orders/create_global_orders/create_global_orders_details_screen.dart';
 import 'package:fw_vendor/screen/orders/create_global_orders/create_global_orders_screen.dart';
 import 'package:fw_vendor/screen/orders/create_global_orders/place_orders_screen.dart';
@@ -16,13 +16,15 @@ import 'package:fw_vendor/screen/orders/create_orders/orders_create_screen.dart'
 import 'package:fw_vendor/screen/orders/create_orders/orders_from_screen.dart';
 import 'package:fw_vendor/screen/orders/create_orders/orders_screen.dart';
 import 'package:fw_vendor/screen/orders/create_orders/show_address_book_screen.dart';
-import 'package:fw_vendor/screen/orders/return_settlement/return_order_settlement.dart';
+import 'package:fw_vendor/screen/settlement/cash_settlement/cash_settlement.dart';
+import 'package:fw_vendor/screen/settlement/return_settlement/return_order_settlement.dart';
 import 'package:get/get.dart';
 
 class AppRoutes {
   static String splash = "/";
   static String login = "/loginScreen";
   static String home = "/homeScreen";
+  static String profileScreen = "/profileScreen";
   static String orders = "/orders";
   static String createOrders = "/createOrders";
   static String ordersFromScreen = "/ordersFromScreen";
@@ -43,6 +45,7 @@ class AppRoutes {
     GetPage(name: splash, page: () => SplashScreen()),
     GetPage(name: login, page: () => const LoginScreen()),
     GetPage(name: home, page: () => const HomeScreen()),
+    GetPage(name: profileScreen, page: () => const ProfileScreen()),
     GetPage(name: orders, page: () => OrderScreen()),
     GetPage(name: createOrders, page: () => const CreateOrderScreen()),
     GetPage(name: ordersFromScreen, page: () => const OrdersFromScreen()),

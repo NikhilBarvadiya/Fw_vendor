@@ -11,6 +11,7 @@ import 'package:get/get.dart';
 
 class HomeController extends GetxController {
   dynamic loginData;
+  dynamic profileData;
   int selectedIndex = 0;
   bool isSlider = false;
   bool isLoading = false;
@@ -51,7 +52,7 @@ class HomeController extends GetxController {
       var resData = await apis.call(
         apiMethods.changeShopOpenStatus,
         {
-          "status": false,
+          "status": isStatus,
         },
         ApiType.post,
       );
@@ -95,6 +96,7 @@ class HomeController extends GetxController {
         ApiType.post,
       );
       if (resData.isSuccess == true && resData.data != 0) {
+        profileData = resData.data;
         isStatus = resData.data["isVendorOpen"];
       }
       update();
@@ -103,6 +105,11 @@ class HomeController extends GetxController {
       isLoading = false;
       update();
     }
+  }
+
+  onProfileClick() {
+    Get.toNamed(AppRoutes.profileScreen, arguments: profileData);
+    update();
   }
 
   onAddressesClick() {

@@ -199,7 +199,7 @@ class GlobalDirectoryController extends GetxController {
     }
   }
 
-  _vendorSaveAddress() async {
+  _vendorSaveAddress(context) async {
     try {
       isLoading = true;
       update();
@@ -214,7 +214,6 @@ class GlobalDirectoryController extends GetxController {
       if (resData.isSuccess && resData.data != 0) {
         _onClean();
         Get.back();
-        snackBar(resData.message.toString(), Colors.green);
       }
     } catch (e) {
       snackBar("No pacakge data found", Colors.red);
@@ -225,11 +224,13 @@ class GlobalDirectoryController extends GetxController {
     update();
   }
 
-  onSaveLocation() async {
+  onSaveLocation(context) async {
     if (selectedOrderTrueList.isNotEmpty) {
-      await _vendorSaveAddress();
+      isLoading = true;
+      await Future.delayed(const Duration(seconds: 3));
+      isLoading = false;
+      await _vendorSaveAddress(context);
       Get.offNamed(AppRoutes.globalDirectoryScreen);
-      snackBar("Location successfully save!", Colors.green);
     }
   }
 }

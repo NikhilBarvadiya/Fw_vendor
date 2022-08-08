@@ -53,7 +53,7 @@ class GlobalDirectoryDetailsScreen extends StatelessWidget {
               ),
             ),
             commonButton(
-              onTap: () => globalDirectoryController.onSaveLocation(),
+              onTap: () => globalDirectoryController.onSaveLocation(context),
               color: Colors.green,
               text: "Save location",
               height: 50.0,

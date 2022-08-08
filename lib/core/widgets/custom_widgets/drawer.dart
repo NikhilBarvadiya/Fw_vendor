@@ -1,5 +1,4 @@
 // ignore_for_file: must_be_immutable, deprecated_member_use
-
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:fw_vendor/controller/app_controller.dart';
@@ -39,9 +38,12 @@ class _CustomDrawerState extends State<CustomDrawer> {
                   ],
                 ),
               ),
-              currentAccountPicture: Image.asset(
-                imageAssets.avatar,
-                fit: BoxFit.fill,
+              currentAccountPicture: GestureDetector(
+                onTap: () => homeController.onProfileClick(),
+                child: Image.asset(
+                  imageAssets.avatar,
+                  fit: BoxFit.fill,
+                ),
               ),
               accountName: Text(
                 homeController.loginData != null ? homeController.loginData['name'].toString() : 'NA',
