@@ -1,3 +1,4 @@
+import 'package:animated_button/animated_button.dart';
 import 'package:flutter/material.dart';
 import 'package:fw_vendor/common/config.dart';
 import 'package:fw_vendor/core/configuration/app_routes.dart';
@@ -5,6 +6,7 @@ import 'package:fw_vendor/core/theme/index.dart';
 import 'package:fw_vendor/core/widgets/common_dialog/scale_dialog.dart';
 import 'package:fw_vendor/networking/index.dart';
 import 'package:get/get.dart';
+import 'package:stylish_dialog/stylish_dialog.dart';
 
 class GlobalDirectoryController extends GetxController {
   TextEditingController txtSearch = TextEditingController();
@@ -199,7 +201,7 @@ class GlobalDirectoryController extends GetxController {
     }
   }
 
-  _vendorSaveAddress(context) async {
+  _vendorSaveAddress() async {
     try {
       isLoading = true;
       update();
@@ -214,6 +216,7 @@ class GlobalDirectoryController extends GetxController {
       if (resData.isSuccess && resData.data != 0) {
         _onClean();
         Get.back();
+        update();
       }
     } catch (e) {
       snackBar("No pacakge data found", Colors.red);
@@ -226,11 +229,34 @@ class GlobalDirectoryController extends GetxController {
 
   onSaveLocation(context) async {
     if (selectedOrderTrueList.isNotEmpty) {
-      isLoading = true;
-      await Future.delayed(const Duration(seconds: 3));
-      isLoading = false;
-      await _vendorSaveAddress(context);
-      Get.offNamed(AppRoutes.globalDirectoryScreen);
+      await _vendorSaveAddress();
+      StylishDialog(
+        context: context,
+        alertType: StylishDialogType.SUCCESS,
+        titleText: 'Update succes',
+        contentText: "Address saved successfully!",
+        confirmButton: AnimatedButton(
+          height: 30,
+          width: Get.width * 0.3,
+          color: Colors.green,
+          shadowDegree: ShadowDegree.light,
+          enabled: true,
+          shape: BoxShape.rectangle,
+          child: const Text(
+            'Ok',
+            style: TextStyle(
+              fontSize: 18,
+              fontWeight: FontWeight.w600,
+              color: Colors.white,
+            ),
+          ),
+          onPressed: () {
+            Get.back();
+            update();
+            Get.offNamed(AppRoutes.globalDirectoryScreen);
+          },
+        ),
+      ).show();
     }
   }
 }

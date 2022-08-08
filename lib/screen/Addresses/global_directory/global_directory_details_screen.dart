@@ -27,39 +27,52 @@ class GlobalDirectoryDetailsScreen extends StatelessWidget {
             textAlign: TextAlign.center,
           ),
         ),
-        body: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
+        body: Stack(
           children: [
-            Expanded(
-              child: ListView(
-                children: [
-                  ...globalDirectoryController.selectedOrderTrueList.map(
-                    (e) {
-                      return OrderAddressCard(
-                        addressHeder: e["name"].toString(),
-                        personName: e["person"].toString(),
-                        mobileNumber: e["mobile"].toString(),
-                        date: getFormattedDate(e["updatedAt"].toString()),
-                        address: e["address"],
-                        onTap: () {
-                          globalDirectoryController.removeToSelectedList(e);
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Expanded(
+                  child: ListView(
+                    children: [
+                      ...globalDirectoryController.selectedOrderTrueList.map(
+                        (e) {
+                          return OrderAddressCard(
+                            addressHeder: e["name"].toString(),
+                            personName: e["person"].toString(),
+                            mobileNumber: e["mobile"].toString(),
+                            date: getFormattedDate(e["updatedAt"].toString()),
+                            address: e["address"],
+                            onTap: () {
+                              globalDirectoryController.removeToSelectedList(e);
+                            },
+                            deleteIcon: Icons.clear,
+                            deleteIconBoxColor: Colors.red,
+                          );
                         },
-                        deleteIcon: Icons.clear,
-                        deleteIconBoxColor: Colors.red,
-                      );
-                    },
+                      ),
+                    ],
                   ),
-                ],
+                ),
+                commonButton(
+                  onTap: () => globalDirectoryController.onSaveLocation(context),
+                  color: Colors.green,
+                  text: "Save location",
+                  height: 50.0,
+                ),
+              ],
+            ).paddingAll(10),
+            if (globalDirectoryController.isLoading)
+              Container(
+                width: MediaQuery.of(context).size.width,
+                height: MediaQuery.of(context).size.height,
+                color: Colors.white.withOpacity(.8),
+                child: const Center(
+                  child: CircularProgressIndicator(),
+                ),
               ),
-            ),
-            commonButton(
-              onTap: () => globalDirectoryController.onSaveLocation(context),
-              color: Colors.green,
-              text: "Save location",
-              height: 50.0,
-            ),
           ],
-        ).paddingAll(10),
+        ),
       ),
     );
   }

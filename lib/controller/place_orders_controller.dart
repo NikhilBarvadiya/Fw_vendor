@@ -1,3 +1,4 @@
+import 'package:animated_button/animated_button.dart';
 import 'package:flutter/material.dart';
 import 'package:fw_vendor/common/config.dart';
 import 'package:fw_vendor/core/configuration/app_routes.dart';
@@ -9,6 +10,7 @@ import 'package:fw_vendor/core/widgets/common_bottom_sheet/common_bottom_sheet.d
 import 'package:fw_vendor/core/widgets/common_dialog/scale_dialog.dart';
 import 'package:fw_vendor/networking/index.dart';
 import 'package:get/get.dart';
+import 'package:stylish_dialog/stylish_dialog.dart';
 
 class PlaceOrdersController extends GetxController {
   TextEditingController txtAmount = TextEditingController();
@@ -186,7 +188,7 @@ class PlaceOrdersController extends GetxController {
     );
   }
 
-  onPlaceOrder(selectedAddress) async {
+  onPlaceOrder(selectedAddress, context) async {
     try {
       isLoading = true;
       update();
@@ -214,7 +216,31 @@ class PlaceOrdersController extends GetxController {
         ApiType.post,
       );
       if (resData.isSuccess && resData.data != 0) {
-        willPopScope();
+        StylishDialog(
+          context: context,
+          alertType: StylishDialogType.SUCCESS,
+          titleText: 'Update succes',
+          contentText: resData.message.toString(),
+          confirmButton: AnimatedButton(
+            height: 30,
+            width: Get.width * 0.3,
+            color: Colors.green,
+            shadowDegree: ShadowDegree.light,
+            enabled: true,
+            shape: BoxShape.rectangle,
+            child: const Text(
+              'Ok',
+              style: TextStyle(
+                fontSize: 18,
+                fontWeight: FontWeight.w600,
+                color: Colors.white,
+              ),
+            ),
+            onPressed: () {
+              willPopScope();
+            },
+          ),
+        ).show();
       }
     } catch (e) {
       snackBar("No pacakge data found", Colors.red);

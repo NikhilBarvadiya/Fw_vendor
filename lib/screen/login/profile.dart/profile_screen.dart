@@ -354,12 +354,14 @@ class _ProfileScreenState extends State<ProfileScreen> {
                   children: [
                     commonButton(
                       onTap: () => profileController.onSave(context),
+                      height: 50.0,
                       width: Get.width * 0.3,
                       color: Colors.green,
                       text: "Save",
                     ),
                     commonButton(
                       onTap: () => profileController.onCancel(),
+                      height: 50.0,
                       width: Get.width * 0.3,
                       color: Colors.red,
                       text: "Cancel",

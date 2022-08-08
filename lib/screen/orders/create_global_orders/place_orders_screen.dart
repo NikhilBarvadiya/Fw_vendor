@@ -44,41 +44,54 @@ class _PlaceOrderScreenState extends State<PlaceOrderScreen> {
               ],
             ),
           ),
-          body: Column(
+          body: Stack(
             children: [
-              Expanded(
-                child: ListView(
-                  children: [
-                    ...placeOrdersController.selectedOrderList.map(
-                      (e) {
-                        var index = placeOrdersController.selectedOrderList.indexOf(e);
-                        return PlaceOrdersCard(
-                          name: e["globalAddressId"]["name"].toString(),
-                          person: e["globalAddressId"]["person"].toString(),
-                          mobile: e["globalAddressId"]["mobile"].toString(),
-                          address: e["globalAddressId"]["address"].toString(),
-                          billNo: placeOrdersController.edit.isNotEmpty && placeOrdersController.edit.length > index && placeOrdersController.edit[index]["_id"] == index ? placeOrdersController.edit[index]["billNo"].toString() : "0",
-                          type: placeOrdersController.edit.isNotEmpty && placeOrdersController.edit.length > index && placeOrdersController.edit[index]["_id"] == index ? placeOrdersController.edit[index]["paymentMethod"].toString() : "credit",
-                          amount: placeOrdersController.edit.isNotEmpty && placeOrdersController.edit.length > index && placeOrdersController.edit[index]["_id"] == index ? placeOrdersController.edit[index]["amount"].toString() : "0",
-                          billAmount: placeOrdersController.edit.isNotEmpty && placeOrdersController.edit.length > index && placeOrdersController.edit[index]["_id"] == index ? placeOrdersController.edit[index]["cash"].toString() : "0",
-                          notes: placeOrdersController.edit.isNotEmpty && placeOrdersController.edit.length > index && placeOrdersController.edit[index]["_id"] == index ? placeOrdersController.edit[index]["notes"].toString() : "---",
-                          loose: placeOrdersController.edit.isNotEmpty && placeOrdersController.edit.length > index && placeOrdersController.edit[index]["_id"] == index ? placeOrdersController.edit[index]["nOfPackages"].toString() : "0",
-                          box: placeOrdersController.edit.isNotEmpty && placeOrdersController.edit.length > index && placeOrdersController.edit[index]["_id"] == index ? placeOrdersController.edit[index]["nOfBoxes"].toString() : "0",
-                          onTap: () => placeOrdersController.onEdit(context, index),
-                        );
-                      },
+              Column(
+                children: [
+                  Expanded(
+                    child: ListView(
+                      children: [
+                        ...placeOrdersController.selectedOrderList.map(
+                          (e) {
+                            var index = placeOrdersController.selectedOrderList.indexOf(e);
+                            return PlaceOrdersCard(
+                              name: e["globalAddressId"]["name"].toString(),
+                              person: e["globalAddressId"]["person"].toString(),
+                              mobile: e["globalAddressId"]["mobile"].toString(),
+                              address: e["globalAddressId"]["address"].toString(),
+                              billNo: placeOrdersController.edit.isNotEmpty && placeOrdersController.edit.length > index && placeOrdersController.edit[index]["_id"] == index ? placeOrdersController.edit[index]["billNo"].toString() : "0",
+                              type: placeOrdersController.edit.isNotEmpty && placeOrdersController.edit.length > index && placeOrdersController.edit[index]["_id"] == index ? placeOrdersController.edit[index]["paymentMethod"].toString() : "credit",
+                              amount: placeOrdersController.edit.isNotEmpty && placeOrdersController.edit.length > index && placeOrdersController.edit[index]["_id"] == index ? placeOrdersController.edit[index]["amount"].toString() : "0",
+                              billAmount: placeOrdersController.edit.isNotEmpty && placeOrdersController.edit.length > index && placeOrdersController.edit[index]["_id"] == index ? placeOrdersController.edit[index]["cash"].toString() : "0",
+                              notes: placeOrdersController.edit.isNotEmpty && placeOrdersController.edit.length > index && placeOrdersController.edit[index]["_id"] == index ? placeOrdersController.edit[index]["notes"].toString() : "---",
+                              loose: placeOrdersController.edit.isNotEmpty && placeOrdersController.edit.length > index && placeOrdersController.edit[index]["_id"] == index ? placeOrdersController.edit[index]["nOfPackages"].toString() : "0",
+                              box: placeOrdersController.edit.isNotEmpty && placeOrdersController.edit.length > index && placeOrdersController.edit[index]["_id"] == index ? placeOrdersController.edit[index]["nOfBoxes"].toString() : "0",
+                              onTap: () => placeOrdersController.onEdit(context, index),
+                            );
+                          },
+                        ),
+                      ],
                     ),
-                  ],
-                ),
-              ),
-              commonButton(
-                onTap: () => placeOrdersController.onPlaceOrder(placeOrdersController.selectedOrderList),
-                color: Colors.green,
-                text: "Place orders",
-                height: 50.0,
-              ),
+                  ),
+                  commonButton(
+                    onTap: () => placeOrdersController.onPlaceOrder(placeOrdersController.selectedOrderList, context),
+                    color: Colors.green,
+                    text: "Place orders",
+                    height: 50.0,
+                  ),
+                ],
+              ).paddingAll(10),
+              if (placeOrdersController.isLoading)
+                Container(
+                  width: MediaQuery.of(context).size.width,
+                  height: MediaQuery.of(context).size.height,
+                  color: Colors.white.withOpacity(.8),
+                  child: const Center(
+                    child: CircularProgressIndicator(),
+                  ),
+                )
             ],
-          ).paddingAll(10),
+          ),
         ),
       ),
     );

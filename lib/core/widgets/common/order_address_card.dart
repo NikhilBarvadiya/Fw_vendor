@@ -160,7 +160,7 @@ class _OrderAddressCardState extends State<OrderAddressCard> {
                             ),
                             color: widget.type == "Credit"
                                 ? Colors.green
-                                : widget.type == "Credit"
+                                : widget.type == "Cash"
                                     ? Colors.blue
                                     : Colors.green,
                             child: Text(

@@ -76,7 +76,7 @@ class _CreateOrderScreenState extends State<CreateOrderScreen> {
                   ),
                   if (ordersCreateController.createList.isNotEmpty)
                     commonButton(
-                      onTap: () => ordersCreateController.onProceedOrder(),
+                      onTap: () => ordersCreateController.onProceedOrder(context),
                       text: "Proceed order",
                       height: 50.0,
                     ).paddingOnly(left: 10, right: 10, top: 5, bottom: 5),

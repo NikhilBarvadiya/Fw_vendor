@@ -1,3 +1,4 @@
+import 'package:animated_button/animated_button.dart';
 import 'package:flutter/material.dart';
 import 'package:fw_vendor/common/config.dart';
 import 'package:fw_vendor/core/configuration/app_routes.dart';
@@ -6,6 +7,7 @@ import 'package:fw_vendor/core/utilities/storage_utils.dart';
 import 'package:fw_vendor/core/widgets/common_dialog/scale_dialog.dart';
 import 'package:fw_vendor/networking/index.dart';
 import 'package:get/get.dart';
+import 'package:stylish_dialog/stylish_dialog.dart';
 
 class OrdersCreateController extends GetxController {
   TextEditingController txtName = TextEditingController();
@@ -207,7 +209,7 @@ class OrdersCreateController extends GetxController {
     update();
   }
 
-  _saveShopOrder() async {
+  _saveShopOrder(context) async {
     try {
       isLoading = true;
       update();
@@ -218,8 +220,7 @@ class OrdersCreateController extends GetxController {
         ApiType.post,
       );
       if (resData.isSuccess && resData.data != 0) {
-        await _saveCustomerAddress();
-        snackBar(resData.message.toString(), Colors.green);
+        await _saveCustomerAddress(context);
         onCLear();
       }
     } catch (e) {
@@ -231,7 +232,7 @@ class OrdersCreateController extends GetxController {
     update();
   }
 
-  _saveCustomerAddress() async {
+  _saveCustomerAddress(context) async {
     try {
       isLoading = true;
       update();
@@ -245,7 +246,32 @@ class OrdersCreateController extends GetxController {
         createList.clear();
         addresses.clear();
         onCLear();
-        Get.offNamed(AppRoutes.home);
+        StylishDialog(
+          context: context,
+          alertType: StylishDialogType.SUCCESS,
+          titleText: 'Update succes',
+          contentText: "Shop order placed successfully",
+          confirmButton: AnimatedButton(
+            height: 30,
+            width: Get.width * 0.3,
+            color: Colors.green,
+            shadowDegree: ShadowDegree.light,
+            enabled: true,
+            shape: BoxShape.rectangle,
+            child: const Text(
+              'Ok',
+              style: TextStyle(
+                fontSize: 18,
+                fontWeight: FontWeight.w600,
+                color: Colors.white,
+              ),
+            ),
+            onPressed: () {
+              Get.back();
+              Get.offNamed(AppRoutes.home);
+            },
+          ),
+        ).show();
       }
     } catch (e) {
       snackBar("No pacakge data found", Colors.red);
@@ -354,8 +380,8 @@ class OrdersCreateController extends GetxController {
     }
   }
 
-  onProceedOrder() async {
-    await _saveShopOrder();
+  onProceedOrder(context) async {
+    await _saveShopOrder(context);
     update();
   }
 }
