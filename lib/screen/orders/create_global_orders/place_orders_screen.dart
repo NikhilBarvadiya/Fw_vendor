@@ -89,7 +89,7 @@ class _PlaceOrderScreenState extends State<PlaceOrderScreen> {
                   child: const Center(
                     child: CircularProgressIndicator(),
                   ),
-                )
+                ),
             ],
           ),
         ),

@@ -1,10 +1,10 @@
-import 'package:animated_button/animated_button.dart';
 import 'package:flutter/material.dart';
 import 'package:fw_vendor/common/config.dart';
 import 'package:fw_vendor/core/configuration/app_routes.dart';
 import 'package:fw_vendor/core/theme/index.dart';
 import 'package:fw_vendor/core/utilities/storage_utils.dart';
 import 'package:fw_vendor/core/widgets/common_dialog/scale_dialog.dart';
+import 'package:fw_vendor/core/widgets/common_dialog/stylish_dialog.dart';
 import 'package:fw_vendor/networking/index.dart';
 import 'package:get/get.dart';
 import 'package:stylish_dialog/stylish_dialog.dart';
@@ -246,32 +246,17 @@ class OrdersCreateController extends GetxController {
         createList.clear();
         addresses.clear();
         onCLear();
-        StylishDialog(
+        stylishDialog(
           context: context,
           alertType: StylishDialogType.SUCCESS,
           titleText: 'Update succes',
           contentText: "Shop order placed successfully",
-          confirmButton: AnimatedButton(
-            height: 30,
-            width: Get.width * 0.3,
-            color: Colors.green,
-            shadowDegree: ShadowDegree.light,
-            enabled: true,
-            shape: BoxShape.rectangle,
-            child: const Text(
-              'Ok',
-              style: TextStyle(
-                fontSize: 18,
-                fontWeight: FontWeight.w600,
-                color: Colors.white,
-              ),
-            ),
-            onPressed: () {
-              Get.back();
-              Get.offNamed(AppRoutes.home);
-            },
-          ),
-        ).show();
+          confirmButton: Colors.green,
+          onPressed: () {
+            Get.back();
+            Get.offNamed(AppRoutes.home);
+          },
+        );
       }
     } catch (e) {
       snackBar("No pacakge data found", Colors.red);

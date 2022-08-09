@@ -38,4 +38,6 @@ class ApiMethods {
   final String saveOrder = "vendor/saveOrder";
   final String codSettlement = "vendor/cod-settlement/getDetails";
   final String returnOrderSettlement = "vendor/vReturnOrder/Settlement/getData";
+  final String getVendorDraftOrder = "vendor/get/vendorDraftOrder";
+  final String updateVendorDraftOrder = "vendor/update/vendorDraftOrder";
 }

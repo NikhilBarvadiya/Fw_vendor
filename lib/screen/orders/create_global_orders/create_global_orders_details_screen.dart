@@ -36,22 +36,23 @@ class _CreateGlobalOrdersDetailsScreenState extends State<CreateGlobalOrdersDeta
             Expanded(
               child: ListView(
                 children: [
-                  ...createGlobalOrdersCntroller.selectedOrderTrueList.map(
-                    (e) {
-                      return OrderAddressCard(
-                        addressHeder: e["globalAddressId"]["name"].toString(),
-                        personName: e["globalAddressId"]["person"].toString(),
-                        mobileNumber: e["globalAddressId"]["mobile"].toString(),
-                        date: getFormattedDate(e["globalAddressId"]["updatedAt"].toString()),
-                        address: e["globalAddressId"]["address"],
-                        onTap: () {
-                          createGlobalOrdersCntroller.removeToSelectedList(e);
-                        },
-                        deleteIcon: Icons.clear,
-                        deleteIconBoxColor: Colors.red,
-                      );
-                    },
-                  ),
+                  if (createGlobalOrdersCntroller.selectedOrderTrueList.isNotEmpty)
+                    ...createGlobalOrdersCntroller.selectedOrderTrueList.map(
+                      (e) {
+                        return OrderAddressCard(
+                          addressHeder: e["globalAddressId"]["name"].toString(),
+                          personName: e["globalAddressId"]["person"].toString(),
+                          mobileNumber: e["globalAddressId"]["mobile"].toString(),
+                          date: getFormattedDate(e["globalAddressId"]["updatedAt"].toString()),
+                          address: e["globalAddressId"]["address"],
+                          onTap: () {
+                            createGlobalOrdersCntroller.removeToSelectedList(e);
+                          },
+                          deleteIcon: Icons.clear,
+                          deleteIconBoxColor: Colors.red,
+                        );
+                      },
+                    ),
                 ],
               ),
             ),

@@ -117,6 +117,36 @@ class _CustomDrawerState extends State<CustomDrawer> {
                         onPress: () => homeController.onCreateGlobalOrderClick(),
                       ),
                       MenuCard(
+                        title: "Draft Orders",
+                        icon: Icons.circle,
+                        iconSize: 8.0,
+                        onPress: () => homeController.onDraftOrdersClick(),
+                      ),
+                      MenuCard(
+                        icon: Icons.circle,
+                        title: "Orders view",
+                        iconSize: 8.0,
+                        onPress: () => homeController.onOrdersClick(),
+                      ),
+                    ],
+                  ),
+                  ExpansionTile(
+                    title: const Text("Settlement"),
+                    leading: const Padding(
+                      padding: EdgeInsets.only(left: 8),
+                      child: Icon(
+                        FontAwesomeIcons.wrench,
+                        size: 20,
+                      ),
+                    ),
+                    children: [
+                      MenuCard(
+                        title: "Bill copy settlement",
+                        icon: Icons.circle,
+                        iconSize: 8.0,
+                        onPress: () => homeController.onBillCopySettementClick(),
+                      ),
+                      MenuCard(
                         title: "Cash settlement",
                         icon: Icons.circle,
                         iconSize: 8.0,
@@ -127,12 +157,6 @@ class _CustomDrawerState extends State<CustomDrawer> {
                         icon: Icons.circle,
                         iconSize: 8.0,
                         onPress: () => homeController.onReturnSettementClick(),
-                      ),
-                      MenuCard(
-                        icon: Icons.circle,
-                        title: "Orders view",
-                        iconSize: 8.0,
-                        onPress: () => homeController.onOrdersClick(),
                       ),
                     ],
                   ),

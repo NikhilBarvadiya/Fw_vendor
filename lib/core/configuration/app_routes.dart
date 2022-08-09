@@ -16,6 +16,9 @@ import 'package:fw_vendor/screen/orders/create_orders/orders_create_screen.dart'
 import 'package:fw_vendor/screen/orders/create_orders/orders_from_screen.dart';
 import 'package:fw_vendor/screen/orders/create_orders/orders_screen.dart';
 import 'package:fw_vendor/screen/orders/create_orders/show_address_book_screen.dart';
+import 'package:fw_vendor/screen/orders/draft_orders/draft_orders.dart';
+import 'package:fw_vendor/screen/orders/draft_orders/edit_selected_location.dart';
+import 'package:fw_vendor/screen/settlement/bill_copy_settlement/bill_copy_settlement.dart';
 import 'package:fw_vendor/screen/settlement/cash_settlement/cash_settlement.dart';
 import 'package:fw_vendor/screen/settlement/return_settlement/return_order_settlement.dart';
 import 'package:get/get.dart';
@@ -28,6 +31,8 @@ class AppRoutes {
   static String orders = "/orders";
   static String createOrders = "/createOrders";
   static String ordersFromScreen = "/ordersFromScreen";
+  static String draftOrdersScreen = "/draftOrdersScreen";
+  static String editSelectedLocationScreen = "/editSelectedLocationScreen";
   static String showAdrresBookScreen = "/showAdrresBookScreen";
   static String createGlobalOrdersScreen = "/createGlobalOrdersScreen";
   static String createGlobalOrdersDetailsScreen = "/createGlobalOrdersDetailsScreen";
@@ -37,6 +42,7 @@ class AppRoutes {
   static String locationScreen = "/locationScreen";
   static String saveAddressScreen = "/saveAddressScreen";
   static String requestAddressScreen = "/requestAddressScreen";
+  static String billCopySettlementScreen = "/billCopySettlementScreen";
   static String cashSettlementScreen = "/cashSettlementScreen";
   static String returnSettlementScreen = "/returnSettlementScreen";
   static String noInternet = "/noInternet";
@@ -49,6 +55,8 @@ class AppRoutes {
     GetPage(name: orders, page: () => OrderScreen()),
     GetPage(name: createOrders, page: () => const CreateOrderScreen()),
     GetPage(name: ordersFromScreen, page: () => const OrdersFromScreen()),
+    GetPage(name: draftOrdersScreen, page: () => const DraftOrderScreen()),
+    GetPage(name: editSelectedLocationScreen, page: () => const EditSelectedLocationScreen()),
     GetPage(name: createGlobalOrdersScreen, page: () => const CreateGlobalOrdersScreen()),
     GetPage(name: createGlobalOrdersDetailsScreen, page: () => const CreateGlobalOrdersDetailsScreen()),
     GetPage(name: placeOrderScreen, page: () => const PlaceOrderScreen()),
@@ -58,6 +66,7 @@ class AppRoutes {
     GetPage(name: saveAddressScreen, page: () => SaveAddressScreen()),
     GetPage(name: showAdrresBookScreen, page: () => const ShowAdrresBookScreen()),
     GetPage(name: requestAddressScreen, page: () => const RequestAddressScreen()),
+    GetPage(name: billCopySettlementScreen, page: () => const BillCopySettementScreen()),
     GetPage(name: cashSettlementScreen, page: () => const CashSettlementScreen()),
     GetPage(name: returnSettlementScreen, page: () => const ReturnOrderSettlementScreen()),
     GetPage(

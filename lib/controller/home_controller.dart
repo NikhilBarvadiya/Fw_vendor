@@ -137,6 +137,11 @@ class HomeController extends GetxController {
     update();
   }
 
+  onBillCopySettementClick() {
+    Get.toNamed(AppRoutes.billCopySettlementScreen);
+    update();
+  }
+
   onCashSettementClick() {
     Get.toNamed(AppRoutes.cashSettlementScreen);
     update();
@@ -144,6 +149,11 @@ class HomeController extends GetxController {
 
   onReturnSettementClick() {
     Get.toNamed(AppRoutes.returnSettlementScreen);
+    update();
+  }
+
+  onDraftOrdersClick() {
+    Get.toNamed(AppRoutes.draftOrdersScreen);
     update();
   }
 

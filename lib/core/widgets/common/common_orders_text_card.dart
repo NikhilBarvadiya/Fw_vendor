@@ -9,6 +9,7 @@ class CommonOrdersTextCard extends StatefulWidget {
   final bool? readOnly;
   final int? maxLines;
   final int? minLines;
+  final dynamic elevation;
   final void Function()? onTap;
   final TextEditingController? controller;
   final TextInputType? keyboardType;
@@ -25,6 +26,7 @@ class CommonOrdersTextCard extends StatefulWidget {
     this.maxLines,
     this.minLines,
     this.hederStyle,
+    this.elevation,
   }) : super(key: key);
 
   @override
@@ -35,7 +37,7 @@ class _CommonOrdersTextCardState extends State<CommonOrdersTextCard> {
   @override
   Widget build(BuildContext context) {
     return Card(
-      elevation: 1,
+      elevation: widget.elevation ?? 1,
       clipBehavior: Clip.antiAlias,
       surfaceTintColor: Theme.of(context).canvasColor,
       semanticContainer: true,

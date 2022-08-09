@@ -1,12 +1,12 @@
 // ignore_for_file: prefer_const_constructors
 
-import 'package:animated_button/animated_button.dart';
 import 'package:flutter/material.dart';
 import 'package:fw_vendor/common/config.dart';
 import 'package:fw_vendor/controller/home_controller.dart';
 import 'package:fw_vendor/core/configuration/app_routes.dart';
 import 'package:fw_vendor/core/utilities/storage_utils.dart';
 import 'package:fw_vendor/core/widgets/common_dialog/scale_dialog.dart';
+import 'package:fw_vendor/core/widgets/common_dialog/stylish_dialog.dart';
 import 'package:fw_vendor/networking/index.dart';
 import 'package:get/get.dart';
 import 'package:stylish_dialog/stylish_dialog.dart';
@@ -39,7 +39,7 @@ class ProfileController extends GetxController {
   }
 
   willPopScope() {
-    if (isEdit != false) {
+    if (isEdit == true) {
       isEdit = false;
       update();
     } else {
@@ -50,7 +50,6 @@ class ProfileController extends GetxController {
   onEdit() {
     try {
       isLoading = true;
-      update();
       isEdit = true;
       txtShopName.text = profileData["name"].toString();
       txtName.text = profileData["ownerName"].toString();
@@ -60,6 +59,7 @@ class ProfileController extends GetxController {
       txtPincode.text = profileData["address"]["pincode"].toString();
       txtLat.text = profileData["address"]["geoLocation"]["lat"].toString();
       txtLong.text = profileData["address"]["geoLocation"]["long"].toString();
+      update();
     } catch (e) {
       return e;
     }
@@ -78,33 +78,18 @@ class ProfileController extends GetxController {
         ApiType.post,
       );
       if (resData.isSuccess == true && resData.data != 0) {
-        StylishDialog(
+        stylishDialog(
           context: context,
           alertType: StylishDialogType.SUCCESS,
           titleText: 'Update succes',
           contentText: resData.message.toString(),
-          confirmButton: AnimatedButton(
-            height: 30,
-            width: Get.width * 0.3,
-            color: Colors.green,
-            shadowDegree: ShadowDegree.light,
-            enabled: true,
-            shape: BoxShape.rectangle,
-            child: const Text(
-              'Ok',
-              style: TextStyle(
-                fontSize: 18,
-                fontWeight: FontWeight.w600,
-                color: Colors.white,
-              ),
-            ),
-            onPressed: () {
-              isEdit = false;
-              Get.back();
-              update();
-            },
-          ),
-        ).show();
+          confirmButton: Colors.green,
+          onPressed: () {
+            isEdit = false;
+            Get.back();
+            update();
+          },
+        );
       }
       update();
     } catch (e) {
@@ -116,17 +101,27 @@ class ProfileController extends GetxController {
     update();
   }
 
-  onCancel() {
-    isEdit = false;
-    txtShopName.clear();
-    txtName.clear();
-    txtEmailId.clear();
-    txtAddress.clear();
-    txtArea.clear();
-    txtPincode.clear();
-    txtLat.clear();
-    txtLong.clear();
-    update();
+  onCancel(context) {
+    stylishDialog(
+      context: context,
+      alertType: StylishDialogType.ERROR,
+      titleText: 'Cancel',
+      confirmButton: Colors.redAccent,
+      contentText: "Do you cancel edit procces account!",
+      onPressed: () {
+        isEdit = false;
+        txtShopName.clear();
+        txtName.clear();
+        txtEmailId.clear();
+        txtAddress.clear();
+        txtArea.clear();
+        txtPincode.clear();
+        txtLat.clear();
+        txtLong.clear();
+        update();
+        Get.back();
+      },
+    );
   }
 
   onPreparationTime(context) async {
@@ -142,31 +137,16 @@ class ProfileController extends GetxController {
         ApiType.post,
       );
       if (resData.isSuccess == true && resData.data != 0) {
-        StylishDialog(
+        stylishDialog(
           context: context,
           alertType: StylishDialogType.SUCCESS,
           titleText: 'Update succes',
+          confirmButton: Colors.green,
           contentText: resData.message.toString(),
-          confirmButton: AnimatedButton(
-            height: 30,
-            width: Get.width * 0.3,
-            color: Colors.green,
-            shadowDegree: ShadowDegree.light,
-            enabled: true,
-            shape: BoxShape.rectangle,
-            child: const Text(
-              'Ok',
-              style: TextStyle(
-                fontSize: 18,
-                fontWeight: FontWeight.w600,
-                color: Colors.white,
-              ),
-            ),
-            onPressed: () {
-              Get.back();
-            },
-          ),
-        ).show();
+          onPressed: () {
+            Get.back();
+          },
+        );
       }
       update();
     } catch (e) {
@@ -229,31 +209,16 @@ class ProfileController extends GetxController {
       );
       if (resData.isSuccess == true && resData.data != 0) {
         homeController.vendorWhoAmI();
-        StylishDialog(
+        stylishDialog(
           context: context,
           alertType: StylishDialogType.SUCCESS,
           titleText: 'Update succes',
           contentText: resData.message.toString(),
-          confirmButton: AnimatedButton(
-            height: 30,
-            width: Get.width * 0.3,
-            color: Colors.green,
-            shadowDegree: ShadowDegree.light,
-            enabled: true,
-            shape: BoxShape.rectangle,
-            child: const Text(
-              'Ok',
-              style: TextStyle(
-                fontSize: 18,
-                fontWeight: FontWeight.w600,
-                color: Colors.white,
-              ),
-            ),
-            onPressed: () {
-              Get.back();
-            },
-          ),
-        ).show();
+          confirmButton: Colors.green,
+          onPressed: () {
+            Get.back();
+          },
+        );
       }
       update();
     } catch (e) {
@@ -266,33 +231,18 @@ class ProfileController extends GetxController {
   }
 
   onGst(context) {
-    StylishDialog(
+    stylishDialog(
       context: context,
       alertType: StylishDialogType.SUCCESS,
       titleText: 'Update succes',
       contentText: "GST number save",
-      confirmButton: AnimatedButton(
-        height: 30,
-        width: Get.width * 0.3,
-        color: Colors.green,
-        shadowDegree: ShadowDegree.light,
-        enabled: true,
-        shape: BoxShape.rectangle,
-        child: const Text(
-          'Ok',
-          style: TextStyle(
-            fontSize: 18,
-            fontWeight: FontWeight.w600,
-            color: Colors.white,
-          ),
-        ),
-        onPressed: () {
-          isEdit = false;
-          update();
-          Get.back();
-        },
-      ),
-    ).show();
+      confirmButton: Colors.green,
+      onPressed: () {
+        isEdit = false;
+        update();
+        Get.back();
+      },
+    );
   }
 
   onChangePassword() async {
