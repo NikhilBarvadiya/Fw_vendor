@@ -57,7 +57,9 @@ class _ShowAdrresBookScreenState extends State<ShowAdrresBookScreen> {
                             return null;
                           }
                         },
-                        onChanged: (val) {},
+                        onChanged: (val) {
+                          showAddressBookController.onSearchAddress();
+                        },
                       ),
                     )
                   : Container(),

@@ -6,6 +6,7 @@ import 'package:fw_vendor/core/widgets/common/common_button.dart';
 import 'package:fw_vendor/core/widgets/common/order_address_card.dart';
 import 'package:fw_vendor/core/widgets/common/searchable_list.dart';
 import 'package:fw_vendor/core/widgets/custom_widgets/custom_nodata.dart';
+import 'package:fw_vendor/core/widgets/custom_widgets/custom_textformfield.dart';
 import 'package:fw_vendor/extensions/date_exensions.dart';
 import 'package:get/get.dart';
 
@@ -32,6 +33,43 @@ class _CreateGlobalOrdersScreenState extends State<CreateGlobalOrdersScreen> {
             foregroundColor: Colors.white,
             title: const Text(
               "Create B2B Order",
+            ),
+            actions: [
+              // if (createGlobalOrdersCntroller.areaSelectedId != "")
+              //   IconButton(
+              //     onPressed: () {
+              //       createGlobalOrdersCntroller.onSearchButtonTapped();
+              //     },
+              //     icon: Icon(createGlobalOrdersCntroller.isSearch ? Icons.close : Icons.search),
+              //   ),
+            ],
+            bottom: PreferredSize(
+              preferredSize: Size.fromHeight(createGlobalOrdersCntroller.isSearch ? 50 : 0),
+              child: createGlobalOrdersCntroller.isSearch
+                  ? Container(
+                      color: Colors.white,
+                      child: CustomTextFormField(
+                        container: createGlobalOrdersCntroller.txtSearch,
+                        hintText: "Search".tr,
+                        fillColor: Colors.white,
+                        prefixIcon: const Icon(Icons.search),
+                        padding: 15,
+                        radius: 0,
+                        maxLength: 10,
+                        counterText: "",
+                        validator: (value) {
+                          if (value!.isEmpty) {
+                            return "";
+                          } else {
+                            return null;
+                          }
+                        },
+                        onChanged: (val) {
+                          createGlobalOrdersCntroller.onSearchAddress();
+                        },
+                      ),
+                    )
+                  : Container(),
             ),
           ),
           body: Stack(

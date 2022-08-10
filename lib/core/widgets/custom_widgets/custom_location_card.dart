@@ -55,9 +55,25 @@ class CustomLocationCard extends StatelessWidget {
       surfaceTintColor: Theme.of(context).canvasColor,
       semanticContainer: true,
       margin: const EdgeInsets.all(10),
-      shape: const RoundedRectangleBorder(
-        borderRadius: BorderRadius.all(
+      shape: RoundedRectangleBorder(
+        borderRadius: const BorderRadius.all(
           Radius.circular(4),
+        ),
+        side: BorderSide(
+          // color: Colors.black26,
+          color: status == "Pending"
+              ? Colors.amber.shade500
+              : status == "Delivered"
+                  ? Colors.green.shade500
+                  : status == "Running"
+                      ? Colors.blue.shade500
+                      : status == "Cancelled"
+                          ? Colors.deepOrange.shade500
+                          : status == "Returned"
+                              ? Colors.red.shade500
+                              : status == "Completed"
+                                  ? Colors.blueGrey
+                                  : Colors.transparent,
         ),
       ),
       child: Column(
@@ -180,10 +196,9 @@ class CustomLocationCard extends StatelessWidget {
                 ),
                 Text(
                   driverName ?? "",
-                  style: AppCss.footnote.copyWith(
+                  style: AppCss.body1.copyWith(
                     color: Colors.black,
                     fontSize: 12,
-                    fontWeight: FontWeight.bold,
                   ),
                 ),
               ],
@@ -204,7 +219,6 @@ class CustomLocationCard extends StatelessWidget {
                   style: AppCss.body1.copyWith(
                     color: Colors.black,
                     fontSize: 12,
-                    fontWeight: FontWeight.bold,
                   ),
                 ),
               ],
@@ -225,7 +239,6 @@ class CustomLocationCard extends StatelessWidget {
                   style: AppCss.body1.copyWith(
                     color: Colors.black,
                     fontSize: 12,
-                    fontWeight: FontWeight.bold,
                   ),
                 ),
               ],
@@ -237,7 +250,7 @@ class CustomLocationCard extends StatelessWidget {
 
   Widget _cardWidget(context, String heder, String amount) {
     return Card(
-      elevation: 1,
+      elevation: 0.5,
       shadowColor: status == "Pending"
           ? Colors.amber.shade500
           : status == "Delivered"

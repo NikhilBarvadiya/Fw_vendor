@@ -26,6 +26,7 @@ class PlaceOrdersController extends GetxController {
   @override
   void onInit() {
     selectedOrderList = Get.arguments;
+    print("selectedOrderList=======$selectedOrderList");
     super.onInit();
   }
 
@@ -43,8 +44,10 @@ class PlaceOrdersController extends GetxController {
   willPopScope() {
     _onClear();
     edit.clear();
-    selectedOrderList.clear();
-    Get.toNamed(AppRoutes.createGlobalOrdersScreen);
+    if (Get.isRegistered<PlaceOrdersController>()) {
+      Get.delete<PlaceOrdersController>();
+    }
+    Get.offNamed(AppRoutes.createGlobalOrdersScreen);
   }
 
   onCredit() {
@@ -194,22 +197,58 @@ class PlaceOrdersController extends GetxController {
       update();
       List ordersRequest = [];
       for (int i = 0; i < selectedAddress.length; i++) {
-        ordersRequest.add({
-          "addressId": selectedAddress[i]["globalAddressId"]["_id"],
-          "amount": edit.isNotEmpty && edit.length > i && edit[i]["_id"] == i ? edit[i]["amount"].toString() : "0",
-          "areaId": selectedAddress[i]["globalAddressId"]["routeId"]["areaId"],
-          "billNo": edit.isNotEmpty && edit.length > i && edit[i]["_id"] == i ? edit[i]["billNo"].toString() : "0",
-          "businessCategoryId": selectedAddress[i]["globalAddressId"]["businessCategoryId"],
-          "cash": edit.isNotEmpty && edit.length > i && edit[i]["_id"] == i ? edit[i]["cash"].toString() : "0",
-          "nOfBoxes": edit.isNotEmpty && edit.length > i && edit[i]["_id"] == i ? edit[i]["nOfBoxes"].toString() : "0",
-          "nOfPackages": edit.isNotEmpty && edit.length > i && edit[i]["_id"] == i ? edit[i]["nOfPackages"].toString() : "0",
-          "orderType": "b2b",
-          "routeId": selectedAddress[i]["globalAddressId"]["routeId"]["_id"],
-        });
+        print(selectedAddress.length);
+        ordersRequest.add(
+          {
+            "addressId": selectedAddress[i]["globalAddressId"] != null && selectedAddress[i]["globalAddressId"] != ""
+                ? selectedAddress[i]["globalAddressId"]["_id"].toString()
+                : selectedAddress[i]["addressId"] != null && selectedAddress[i]["addressId"] != ""
+                    ? selectedAddress[i]["addressId"]["_id"].toString()
+                    : "",
+            "amount": selectedAddress[i]["globalAddressId"] != null && selectedAddress[i]["globalAddressId"] != "" && edit.isNotEmpty && edit.length > i && edit[i]["_id"] == i
+                ? edit[i]["amount"].toString()
+                : selectedAddress[i]["amount"] != null && selectedAddress[i]["amount"] != ""
+                    ? selectedAddress[i]["amount"].toString()
+                    : "0",
+            "areaId": selectedAddress[i]["globalAddressId"] != null && selectedAddress[i]["globalAddressId"] != "" ? selectedAddress[i]["globalAddressId"]["routeId"]["areaId"].toString() : "",
+            "billNo": selectedAddress[i]["globalAddressId"] != null && selectedAddress[i]["globalAddressId"] != "" && edit.isNotEmpty && edit.length > i && edit[i]["_id"] == i
+                ? edit[i]["billNo"].toString()
+                : selectedAddress[i]["billNo"] != null && selectedAddress[i]["billNo"] != ""
+                    ? selectedAddress[i]["billNo"].toString()
+                    : "0",
+            "businessCategoryId": selectedAddress[i]["globalAddressId"] != null && selectedAddress[i]["globalAddressId"] != ""
+                ? selectedAddress[i]["globalAddressId"]["businessCategoryId"].toString()
+                : selectedAddress[i]["addressId"] != null && selectedAddress[i]["addressId"] != ""
+                    ? selectedAddress[i]["addressId"]["businessCategoryId"].toString()
+                    : "",
+            "cash": selectedAddress[i]["globalAddressId"] != null && selectedAddress[i]["globalAddressId"] != "" && edit.isNotEmpty && edit.length > i && edit[i]["_id"] == i
+                ? edit[i]["cash"].toString()
+                : selectedAddress[i]["cash"] != null && selectedAddress[i]["cash"] != ""
+                    ? selectedAddress[i]["cash"].toString()
+                    : "0",
+            "nOfBoxes": selectedAddress[i]["globalAddressId"] != null && selectedAddress[i]["globalAddressId"] != "" && edit.isNotEmpty && edit.length > i && edit[i]["_id"] == i
+                ? edit[i]["nOfBoxes"].toString()
+                : selectedAddress[i]["nOfBoxes"] != null && selectedAddress[i]["nOfBoxes"] != ""
+                    ? selectedAddress[i]["nOfBoxes"].toString()
+                    : "0",
+            "nOfPackages": selectedAddress[i]["globalAddressId"] != null && selectedAddress[i]["globalAddressId"] != "" && edit.isNotEmpty && edit.length > i && edit[i]["_id"] == i
+                ? edit[i]["nOfPackages"].toString()
+                : selectedAddress[i]["nOfPackages"] != null && selectedAddress[i]["nOfPackages"] != ""
+                    ? selectedAddress[i]["nOfPackages"].toString()
+                    : "0",
+            "orderType": "b2b",
+            "routeId": selectedAddress[i]["globalAddressId"] != null && selectedAddress[i]["globalAddressId"] != ""
+                ? selectedAddress[i]["globalAddressId"]["routeId"]["_id"].toString()
+                : selectedAddress[i]["addressId"] != null && selectedAddress[i]["addressId"] != ""
+                    ? selectedAddress[i]["addressId"]["routeId"].toString()
+                    : "",
+          },
+        );
       }
       var data = {
         "ordersRequest": ordersRequest,
       };
+      print(data);
       var resData = await apis.call(
         apiMethods.saveOrder,
         data,

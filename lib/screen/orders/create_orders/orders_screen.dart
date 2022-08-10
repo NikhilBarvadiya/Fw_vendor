@@ -85,7 +85,9 @@ class OrderScreen extends StatelessWidget {
                               return null;
                             }
                           },
-                          onChanged: (val) {},
+                          onChanged: (val) {
+                            ordersController.onSearchOrders();
+                          },
                         ),
                       )
                     : Container(),
@@ -117,9 +119,10 @@ class OrderScreen extends StatelessWidget {
                     if (ordersController.ordersDetailsList.length != null)
                       ...ordersController.ordersDetailsList.map(
                         (e) {
+                          ordersController.locationData = e;
                           return Column(
                             children: [
-                              if (ordersController.ordersDetailsList != null)
+                              if (ordersController.ordersDetailsList != null && e["orderStatus"].length != 0)
                                 CommonOrdersDetails(
                                   orderNo: e["orderNo"] != "" ? e["orderNo"].toString() : "",
                                   orderType: e["orderType"] != "" ? e["orderType"].toString().toUpperCase() : "",
@@ -172,6 +175,16 @@ class OrderScreen extends StatelessWidget {
                       ),
                   ],
                 ).paddingOnly(top: 30),
+                if (ordersController.locationData != null && ordersController.locationData["orderStatus"].length == 0)
+                  Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: const [
+                      NoDataWidget(
+                        title: "No data !",
+                        body: "No orders available",
+                      ),
+                    ],
+                  ),
                 if (ordersController.ordersDetailsList.isEmpty || ordersController.ordersDetailsList.length == null)
                   Column(
                     mainAxisAlignment: MainAxisAlignment.center,

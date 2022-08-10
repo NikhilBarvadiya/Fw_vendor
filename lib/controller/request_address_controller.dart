@@ -30,6 +30,11 @@ class RequestAddressControler extends GetxController {
     update();
   }
 
+  onSearchAddress() async {
+    await _vendorRequestedAddress();
+    update();
+  }
+
   _vendorRequestedAddress() async {
     try {
       isLoading = true;
@@ -37,7 +42,7 @@ class RequestAddressControler extends GetxController {
       var body = {
         "limit": "10",
         "page": 1,
-        "search": "",
+        "search": txtSearch.text,
       };
       var resData = await apis.call(
         apiMethods.vendorRequestedAddress,

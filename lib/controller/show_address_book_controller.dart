@@ -33,12 +33,17 @@ class ShowAddressBookController extends GetxController {
     update();
   }
 
+  onSearchAddress() async {
+    await _saveCustomerAddress();
+    update();
+  }
+
   _saveCustomerAddress() async {
     try {
       isLoading = true;
       update();
       var body = {
-        "search": "",
+        "search": txtSearch.text,
         "page": 1,
         "limit": 10,
       };

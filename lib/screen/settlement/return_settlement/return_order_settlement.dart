@@ -5,6 +5,7 @@ import 'package:fw_vendor/core/theme/index.dart';
 import 'package:fw_vendor/core/widgets/common/common_chips.dart';
 import 'package:fw_vendor/core/widgets/common/common_retrun_orders_settement_card.dart';
 import 'package:fw_vendor/core/widgets/custom_widgets/custom_nodata.dart';
+import 'package:fw_vendor/core/widgets/custom_widgets/custom_textformfield.dart';
 import 'package:fw_vendor/extensions/date_exensions.dart';
 import 'package:get/get.dart';
 
@@ -29,6 +30,42 @@ class _ReturnOrderSettlementScreenState extends State<ReturnOrderSettlementScree
             automaticallyImplyLeading: false,
             foregroundColor: Colors.white,
             title: const Text("Return Order Settlement"),
+            actions: [
+              IconButton(
+                onPressed: () {
+                  returnOrderSettlementController.onSearchButtonTapped();
+                },
+                icon: Icon(returnOrderSettlementController.isSearch ? Icons.close : Icons.search),
+              ),
+            ],
+            bottom: PreferredSize(
+              preferredSize: Size.fromHeight(returnOrderSettlementController.isSearch ? 50 : 0),
+              child: returnOrderSettlementController.isSearch
+                  ? Container(
+                      color: Colors.white,
+                      child: CustomTextFormField(
+                        container: returnOrderSettlementController.txtSearch,
+                        hintText: "Search".tr,
+                        fillColor: Colors.white,
+                        prefixIcon: const Icon(Icons.search),
+                        padding: 15,
+                        radius: 0,
+                        maxLength: 10,
+                        counterText: "",
+                        validator: (value) {
+                          if (value!.isEmpty) {
+                            return "";
+                          } else {
+                            return null;
+                          }
+                        },
+                        onChanged: (val) {
+                          returnOrderSettlementController.onSearch();
+                        },
+                      ),
+                    )
+                  : Container(),
+            ),
           ),
           body: Stack(
             children: [

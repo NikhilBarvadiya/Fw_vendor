@@ -50,24 +50,25 @@ class CommonOrdersDetails extends StatelessWidget {
                   style: AppCss.poppins,
                 ),
                 const Spacer(),
-                TextButton(
-                  onPressed: locationClick,
-                  style: TextButton.styleFrom(
-                    primary: Colors.blue,
+                if (locations != "" && locations != null)
+                  TextButton(
+                    onPressed: locationClick,
+                    style: TextButton.styleFrom(
+                      primary: Colors.blue,
+                    ),
+                    child: Row(
+                      crossAxisAlignment: CrossAxisAlignment.end,
+                      children: [
+                        Text(
+                          locations ?? "",
+                          style: AppCss.h3,
+                        ).paddingOnly(right: 3),
+                        const Text(
+                          "Locations",
+                        ),
+                      ],
+                    ),
                   ),
-                  child: Row(
-                    crossAxisAlignment: CrossAxisAlignment.end,
-                    children: [
-                      Text(
-                        locations ?? "",
-                        style: AppCss.h3,
-                      ).paddingOnly(right: 3),
-                      const Text(
-                        "Locations",
-                      ),
-                    ],
-                  ),
-                ),
               ],
             ),
             Text(

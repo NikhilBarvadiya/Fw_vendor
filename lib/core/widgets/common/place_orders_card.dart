@@ -73,10 +73,12 @@ class _PlaceOrdersCardState extends State<PlaceOrdersCard> {
                   padding: const EdgeInsets.all(5),
                   decoration: BoxDecoration(
                     color: widget.type == "credit"
-                        ? Colors.green
+                        ? Colors.blue
                         : widget.type == "COD"
                             ? Colors.red
-                            : Colors.white,
+                            : widget.type == "Cash"
+                                ? Colors.green
+                                : Colors.white,
                     borderRadius: const BorderRadius.all(
                       Radius.circular(2),
                     ),

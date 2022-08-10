@@ -6,7 +6,9 @@ import 'package:fw_vendor/networking/index.dart';
 import 'package:get/get.dart';
 
 class ReturnOrderSettlementController extends GetxController {
+  TextEditingController txtSearch = TextEditingController();
   bool isLoading = false;
+  bool isSearch = false;
   String selectedFilters = "";
   List returnOrderSettlementList = [];
 
@@ -53,6 +55,19 @@ class ReturnOrderSettlementController extends GetxController {
     update();
   }
 
+  onSearchButtonTapped() {
+    if (isSearch && txtSearch.text != "") {
+      txtSearch.text = "";
+    }
+    isSearch = !isSearch;
+    update();
+  }
+
+  onSearch() async {
+    await _returnSettlement();
+    update();
+  }
+
   _returnSettlement() async {
     try {
       isLoading = true;
@@ -60,7 +75,7 @@ class ReturnOrderSettlementController extends GetxController {
       var body = {
         "page": 0,
         "limit": "10",
-        "search": "",
+        "search": txtSearch.text,
         "status": selectedFilters,
       };
       var resData = await apis.call(

@@ -105,7 +105,7 @@ class _DraftOrderScreenState extends State<DraftOrderScreen> {
                     Align(
                       alignment: Alignment.bottomCenter,
                       child: commonButton(
-                        onTap: () => draftOrdersController.onProceed(),
+                        onTap: () => draftOrdersController.onProceed(draftOrdersController.selectedOrderList),
                         text: "Proceed Addresses (${draftOrdersController.selectedOrderList.length})",
                         height: 50.0,
                       ),

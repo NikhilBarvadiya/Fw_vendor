@@ -12,6 +12,7 @@ class OrdersController extends GetxController {
   bool searchButton = false;
   String filterSelected = "";
   List ordersDetailsList = [];
+  dynamic locationData;
 
   @override
   void onInit() async {
@@ -101,6 +102,11 @@ class OrdersController extends GetxController {
     update();
   }
 
+  onSearchOrders() async {
+    await _vendorOrders();
+    update();
+  }
+
   _vendorOrders() async {
     try {
       isLoading = true;
@@ -109,7 +115,7 @@ class OrdersController extends GetxController {
         "page": 1,
         "limit": 10,
         "searchType": filterSelected != "" ? filterSelected : "Order No",
-        "search": "",
+        "search": txtSearch.text,
         "status": status ?? "pending",
         "fromDate": "",
         "toDate": "",

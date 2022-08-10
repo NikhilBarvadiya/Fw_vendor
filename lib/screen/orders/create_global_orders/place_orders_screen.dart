@@ -51,25 +51,70 @@ class _PlaceOrderScreenState extends State<PlaceOrderScreen> {
                   Expanded(
                     child: ListView(
                       children: [
-                        ...placeOrdersController.selectedOrderList.map(
-                          (e) {
-                            var index = placeOrdersController.selectedOrderList.indexOf(e);
-                            return PlaceOrdersCard(
-                              name: e["globalAddressId"]["name"].toString(),
-                              person: e["globalAddressId"]["person"].toString(),
-                              mobile: e["globalAddressId"]["mobile"].toString(),
-                              address: e["globalAddressId"]["address"].toString(),
-                              billNo: placeOrdersController.edit.isNotEmpty && placeOrdersController.edit.length > index && placeOrdersController.edit[index]["_id"] == index ? placeOrdersController.edit[index]["billNo"].toString() : "0",
-                              type: placeOrdersController.edit.isNotEmpty && placeOrdersController.edit.length > index && placeOrdersController.edit[index]["_id"] == index ? placeOrdersController.edit[index]["paymentMethod"].toString() : "credit",
-                              amount: placeOrdersController.edit.isNotEmpty && placeOrdersController.edit.length > index && placeOrdersController.edit[index]["_id"] == index ? placeOrdersController.edit[index]["amount"].toString() : "0",
-                              billAmount: placeOrdersController.edit.isNotEmpty && placeOrdersController.edit.length > index && placeOrdersController.edit[index]["_id"] == index ? placeOrdersController.edit[index]["cash"].toString() : "0",
-                              notes: placeOrdersController.edit.isNotEmpty && placeOrdersController.edit.length > index && placeOrdersController.edit[index]["_id"] == index ? placeOrdersController.edit[index]["notes"].toString() : "---",
-                              loose: placeOrdersController.edit.isNotEmpty && placeOrdersController.edit.length > index && placeOrdersController.edit[index]["_id"] == index ? placeOrdersController.edit[index]["nOfPackages"].toString() : "0",
-                              box: placeOrdersController.edit.isNotEmpty && placeOrdersController.edit.length > index && placeOrdersController.edit[index]["_id"] == index ? placeOrdersController.edit[index]["nOfBoxes"].toString() : "0",
-                              onTap: () => placeOrdersController.onEdit(context, index),
-                            );
-                          },
-                        ),
+                        if (placeOrdersController.selectedOrderList.isNotEmpty)
+                          ...placeOrdersController.selectedOrderList.map(
+                            (e) {
+                              var index = placeOrdersController.selectedOrderList.indexOf(e);
+                              return PlaceOrdersCard(
+                                name: e["globalAddressId"] != null && e["globalAddressId"]["name"] != ""
+                                    ? e["globalAddressId"]["name"].toString()
+                                    : e["addressId"]["name"] != null && e["addressId"]["name"] != ""
+                                        ? e["addressId"]["name"].toString()
+                                        : "",
+                                person: e["globalAddressId"] != null && e["globalAddressId"]["person"] != ""
+                                    ? e["globalAddressId"]["person"].toString()
+                                    : e["addressId"]["person"] != null && e["addressId"]["person"] != ""
+                                        ? e["addressId"]["person"].toString()
+                                        : "",
+                                mobile: e["globalAddressId"] != null && e["globalAddressId"]["mobile"] != ""
+                                    ? e["globalAddressId"]["mobile"].toString()
+                                    : e["addressId"]["mobile"] != null && e["addressId"]["mobile"] != ""
+                                        ? e["addressId"]["mobile"].toString()
+                                        : "",
+                                address: e["globalAddressId"] != null && e["globalAddressId"]["address"] != ""
+                                    ? e["globalAddressId"]["address"].toString()
+                                    : e["addressId"]["address"] != null && e["addressId"]["address"] != ""
+                                        ? e["addressId"]["address"].toString()
+                                        : "",
+                                billNo: placeOrdersController.edit.isNotEmpty && placeOrdersController.edit.length > index && placeOrdersController.edit[index]["_id"] == index
+                                    ? placeOrdersController.edit[index]["billNo"].toString()
+                                    : e["billNo"] != null && e["billNo"] != ""
+                                        ? e["billNo"].toString()
+                                        : "",
+                                type: placeOrdersController.edit.isNotEmpty && placeOrdersController.edit.length > index && placeOrdersController.edit[index]["_id"] == index
+                                    ? placeOrdersController.edit[index]["paymentMethod"].toString()
+                                    : e["type"] != null && e["type"] != ""
+                                        ? e["type"].toString().capitalizeFirst.toString()
+                                        : "credit",
+                                amount: placeOrdersController.edit.isNotEmpty && placeOrdersController.edit.length > index && placeOrdersController.edit[index]["_id"] == index
+                                    ? placeOrdersController.edit[index]["amount"].toString()
+                                    : e["cash"] != null && e["cash"] != ""
+                                        ? e["cash"].toString()
+                                        : "0",
+                                billAmount: placeOrdersController.edit.isNotEmpty && placeOrdersController.edit.length > index && placeOrdersController.edit[index]["_id"] == index
+                                    ? placeOrdersController.edit[index]["cash"].toString()
+                                    : e["amount"] != null && e["amount"] != ""
+                                        ? e["amount"].toString()
+                                        : "0",
+                                notes: placeOrdersController.edit.isNotEmpty && placeOrdersController.edit.length > index && placeOrdersController.edit[index]["_id"] == index
+                                    ? placeOrdersController.edit[index]["notes"].toString()
+                                    : e["anyNote"] != null && e["anyNote"] != ""
+                                        ? e["anyNote"].toString()
+                                        : "___",
+                                loose: placeOrdersController.edit.isNotEmpty && placeOrdersController.edit.length > index && placeOrdersController.edit[index]["_id"] == index
+                                    ? placeOrdersController.edit[index]["nOfPackages"].toString()
+                                    : e["nOfPackages"] != null && e["nOfPackages"] != ""
+                                        ? e["nOfPackages"].toString()
+                                        : "0",
+                                box: placeOrdersController.edit.isNotEmpty && placeOrdersController.edit.length > index && placeOrdersController.edit[index]["_id"] == index
+                                    ? placeOrdersController.edit[index]["nOfBoxes"].toString()
+                                    : e["nOfBoxes"] != null && e["nOfBoxes"] != ""
+                                        ? e["nOfBoxes"].toString()
+                                        : "0",
+                                onTap: () => placeOrdersController.onEdit(context, index),
+                              );
+                            },
+                          ),
                       ],
                     ),
                   ),

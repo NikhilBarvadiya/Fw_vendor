@@ -60,7 +60,9 @@ class _CashSettlementScreenState extends State<CashSettlementScreen> {
                             return null;
                           }
                         },
-                        onChanged: (val) {},
+                        onChanged: (val) {
+                          cashSettlementController.onSearchAddress();
+                        },
                       ),
                     )
                   : Container(),

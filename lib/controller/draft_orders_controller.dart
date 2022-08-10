@@ -24,10 +24,13 @@ class DraftOrdersController extends GetxController {
   @override
   void onInit() {
     _getVendorDraftOrder();
+    _autoSelector();
     super.onInit();
   }
 
   willPopScope() {
+    selectedOrderList.clear();
+    update();
     Get.offNamed(AppRoutes.home);
   }
 
@@ -151,9 +154,10 @@ class DraftOrdersController extends GetxController {
         Get.back();
       },
       onPressed: () async {
+        selectedOrderList.clear();
+        update();
         Get.back();
         await _updateVendorDraftOrder(item);
-        update();
         Get.offNamed(AppRoutes.draftOrdersScreen);
       },
     );
@@ -214,9 +218,9 @@ class DraftOrdersController extends GetxController {
     }
   }
 
-  onProceed() {
-    print(getDraftOrderList.length);
-    print(selectedOrderList.length);
-    // Get.toNamed(AppRoutes.createGlobalOrdersDetailsScreen, arguments: selectedOrderList);
+  onProceed(arguments) {
+    print(selectedOrderList);
+    Get.offNamed(AppRoutes.placeOrderScreen, arguments: arguments);
+    update();
   }
 }

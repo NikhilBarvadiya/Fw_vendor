@@ -63,6 +63,11 @@ class CashSettlementController extends GetxController {
     update();
   }
 
+  onSearchAddress() async {
+    await _codSettlement();
+    update();
+  }
+
   _codSettlement() async {
     try {
       isLoading = true;
@@ -70,7 +75,7 @@ class CashSettlementController extends GetxController {
       var body = {
         "page": 0,
         "limit": "10",
-        "search": "",
+        "search": txtSearch.text,
         "fromDate": "",
         "toDate": "",
         "status": selectedFilters,

@@ -54,6 +54,11 @@ class GlobalDirectoryController extends GetxController {
     update();
   }
 
+  onSearchglobalAddress() async {
+    await _vendorGlobalAddresses();
+    update();
+  }
+
   _vendorArea() async {
     try {
       isLoading = true;
@@ -108,7 +113,7 @@ class GlobalDirectoryController extends GetxController {
       var body = {
         "page": 1,
         "limit": 10,
-        "search": "",
+        "search": txtSearch.text,
         "areaId": areaSelected,
       };
       var resData = await apis.call(

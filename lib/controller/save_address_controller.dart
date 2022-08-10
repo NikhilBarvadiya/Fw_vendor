@@ -37,6 +37,11 @@ class SaveAddressController extends GetxController {
     update();
   }
 
+  onSearchAddress() async {
+    await _vendorAddresses();
+    update();
+  }
+
   _vendorAddresses() async {
     try {
       isLoading = true;
@@ -44,7 +49,7 @@ class SaveAddressController extends GetxController {
       var body = {
         "page": 1,
         "limit": 10,
-        "search": "",
+        "search": txtSearch.text,
       };
       var resData = await apis.call(
         apiMethods.vendorAddresses,
@@ -126,6 +131,11 @@ class SaveAddressController extends GetxController {
     await _vendorAddresses();
   }
 
+  onSearchMapperAddress() async {
+    await _vendorMappedAddress();
+    update();
+  }
+
   _vendorMappedAddress() async {
     try {
       isLoading = true;
@@ -133,7 +143,7 @@ class SaveAddressController extends GetxController {
       var data = {
         "page": 1,
         "limit": "10",
-        "search": "",
+        "search": txtSearch.text,
         "filter": "database",
       };
       var resData = await apis.call(

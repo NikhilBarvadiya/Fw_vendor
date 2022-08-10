@@ -32,12 +32,13 @@ class GlobalDirectoryScreen extends StatelessWidget {
               "Global Directory",
             ),
             actions: [
-              IconButton(
-                onPressed: () {
-                  globalDirectoryController.onSearchButtonTapped();
-                },
-                icon: Icon(globalDirectoryController.isSearch ? Icons.close : Icons.search),
-              ),
+              if (globalDirectoryController.areaSelected != "")
+                IconButton(
+                  onPressed: () {
+                    globalDirectoryController.onSearchButtonTapped();
+                  },
+                  icon: Icon(globalDirectoryController.isSearch ? Icons.close : Icons.search),
+                ),
             ],
             bottom: PreferredSize(
               preferredSize: Size.fromHeight(globalDirectoryController.isSearch ? 50 : 0),
@@ -60,7 +61,9 @@ class GlobalDirectoryScreen extends StatelessWidget {
                             return null;
                           }
                         },
-                        onChanged: (val) {},
+                        onChanged: (val) {
+                          globalDirectoryController.onSearchglobalAddress();
+                        },
                       ),
                     )
                   : Container(),

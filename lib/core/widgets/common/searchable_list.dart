@@ -171,7 +171,7 @@ class _SearchableListViewState extends State<SearchableListView> {
                     title: Text(
                       widget.bindText != null ? e[widget.bindText].toString().capitalizeFirst : e,
                       style: widget.bindTextStyle ??
-                          AppCss.footnote.copyWith(
+                          AppCss.body2.copyWith(
                             fontSize: 12,
                           ),
                     ),

@@ -56,7 +56,9 @@ class _RequestAddressScreenState extends State<RequestAddressScreen> {
                             return null;
                           }
                         },
-                        onChanged: (val) {},
+                        onChanged: (val) {
+                          requestAddressControler.onSearchAddress();
+                        },
                       ),
                     )
                   : Container(),

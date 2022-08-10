@@ -89,7 +89,13 @@ class SaveAddressScreen extends StatelessWidget {
                             return null;
                           }
                         },
-                        onChanged: (val) {},
+                        onChanged: (val) {
+                          if (saveAddressController.isMapper) {
+                            saveAddressController.onSearchMapperAddress();
+                          } else {
+                            saveAddressController.onSearchAddress();
+                          }
+                        },
                       ),
                     )
                   : Container(),
