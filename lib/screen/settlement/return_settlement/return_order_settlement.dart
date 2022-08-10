@@ -30,6 +30,14 @@ class _ReturnOrderSettlementScreenState extends State<ReturnOrderSettlementScree
             automaticallyImplyLeading: false,
             foregroundColor: Colors.white,
             title: const Text("Return Order Settlement"),
+            leading: IconButton(
+              icon: const Icon(
+                Icons.arrow_back,
+              ),
+              onPressed: () {
+                returnOrderSettlementController.willPopScope();
+              },
+            ),
             actions: [
               IconButton(
                 onPressed: () {

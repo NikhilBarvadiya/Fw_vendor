@@ -28,6 +28,14 @@ class _ShowAdrresBookScreenState extends State<ShowAdrresBookScreen> {
             title: const Text(
               "Address Book",
             ),
+            leading: IconButton(
+              icon: const Icon(
+                Icons.arrow_back,
+              ),
+              onPressed: () {
+                showAddressBookController.willPopScope();
+              },
+            ),
             actions: [
               IconButton(
                 onPressed: () {

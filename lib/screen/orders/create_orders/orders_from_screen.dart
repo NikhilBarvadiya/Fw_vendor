@@ -31,6 +31,14 @@ class _OrdersFromScreenState extends State<OrdersFromScreen> {
             title: const Text(
               "Create B2C Order",
             ),
+            leading: IconButton(
+              icon: const Icon(
+                Icons.arrow_back,
+              ),
+              onPressed: () {
+                ordersCreateController.willPopScopeCreateOrdersFroms();
+              },
+            ),
           ),
           body: ListView(
             children: [

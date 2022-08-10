@@ -34,6 +34,14 @@ class _CreateGlobalOrdersScreenState extends State<CreateGlobalOrdersScreen> {
             title: const Text(
               "Create B2B Order",
             ),
+            leading: IconButton(
+              icon: const Icon(
+                Icons.arrow_back,
+              ),
+              onPressed: () {
+                createGlobalOrdersCntroller.willPopScope();
+              },
+            ),
             actions: [
               // if (createGlobalOrdersCntroller.areaSelectedId != "")
               //   IconButton(

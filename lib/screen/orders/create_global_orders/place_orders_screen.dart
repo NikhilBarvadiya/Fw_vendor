@@ -26,6 +26,14 @@ class _PlaceOrderScreenState extends State<PlaceOrderScreen> {
             elevation: 1,
             automaticallyImplyLeading: false,
             foregroundColor: Colors.white,
+            leading: IconButton(
+              icon: const Icon(
+                Icons.arrow_back,
+              ),
+              onPressed: () {
+                placeOrdersController.willPopScope();
+              },
+            ),
             title: Row(
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [

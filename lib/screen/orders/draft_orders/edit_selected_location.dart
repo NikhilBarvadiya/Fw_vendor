@@ -19,7 +19,6 @@ class _EditSelectedLocationScreenState extends State<EditSelectedLocationScreen>
       builder: (_) => Scaffold(
         appBar: AppBar(
           elevation: 1,
-          automaticallyImplyLeading: false,
           foregroundColor: Colors.white,
           title: const Text(
             "Edit Selected Location",

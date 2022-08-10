@@ -31,6 +31,14 @@ class GlobalDirectoryScreen extends StatelessWidget {
             title: const Text(
               "Global Directory",
             ),
+            leading: IconButton(
+              icon: const Icon(
+                Icons.arrow_back,
+              ),
+              onPressed: () {
+                globalDirectoryController.willPopScope();
+              },
+            ),
             actions: [
               if (globalDirectoryController.areaSelected != "")
                 IconButton(

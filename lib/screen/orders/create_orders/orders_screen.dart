@@ -32,6 +32,14 @@ class OrderScreen extends StatelessWidget {
               automaticallyImplyLeading: false,
               foregroundColor: Colors.white,
               title: Text(ordersController.status != null ? ordersController.status.toString().capitalizeFirst.toString() : "Pending"),
+              leading: IconButton(
+                icon: const Icon(
+                  Icons.arrow_back,
+                ),
+                onPressed: () {
+                  ordersController.willPopScope();
+                },
+              ),
               actions: [
                 IconButton(
                   onPressed: () {

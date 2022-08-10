@@ -4,6 +4,7 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:fw_vendor/controller/draft_orders_controller.dart';
 import 'package:fw_vendor/core/widgets/common/common_button.dart';
 import 'package:fw_vendor/core/widgets/common/common_draftOrders_card.dart';
+import 'package:fw_vendor/core/widgets/custom_widgets/custom_nodata.dart';
 import 'package:get/get.dart';
 
 class DraftOrderScreen extends StatefulWidget {
@@ -28,6 +29,14 @@ class _DraftOrderScreenState extends State<DraftOrderScreen> {
             automaticallyImplyLeading: false,
             foregroundColor: Colors.white,
             title: const Text("Your Draft Orders"),
+            leading: IconButton(
+              icon: const Icon(
+                Icons.arrow_back,
+              ),
+              onPressed: () {
+                draftOrdersController.willPopScope();
+              },
+            ),
           ),
           body: Stack(
             children: [
@@ -112,6 +121,16 @@ class _DraftOrderScreenState extends State<DraftOrderScreen> {
                     ),
                 ],
               ).paddingAll(10),
+              if (draftOrdersController.selectedOrderList.isEmpty)
+                Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: const [
+                    NoDataWidget(
+                      title: "No data !",
+                      body: "No orders available",
+                    ),
+                  ],
+                ),
               if (draftOrdersController.isLoading)
                 Container(
                   width: MediaQuery.of(context).size.width,

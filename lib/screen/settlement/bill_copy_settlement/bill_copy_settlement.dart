@@ -24,6 +24,14 @@ class _BillCopySettementScreenState extends State<BillCopySettementScreen> {
             automaticallyImplyLeading: false,
             foregroundColor: Colors.white,
             title: const Text("Bill Copy Settlement"),
+            leading: IconButton(
+              icon: const Icon(
+                Icons.arrow_back,
+              ),
+              onPressed: () {
+                billCopySettlementController.willPopScope();
+              },
+            ),
           ),
         ),
       ),

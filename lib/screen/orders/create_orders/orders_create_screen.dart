@@ -29,6 +29,14 @@ class _CreateOrderScreenState extends State<CreateOrderScreen> {
             title: const Text(
               "Orders view",
             ),
+            leading: IconButton(
+              icon: const Icon(
+                Icons.arrow_back,
+              ),
+              onPressed: () {
+                ordersCreateController.willPopScope();
+              },
+            ),
             actions: [
               IconButton(
                 onPressed: () {

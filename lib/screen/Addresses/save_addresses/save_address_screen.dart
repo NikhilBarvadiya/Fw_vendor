@@ -34,16 +34,18 @@ class SaveAddressScreen extends StatelessWidget {
               textScaleFactor: 1,
               textAlign: TextAlign.center,
             ),
-            leading: saveAddressController.isMapper
-                ? IconButton(
-                    icon: const Icon(
-                      Icons.arrow_back,
-                    ),
-                    onPressed: () {
-                      saveAddressController.onMapperModeBack();
-                    },
-                  )
-                : null,
+            leading: IconButton(
+              icon: const Icon(
+                Icons.arrow_back,
+              ),
+              onPressed: () {
+                if (saveAddressController.isMapper) {
+                  saveAddressController.onMapperModeBack();
+                } else {
+                  saveAddressController.willPopScope();
+                }
+              },
+            ),
             actions: [
               IconButton(
                 onPressed: () {

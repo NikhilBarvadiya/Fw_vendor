@@ -31,6 +31,14 @@ class _CashSettlementScreenState extends State<CashSettlementScreen> {
             automaticallyImplyLeading: false,
             foregroundColor: Colors.white,
             title: const Text("Cash Settlement"),
+            leading: IconButton(
+              icon: const Icon(
+                Icons.arrow_back,
+              ),
+              onPressed: () {
+                cashSettlementController.willPopScope();
+              },
+            ),
             actions: [
               IconButton(
                 onPressed: () {
