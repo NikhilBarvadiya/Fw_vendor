@@ -9,7 +9,7 @@ class OrdersController extends GetxController {
   TextEditingController txtSearch = TextEditingController();
   dynamic status;
   bool isLoading = false;
-  bool searchButton = false;
+  bool isSearch = false;
   String filterSelected = "";
   List ordersDetailsList = [];
   dynamic locationData;
@@ -85,10 +85,10 @@ class OrdersController extends GetxController {
   }
 
   onSearchButtonTapped() {
-    if (searchButton && txtSearch.text != "") {
+    if (isSearch && txtSearch.text != "") {
       txtSearch.text = "";
     }
-    searchButton = !searchButton;
+    isSearch = !isSearch;
     update();
   }
 

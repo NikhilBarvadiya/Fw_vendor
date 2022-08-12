@@ -45,7 +45,7 @@ class OrderScreen extends StatelessWidget {
                   onPressed: () {
                     ordersController.onSearchButtonTapped();
                   },
-                  icon: Icon(ordersController.searchButton ? Icons.close : Icons.search),
+                  icon: Icon(ordersController.isSearch ? Icons.close : Icons.search),
                 ),
                 IconButton(
                   onPressed: () {
@@ -73,8 +73,8 @@ class OrderScreen extends StatelessWidget {
                 ),
               ],
               bottom: PreferredSize(
-                preferredSize: Size.fromHeight(ordersController.searchButton ? 50 : 0),
-                child: ordersController.searchButton
+                preferredSize: Size.fromHeight(ordersController.isSearch ? 50 : 0),
+                child: ordersController.isSearch
                     ? Container(
                         color: Colors.white,
                         child: CustomTextFormField(
