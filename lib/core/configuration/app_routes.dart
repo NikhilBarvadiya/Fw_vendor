@@ -4,6 +4,7 @@ import 'package:fw_vendor/screen/Addresses/global_directory/global_directory_det
 import 'package:fw_vendor/screen/Addresses/global_directory/global_directory_screen.dart';
 import 'package:fw_vendor/screen/Addresses/request_addresses/request_address_screen.dart';
 import 'package:fw_vendor/screen/Addresses/save_addresses/save_address_screen.dart';
+import 'package:fw_vendor/screen/chat/chat_screen.dart';
 import 'package:fw_vendor/screen/dashboard/location_screen.dart';
 import 'package:fw_vendor/screen/home/home_screen.dart';
 import 'package:fw_vendor/screen/login/login_screen.dart';
@@ -45,6 +46,7 @@ class AppRoutes {
   static String billCopySettlementScreen = "/billCopySettlementScreen";
   static String cashSettlementScreen = "/cashSettlementScreen";
   static String returnSettlementScreen = "/returnSettlementScreen";
+  static String chatScreen = "/chatScreen";
   static String noInternet = "/noInternet";
 
   static List<GetPage> getPages = [
@@ -69,6 +71,7 @@ class AppRoutes {
     GetPage(name: billCopySettlementScreen, page: () => const BillCopySettementScreen()),
     GetPage(name: cashSettlementScreen, page: () => const CashSettlementScreen()),
     GetPage(name: returnSettlementScreen, page: () => const ReturnOrderSettlementScreen()),
+    GetPage(name: chatScreen, page: () => const ChatScreen()),
     GetPage(
       name: noInternet,
       page: () => Column(

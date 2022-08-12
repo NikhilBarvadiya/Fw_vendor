@@ -162,6 +162,11 @@ class HomeController extends GetxController {
     update();
   }
 
+  onChatClick() {
+    Get.toNamed(AppRoutes.chatScreen);
+    update();
+  }
+
   onLogout(context) async {
     return showDialog(
       builder: (context) {

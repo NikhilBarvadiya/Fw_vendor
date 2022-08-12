@@ -121,7 +121,7 @@ class _DraftOrderScreenState extends State<DraftOrderScreen> {
                     ),
                 ],
               ).paddingAll(10),
-              if (draftOrdersController.selectedOrderList.isEmpty)
+              if (draftOrdersController.getDraftOrderList.isEmpty)
                 Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: const [

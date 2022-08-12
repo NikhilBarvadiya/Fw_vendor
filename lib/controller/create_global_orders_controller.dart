@@ -7,9 +7,7 @@ import 'package:fw_vendor/networking/index.dart';
 import 'package:get/get.dart';
 
 class CreateGlobalOrdersCntroller extends GetxController {
-  TextEditingController txtSearch = TextEditingController();
   bool isLoading = false;
-  bool isSearch = false;
   List vendorAreaList = [];
   List vendorAddressesByAreaList = [];
   List selectedOrderTrueList = [];
@@ -44,34 +42,13 @@ class CreateGlobalOrdersCntroller extends GetxController {
     }
   }
 
-  onSearchButtonTapped() {
-    if (isSearch && txtSearch.text != "") {
-      txtSearch.text = "";
-    }
-    isSearch = !isSearch;
-    update();
-  }
-
-  onSearchAddress() async {
-    // var data = vendorAddressesByAreaList.where((element) => element == txtSearch.text);
-    // print(data);
-    // if (data.isNotEmpty) {
-    //   print("yes");
-    // } else {
-    //   print("no");
-    // }
-    update();
-  }
-
   _vendorArea() async {
     try {
       isLoading = true;
       update();
       var resData = await apis.call(
         apiMethods.vendorAreas,
-        {
-          "search": txtSearch.text,
-        },
+        {},
         ApiType.post,
       );
       if (resData.isSuccess && resData.data != 0) {

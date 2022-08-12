@@ -26,7 +26,6 @@ class PlaceOrdersController extends GetxController {
   @override
   void onInit() {
     selectedOrderList = Get.arguments;
-    print("selectedOrderList=======$selectedOrderList");
     super.onInit();
   }
 
@@ -197,7 +196,6 @@ class PlaceOrdersController extends GetxController {
       update();
       List ordersRequest = [];
       for (int i = 0; i < selectedAddress.length; i++) {
-        print(selectedAddress.length);
         ordersRequest.add(
           {
             "addressId": selectedAddress[i]["globalAddressId"] != null && selectedAddress[i]["globalAddressId"] != ""
@@ -210,7 +208,11 @@ class PlaceOrdersController extends GetxController {
                 : selectedAddress[i]["amount"] != null && selectedAddress[i]["amount"] != ""
                     ? selectedAddress[i]["amount"].toString()
                     : "0",
-            "areaId": selectedAddress[i]["globalAddressId"] != null && selectedAddress[i]["globalAddressId"] != "" ? selectedAddress[i]["globalAddressId"]["routeId"]["areaId"].toString() : "",
+            "areaId": selectedAddress[i]["globalAddressId"] != null && selectedAddress[i]["globalAddressId"] != ""
+                ? selectedAddress[i]["globalAddressId"]["routeId"]["areaId"].toString()
+                : selectedAddress[i]["addressId"] != null && selectedAddress[i]["addressId"] != ""
+                    ? selectedAddress[i]["addressId"]["routeId"]["areaId"].toString()
+                    : "",
             "billNo": selectedAddress[i]["globalAddressId"] != null && selectedAddress[i]["globalAddressId"] != "" && edit.isNotEmpty && edit.length > i && edit[i]["_id"] == i
                 ? edit[i]["billNo"].toString()
                 : selectedAddress[i]["billNo"] != null && selectedAddress[i]["billNo"] != ""
@@ -240,7 +242,7 @@ class PlaceOrdersController extends GetxController {
             "routeId": selectedAddress[i]["globalAddressId"] != null && selectedAddress[i]["globalAddressId"] != ""
                 ? selectedAddress[i]["globalAddressId"]["routeId"]["_id"].toString()
                 : selectedAddress[i]["addressId"] != null && selectedAddress[i]["addressId"] != ""
-                    ? selectedAddress[i]["addressId"]["routeId"].toString()
+                    ? selectedAddress[i]["addressId"]["routeId"]["_id"].toString()
                     : "",
           },
         );
@@ -248,7 +250,6 @@ class PlaceOrdersController extends GetxController {
       var data = {
         "ordersRequest": ordersRequest,
       };
-      print(data);
       var resData = await apis.call(
         apiMethods.saveOrder,
         data,

@@ -161,6 +161,11 @@ class _CustomDrawerState extends State<CustomDrawer> {
                     ],
                   ),
                   MenuCard(
+                    icon: FontAwesomeIcons.solidMessage,
+                    title: "Chat",
+                    onPress: () => homeController.onChatClick(),
+                  ),
+                  MenuCard(
                     icon: FontAwesomeIcons.rightFromBracket,
                     title: "Log out",
                     onPress: () => homeController.onLogout(context),

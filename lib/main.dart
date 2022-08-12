@@ -8,17 +8,21 @@ import 'package:fw_vendor/core/configuration/app_routes.dart';
 import 'package:fw_vendor/core/theme/index.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
+import 'socket/index.dart';
 
 Future<void> main() async {
-  await GetStorage.init();
   Get.put(CommonController());
+  Get.put(AppController());
+
   SystemChrome.setSystemUIOverlayStyle(
     SystemUiOverlayStyle(
       systemNavigationBarColor: AppController().appTheme.primary,
       systemNavigationBarIconBrightness: Brightness.dark,
     ),
   );
-  Get.put(AppController());
+  await GetStorage.init();
+  socket.connectToServer();
+
   runApp(const MyApp());
 }
 

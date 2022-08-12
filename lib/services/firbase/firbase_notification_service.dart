@@ -9,7 +9,9 @@ import 'package:fw_vendor/controller/app_controller.dart';
 import 'package:get/get.dart';
 import 'firbase_config.dart';
 
-Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {}
+Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
+  await Firebase.initializeApp();
+}
 
 late AndroidNotificationChannel channel;
 

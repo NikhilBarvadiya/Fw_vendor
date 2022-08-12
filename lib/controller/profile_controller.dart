@@ -43,6 +43,7 @@ class ProfileController extends GetxController {
       isEdit = false;
       update();
     } else {
+      isEdit = true;
       Get.offNamed(AppRoutes.home);
     }
   }

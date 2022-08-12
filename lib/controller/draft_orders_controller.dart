@@ -71,7 +71,7 @@ class DraftOrdersController extends GetxController {
           "mobile": item["addressId"]["mobile"].toString(),
           "name": txtAddressName.text != "" ? txtAddressName.text : item["addressId"]["name"].toString(),
           "person": item["addressId"]["person"].toString(),
-          "routeId": item["addressId"]["routeId"].toString(),
+          "routeId": item["addressId"]["routeId"]["_id"].toString(),
           "shortNo": item["addressId"]["shortNo"].toString(),
           "updatedAt": item["addressId"]["updatedAt"].toString(),
           "_id": item["addressId"]["_id"],
@@ -219,7 +219,6 @@ class DraftOrdersController extends GetxController {
   }
 
   onProceed(arguments) {
-    print(selectedOrderList);
     Get.offNamed(AppRoutes.placeOrderScreen, arguments: arguments);
     update();
   }
