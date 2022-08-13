@@ -40,5 +40,7 @@ class ApiMethods {
   final String returnOrderSettlement = "vendor/vReturnOrder/Settlement/getData";
   final String getVendorDraftOrder = "vendor/get/vendorDraftOrder";
   final String updateVendorDraftOrder = "vendor/update/vendorDraftOrder";
+  final String getAllChats = "vendor/getAllChats";
+  final String sendMessageToAdmin = "vendor/sendMessageToAdmin";
   final String setBillDetails = "vendor/vendorData/setBillDetails/get";
 }
