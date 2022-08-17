@@ -32,7 +32,7 @@ class SocketServerController extends GetxController {
         (message) async {
           if (Get.isRegistered<ChatController>()) {
             ChatController chatController = Get.find();
-            await chatController.onChatting();
+            await chatController.getAllChats();
             chatController.update();
           }
         },

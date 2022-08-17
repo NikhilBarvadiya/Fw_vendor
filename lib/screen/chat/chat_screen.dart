@@ -1,12 +1,20 @@
+import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_chat_bubble/bubble_type.dart';
 import 'package:flutter_chat_bubble/chat_bubble.dart';
 import 'package:flutter_chat_bubble/clippers/chat_bubble_clipper_1.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
+import 'package:flutter_speed_dial/flutter_speed_dial.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:fw_vendor/controller/chat_controller.dart';
+import 'package:fw_vendor/core/assets/index.dart';
+import 'package:fw_vendor/core/theme/app_css.dart';
 import 'package:fw_vendor/core/widgets/custom_widgets/custom_nodata.dart';
+import 'package:fw_vendor/env.dart';
 import 'package:fw_vendor/extensions/date_exensions.dart';
 import 'package:get/get.dart';
+import 'package:image_picker/image_picker.dart';
+import 'package:url_launcher/link.dart';
 
 class ChatScreen extends StatefulWidget {
   const ChatScreen({Key? key}) : super(key: key);
@@ -27,16 +35,26 @@ class _ChatScreenState extends State<ChatScreen> {
         child: Scaffold(
           appBar: AppBar(
             elevation: 1,
+            backgroundColor: const Color(0xFF128C7E),
             foregroundColor: Colors.white,
             title: const Text("Chat"),
           ),
           body: Stack(
             children: [
+              Container(
+                color: Colors.white.withOpacity(.8),
+                child: Image.asset(
+                  imageAssets.whatsApp,
+                  height: Get.height,
+                  width: Get.width,
+                  fit: BoxFit.cover,
+                ),
+              ),
               if (chatController.allChatList.isNotEmpty)
                 Padding(
-                  padding: EdgeInsets.only(bottom: MediaQuery.of(context).size.height * 0.08),
+                  padding: EdgeInsets.only(bottom: MediaQuery.of(context).size.height * 0.085),
                   child: ListView.builder(
-                    padding: EdgeInsets.only(bottom: MediaQuery.of(context).size.height * 0.1),
+                    padding: EdgeInsets.only(bottom: MediaQuery.of(context).size.height * 0.15),
                     controller: chatController.controller,
                     shrinkWrap: true,
                     reverse: true,
@@ -62,7 +80,7 @@ class _ChatScreenState extends State<ChatScreen> {
                                 clipper: ChatBubbleClipper1(type: BubbleType.sendBubble),
                                 alignment: Alignment.topRight,
                                 margin: const EdgeInsets.only(top: 5, bottom: 5),
-                                backGroundColor: Colors.yellow.shade100,
+                                backGroundColor: const Color(0xff075E54),
                                 child: Container(
                                   constraints: BoxConstraints(maxWidth: MediaQuery.maybeOf(context)!.size.width * 0.7),
                                   child: Column(
@@ -71,17 +89,68 @@ class _ChatScreenState extends State<ChatScreen> {
                                       Text(
                                         getFormattedDate(chatController.allChatList[index]["updatedAt"].toString()),
                                         style: const TextStyle(
-                                          color: Colors.grey,
+                                          color: Colors.white,
                                           fontSize: 10,
                                         ),
                                       ),
-                                      Text(
-                                        chatController.allChatList[index]["message"],
-                                        style: const TextStyle(
-                                          color: Colors.black,
-                                          fontSize: 16,
+                                      if (chatController.allChatList[index]["messageType"] == "text" && chatController.allChatList[index]["message"] != "")
+                                        Text(
+                                          chatController.allChatList[index]["message"].toString().capitalizeFirst.toString(),
+                                          style: AppCss.body1.copyWith(color: Colors.white),
+                                        ).paddingOnly(top: 5),
+                                      if (chatController.allChatList[index]["messageType"] == "image" && chatController.allChatList[index]["message"] != "")
+                                        SizedBox(
+                                          height: 130,
+                                          width: 130,
+                                          child: Image.network(
+                                            environment["imagesbaseUrl"] + chatController.allChatList[index]["message"].toString(),
+                                            fit: BoxFit.cover,
+                                            loadingBuilder: (BuildContext context, Widget child, ImageChunkEvent? loadingProgress) {
+                                              if (loadingProgress == null) {
+                                                return child;
+                                              }
+                                              return Center(
+                                                child: CircularProgressIndicator(
+                                                  value: loadingProgress.expectedTotalBytes != null ? loadingProgress.cumulativeBytesLoaded / loadingProgress.expectedTotalBytes! : null,
+                                                ),
+                                              );
+                                            },
+                                          ),
+                                        ).paddingOnly(top: 5),
+                                      if (chatController.allChatList[index]["messageType"] == "file" || chatController.allChatList[index]["messageType"] == "audio" && chatController.allChatList[index]["message"] != "")
+                                        Link(
+                                          uri: Uri.parse(
+                                            environment["imagesbaseUrl"] + chatController.allChatList[index]["message"],
+                                          ),
+                                          target: LinkTarget.blank,
+                                          builder: (BuildContext ctx, FollowLink? openLink) {
+                                            return TextButton.icon(
+                                              onPressed: openLink,
+                                              label: Text(
+                                                chatController.allChatList[index]["messageType"] == "file"
+                                                    ? 'Show file'
+                                                    : chatController.allChatList[index]["messageType"] == "audio"
+                                                        ? 'Show audio'
+                                                        : "",
+                                                style: AppCss.body1.copyWith(
+                                                  color: Colors.white,
+                                                ),
+                                              ),
+                                              icon: Icon(
+                                                chatController.allChatList[index]["messageType"] == "file"
+                                                    ? FontAwesomeIcons.solidFile
+                                                    : chatController.allChatList[index]["messageType"] == "audio"
+                                                        ? Icons.audiotrack
+                                                        : null,
+                                                color: chatController.allChatList[index]["messageType"] == "file"
+                                                    ? Colors.amber
+                                                    : chatController.allChatList[index]["messageType"] == "audio"
+                                                        ? Colors.red
+                                                        : null,
+                                              ),
+                                            );
+                                          },
                                         ),
-                                      ),
                                     ],
                                   ),
                                 ).paddingOnly(right: 5),
@@ -105,7 +174,7 @@ class _ChatScreenState extends State<ChatScreen> {
                                 clipper: ChatBubbleClipper1(type: BubbleType.receiverBubble),
                                 alignment: Alignment.topLeft,
                                 margin: const EdgeInsets.only(top: 5, bottom: 5),
-                                backGroundColor: Colors.grey[100],
+                                backGroundColor: const Color(0xFFEEEEEE),
                                 child: Container(
                                   constraints: BoxConstraints(maxWidth: MediaQuery.maybeOf(context)!.size.width * 0.7),
                                   child: Column(
@@ -114,17 +183,71 @@ class _ChatScreenState extends State<ChatScreen> {
                                       Text(
                                         getFormattedDate(chatController.allChatList[index]["updatedAt"].toString()),
                                         style: const TextStyle(
-                                          color: Colors.grey,
+                                          color: Colors.black,
                                           fontSize: 10,
                                         ),
                                       ),
-                                      Text(
-                                        chatController.allChatList[index]["message"],
-                                        style: const TextStyle(
-                                          color: Colors.black,
-                                          fontSize: 16,
+                                      if (chatController.allChatList[index]["messageType"] == "text" && chatController.allChatList[index]["message"] != "")
+                                        Text(
+                                          chatController.allChatList[index]["message"],
+                                          style: const TextStyle(
+                                            color: Colors.black,
+                                            fontSize: 16,
+                                          ),
+                                        ).paddingOnly(top: 5),
+                                      if (chatController.allChatList[index]["messageType"] == "image" && chatController.allChatList[index]["message"] != "")
+                                        SizedBox(
+                                          height: 130,
+                                          width: 130,
+                                          child: Image.network(
+                                            environment["imagesbaseUrl"] + chatController.allChatList[index]["message"].toString(),
+                                            fit: BoxFit.cover,
+                                            loadingBuilder: (BuildContext context, Widget child, ImageChunkEvent? loadingProgress) {
+                                              if (loadingProgress == null) {
+                                                return child;
+                                              }
+                                              return Center(
+                                                child: CircularProgressIndicator(
+                                                  value: loadingProgress.expectedTotalBytes != null ? loadingProgress.cumulativeBytesLoaded / loadingProgress.expectedTotalBytes! : null,
+                                                ),
+                                              );
+                                            },
+                                          ),
+                                        ).paddingOnly(top: 5),
+                                      if (chatController.allChatList[index]["messageType"] == "file" || chatController.allChatList[index]["messageType"] == "audio" && chatController.allChatList[index]["message"] != "")
+                                        Link(
+                                          uri: Uri.parse(
+                                            environment["imagesbaseUrl"] + chatController.allChatList[index]["message"],
+                                          ),
+                                          target: LinkTarget.blank,
+                                          builder: (BuildContext ctx, FollowLink? openLink) {
+                                            return TextButton.icon(
+                                              onPressed: openLink,
+                                              label: Text(
+                                                chatController.allChatList[index]["messageType"] == "file"
+                                                    ? 'Show file'
+                                                    : chatController.allChatList[index]["messageType"] == "audio"
+                                                        ? 'Show audio'
+                                                        : "",
+                                                style: AppCss.body1.copyWith(
+                                                  color: Colors.white,
+                                                ),
+                                              ),
+                                              icon: Icon(
+                                                chatController.allChatList[index]["messageType"] == "file"
+                                                    ? FontAwesomeIcons.solidFile
+                                                    : chatController.allChatList[index]["messageType"] == "audio"
+                                                        ? Icons.audiotrack
+                                                        : null,
+                                                color: chatController.allChatList[index]["messageType"] == "file"
+                                                    ? Colors.amber
+                                                    : chatController.allChatList[index]["messageType"] == "audio"
+                                                        ? Colors.red
+                                                        : null,
+                                              ),
+                                            );
+                                          },
                                         ),
-                                      ),
                                     ],
                                   ),
                                 ).paddingOnly(left: 5),
@@ -135,29 +258,91 @@ class _ChatScreenState extends State<ChatScreen> {
                 ),
               Align(
                 alignment: Alignment.bottomCenter,
-                child: Row(
-                  children: [
-                    Expanded(
-                      child: TextField(
-                        controller: chatController.txtMessage,
-                        decoration: const InputDecoration(
-                          hintText: "Message",
-                          contentPadding: EdgeInsets.symmetric(horizontal: 10),
+                child: Card(
+                  elevation: 1,
+                  shape: const RoundedRectangleBorder(
+                    borderRadius: BorderRadius.all(
+                      Radius.circular(8),
+                    ),
+                  ),
+                  margin: const EdgeInsets.all(15),
+                  child: Row(
+                    children: [
+                      SpeedDial(
+                        overlayColor: Colors.transparent,
+                        icon: Icons.add,
+                        elevation: 0,
+                        activeIcon: Icons.close,
+                        backgroundColor: Colors.white,
+                        foregroundColor: const Color(0xFF128C7E),
+                        activeBackgroundColor: const Color(0xFF128C7E),
+                        activeForegroundColor: Colors.white,
+                        children: [
+                          SpeedDialChild(
+                            onTap: () => chatController.sendImage(ImageSource.camera),
+                            child: const Icon(
+                              FontAwesomeIcons.camera,
+                              color: Color(0xFF128C7E),
+                              size: 18,
+                            ),
+                          ),
+                          SpeedDialChild(
+                            onTap: () => chatController.sendImage(ImageSource.gallery),
+                            child: const Icon(
+                              FontAwesomeIcons.images,
+                              color: Color(0xFF128C7E),
+                              size: 18,
+                            ),
+                          ),
+                          SpeedDialChild(
+                            onTap: () => chatController.sendFile(FileType.any),
+                            child: const Icon(
+                              FontAwesomeIcons.file,
+                              color: Color(0xFF128C7E),
+                              size: 18,
+                            ),
+                          ),
+                          SpeedDialChild(
+                            onTap: () => chatController.sendFile(FileType.audio),
+                            child: const Icon(
+                              FontAwesomeIcons.music,
+                              color: Color(0xFF128C7E),
+                              size: 18,
+                            ),
+                          ),
+                        ],
+                      ),
+                      Expanded(
+                        child: TextField(
+                          controller: chatController.txtMessage,
+                          decoration: const InputDecoration(
+                            hintText: "Message",
+                            hintStyle: TextStyle(
+                              color: Colors.black,
+                            ),
+                            border: InputBorder.none,
+                          ),
+                          style: const TextStyle(
+                            fontSize: 15,
+                            color: Colors.black,
+                          ),
+                          cursorHeight: 20,
+                          keyboardType: TextInputType.text,
                         ),
-                        style: const TextStyle(fontSize: 15),
-                        keyboardType: TextInputType.text,
                       ),
-                    ),
-                    IconButton(
-                      icon: const Icon(
-                        Icons.send,
+                      IconButton(
+                        highlightColor: Colors.transparent,
+                        icon: const Icon(
+                          Icons.send,
+                          color: Color(0xFF128C7E),
+                        ),
+                        onPressed: () {
+                          chatController.sendTextMessage();
+                        },
                       ),
-                      onPressed: () {
-                        chatController.onChatting();
-                      },
-                    ),
-                  ],
-                ).paddingOnly(left: 20, right: 10, bottom: 20),
+                    ],
+                  ),
+                ),
               ),
               if (chatController.allChatList.isEmpty)
                 Column(
