@@ -9,6 +9,7 @@ class ReturnOrderSettlementController extends GetxController {
   TextEditingController txtSearch = TextEditingController();
   bool isLoading = false;
   bool isSearch = false;
+  int limit = 10;
   String selectedFilters = "";
   List returnOrderSettlementList = [];
 
@@ -68,13 +69,20 @@ class ReturnOrderSettlementController extends GetxController {
     update();
   }
 
+  void onRefresh() async {
+    if (returnOrderSettlementList.length == limit) {
+      limit = (returnOrderSettlementList.length) + 10;
+      await _returnSettlement();
+    }
+  }
+
   _returnSettlement() async {
     try {
       isLoading = true;
       update();
       var body = {
         "page": 0,
-        "limit": "10",
+        "limit": limit,
         "search": txtSearch.text,
         "status": selectedFilters,
       };

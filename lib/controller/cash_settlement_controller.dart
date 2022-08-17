@@ -11,6 +11,7 @@ class CashSettlementController extends GetxController {
   bool searchButton = false;
   String selectedFilters = "";
   List codSettlementList = [];
+  int limit = 10;
 
   @override
   void onInit() async {
@@ -68,13 +69,20 @@ class CashSettlementController extends GetxController {
     update();
   }
 
+  void onRefresh() async {
+    if (codSettlementList.length == limit) {
+      limit = (codSettlementList.length) + 10;
+      await _codSettlement();
+    }
+  }
+
   _codSettlement() async {
     try {
       isLoading = true;
       update();
       var body = {
         "page": 0,
-        "limit": "10",
+        "limit": limit,
         "search": txtSearch.text,
         "fromDate": "",
         "toDate": "",

@@ -52,40 +52,39 @@ class _RequestAddressCardState extends State<RequestAddressCard> {
           children: [
             Row(
               crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 if (widget.addressName != null)
-                  Expanded(
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          widget.addressName ?? "",
-                          style: AppCss.h3.copyWith(
-                            color: Colors.black,
-                            fontSize: 15,
-                          ),
-                        ).paddingOnly(bottom: 5),
-                        Row(
-                          children: [
-                            Text(
-                              widget.date ?? "",
-                              style: AppCss.footnote.copyWith(
-                                color: Colors.black,
-                              ),
-                            ).paddingOnly(right: 8),
-                            if (widget.mobileNumber != null && widget.mobileNumber != "")
-                              Text(
-                                widget.mobileNumber ?? "",
-                                style: AppCss.body1.copyWith(
-                                  color: Colors.black,
-                                  fontSize: 12,
-                                  fontWeight: FontWeight.w500,
-                                ),
-                              ),
-                          ],
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        widget.addressName ?? "",
+                        style: AppCss.h3.copyWith(
+                          color: Colors.black,
+                          fontSize: 15,
                         ),
-                      ],
-                    ),
+                      ).paddingOnly(bottom: 5),
+                      Row(
+                        children: [
+                          Text(
+                            widget.date ?? "",
+                            style: AppCss.footnote.copyWith(
+                              color: Colors.black,
+                            ),
+                          ).paddingOnly(right: 8),
+                          if (widget.mobileNumber != null && widget.mobileNumber != "")
+                            Text(
+                              widget.mobileNumber ?? "",
+                              style: AppCss.body1.copyWith(
+                                color: Colors.black,
+                                fontSize: 12,
+                                fontWeight: FontWeight.w500,
+                              ),
+                            ),
+                        ],
+                      ),
+                    ],
                   ),
                 if (widget.type != null)
                   Card(
@@ -125,15 +124,17 @@ class _RequestAddressCardState extends State<RequestAddressCard> {
               ],
             ),
             if (widget.address != null && widget.address != "")
-              Expanded(
-                child: Text(
-                  widget.address ?? "",
-                  style: AppCss.poppins.copyWith(
-                    color: Colors.black,
-                    fontSize: 12,
-                  ),
-                ),
-              ).paddingOnly(bottom: 5),
+              Wrap(
+                children: [
+                  Text(
+                    widget.address ?? "",
+                    style: AppCss.poppins.copyWith(
+                      color: Colors.black,
+                      fontSize: 12,
+                    ),
+                  ).paddingOnly(top: 8),
+                ],
+              ),
           ],
         ),
       ),

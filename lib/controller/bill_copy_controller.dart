@@ -7,11 +7,12 @@ import 'package:get/get.dart';
 
 class BillCopySettlementController extends GetxController {
   TextEditingController txtSearch = TextEditingController();
-
   bool isLoading = false;
   bool isSearch = false;
   String filterSelected = "Order No";
+  int limit = 10;
   List billDetailsList = [];
+
   @override
   void onInit() async {
     _setBillDetails();
@@ -52,6 +53,13 @@ class BillCopySettlementController extends GetxController {
     update();
   }
 
+  void onRefresh() async {
+    if (billDetailsList.length == limit) {
+      limit = (billDetailsList.length) + 10;
+      await _setBillDetails();
+    }
+  }
+
   _setBillDetails() async {
     try {
       isLoading = true;
@@ -59,7 +67,7 @@ class BillCopySettlementController extends GetxController {
       var data = {
         "fromDate": "",
         "toDate": "",
-        "limit": 10,
+        "limit": limit,
         "page": 1,
         "search": txtSearch.text,
         "filterType": filterSelected,

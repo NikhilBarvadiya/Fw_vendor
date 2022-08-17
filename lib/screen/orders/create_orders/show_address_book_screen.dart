@@ -75,22 +75,27 @@ class _ShowAdrresBookScreenState extends State<ShowAdrresBookScreen> {
           ),
           body: Stack(
             children: [
-              ListView(
-                children: [
-                  if (showAddressBookController.getCustomerAddressList.isNotEmpty)
-                    ...showAddressBookController.getCustomerAddressList.map(
-                      (e) {
-                        return ShowAddressBookCard(
-                          name: e["name"].toString().capitalizeFirst.toString(),
-                          mobileNumber: e["mobile"].toString(),
-                          address: e["address"].toString().capitalizeFirst.toString(),
-                          onDelete: () => showAddressBookController.onDeleteOrders(e["_id"]),
-                          onAdd: () => showAddressBookController.onEdit(e),
-                        );
-                      },
-                    ),
-                ],
-              ).paddingAll(5),
+              RefreshIndicator(
+                onRefresh: () async {
+                  showAddressBookController.onRefresh();
+                },
+                child: ListView(
+                  children: [
+                    if (showAddressBookController.getCustomerAddressList.isNotEmpty)
+                      ...showAddressBookController.getCustomerAddressList.map(
+                        (e) {
+                          return ShowAddressBookCard(
+                            name: e["name"].toString().capitalizeFirst.toString(),
+                            mobileNumber: e["mobile"].toString(),
+                            address: e["address"].toString().capitalizeFirst.toString(),
+                            onDelete: () => showAddressBookController.onDeleteOrders(e["_id"]),
+                            onAdd: () => showAddressBookController.onEdit(e),
+                          );
+                        },
+                      ),
+                  ],
+                ).paddingAll(5),
+              ),
               if (showAddressBookController.getCustomerAddressList.isEmpty)
                 Column(
                   mainAxisAlignment: MainAxisAlignment.center,

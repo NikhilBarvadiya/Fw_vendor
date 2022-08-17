@@ -10,6 +10,7 @@ class RequestAddressControler extends GetxController {
   TextEditingController txtSearch = TextEditingController();
   bool isLoading = false;
   bool isSearch = false;
+  int limit = 10;
   List vendorRequestAddressList = [];
 
   @override
@@ -35,12 +36,19 @@ class RequestAddressControler extends GetxController {
     update();
   }
 
+  void onRefresh() async {
+    if (vendorRequestAddressList.length == limit) {
+      limit = (vendorRequestAddressList.length) + 10;
+      await _vendorRequestedAddress();
+    }
+  }
+
   _vendorRequestedAddress() async {
     try {
       isLoading = true;
       update();
       var body = {
-        "limit": "10",
+        "limit": limit,
         "page": 1,
         "search": txtSearch.text,
       };
@@ -112,5 +120,9 @@ class RequestAddressControler extends GetxController {
       ),
     );
     update();
+  }
+
+  onRequestAddressEdit(address) {
+    Get.toNamed(AppRoutes.requestAddressEditScreen, arguments: address);
   }
 }

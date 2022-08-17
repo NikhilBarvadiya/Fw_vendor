@@ -13,6 +13,7 @@ class OrdersController extends GetxController {
   String filterSelected = "";
   List ordersDetailsList = [];
   dynamic locationData;
+  int limit = 10;
 
   @override
   void onInit() async {
@@ -107,13 +108,20 @@ class OrdersController extends GetxController {
     update();
   }
 
+  void onRefresh() async {
+    if (ordersDetailsList.length == limit) {
+      limit = (ordersDetailsList.length) + 10;
+      await _vendorOrders();
+    }
+  }
+
   _vendorOrders() async {
     try {
       isLoading = true;
       update();
       var body = {
         "page": 1,
-        "limit": 10,
+        "limit": limit,
         "searchType": filterSelected != "" ? filterSelected : "Order No",
         "search": txtSearch.text,
         "status": status ?? "pending",

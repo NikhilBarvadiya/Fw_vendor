@@ -48,8 +48,8 @@ class ChatController extends GetxController {
     if (image != null) {
       messageType = "image";
       await _sendMessage();
-      await getAllChats();
     }
+    await getAllChats();
     update();
   }
 
@@ -63,8 +63,8 @@ class ChatController extends GetxController {
         messageType = "audio";
       }
       await _sendMessage();
-      await getAllChats();
     }
+    await getAllChats();
     update();
   }
 
@@ -73,9 +73,9 @@ class ChatController extends GetxController {
       messageType = "text";
       socket.sendMessage(txtMessage.text.toString());
       await _sendMessage();
-      await getAllChats();
-      update();
     }
+    await getAllChats();
+    update();
   }
 
   _sendMessage() async {
@@ -112,6 +112,8 @@ class ChatController extends GetxController {
       isLoading = false;
       update();
     }
+    isLoading = false;
+    update();
   }
 
   _prepareDataToSend(messageType, text, file) async {

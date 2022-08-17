@@ -111,37 +111,42 @@ class GlobalDirectoryScreen extends StatelessWidget {
                       ),
                     ),
                     Expanded(
-                      child: ListView(
-                        children: [
-                          if (globalDirectoryController.globalAddressesList.isNotEmpty)
-                            ...globalDirectoryController.globalAddressesList.map(
-                              (e) {
-                                return OrderAddressCard(
-                                  addressHeder: e["name"].toString(),
-                                  personName: e["person"].toString(),
-                                  mobileNumber: e["mobile"].toString(),
-                                  date: getFormattedDate(e["updatedAt"].toString()),
-                                  address: e["address"],
-                                  onTap: () {
-                                    globalDirectoryController.addToSelectedList(e);
-                                  },
-                                  deleteIcon: e['selected'] == null
-                                      ? Icons.add
-                                      : e['selected'] == true
-                                          ? Icons.check
-                                          : Icons.add,
-                                  icon: e['selected'] == null
-                                      ? false
-                                      : e['selected'] == true
-                                          ? true
-                                          : false,
-                                  deleteIconColor: Colors.black,
-                                  deleteIconBoxColor: AppController().appTheme.green,
-                                  cardColors: e['selected'] == true ? Colors.green[100] : Colors.white,
-                                );
-                              },
-                            ),
-                        ],
+                      child: RefreshIndicator(
+                        onRefresh: () async {
+                          globalDirectoryController.onRefresh();
+                        },
+                        child: ListView(
+                          children: [
+                            if (globalDirectoryController.globalAddressesList.isNotEmpty)
+                              ...globalDirectoryController.globalAddressesList.map(
+                                (e) {
+                                  return OrderAddressCard(
+                                    addressHeder: e["name"].toString(),
+                                    personName: e["person"].toString(),
+                                    mobileNumber: e["mobile"].toString(),
+                                    date: getFormattedDate(e["updatedAt"].toString()),
+                                    address: e["address"],
+                                    onTap: () {
+                                      globalDirectoryController.addToSelectedList(e);
+                                    },
+                                    deleteIcon: e['selected'] == null
+                                        ? Icons.add
+                                        : e['selected'] == true
+                                            ? Icons.check
+                                            : Icons.add,
+                                    icon: e['selected'] == null
+                                        ? false
+                                        : e['selected'] == true
+                                            ? true
+                                            : false,
+                                    deleteIconColor: Colors.black,
+                                    deleteIconBoxColor: AppController().appTheme.green,
+                                    cardColors: e['selected'] == true ? Colors.green[100] : Colors.white,
+                                  );
+                                },
+                              ),
+                          ],
+                        ),
                       ),
                     ),
                     Align(

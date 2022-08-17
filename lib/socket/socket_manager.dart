@@ -44,10 +44,8 @@ class SocketServerController extends GetxController {
         (data) async {
           if (Get.isRegistered<ReturnOrderSettlementController>()) {
             ReturnOrderSettlementController returnOrderSettlementController = Get.find();
-            if (returnOrderSettlementController.selectedFilters != "") {
-              await returnOrderSettlementController.onSearch();
-              update();
-            }
+            await returnOrderSettlementController.onSearch();
+            update();
           }
         },
       );

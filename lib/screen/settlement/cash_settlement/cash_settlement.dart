@@ -94,23 +94,28 @@ class _CashSettlementScreenState extends State<CashSettlementScreen> {
                     ],
                   ).paddingOnly(bottom: 10),
                   Expanded(
-                    child: ListView(
-                      children: [
-                        if (cashSettlementController.codSettlementList.isNotEmpty)
-                          ...cashSettlementController.codSettlementList.map(
-                            (e) {
-                              return CommonCashSettlementCard(
-                                orderNo: e["desc"] != "" && e["desc"] != null ? e["desc"].toString() : "",
-                                personName: e["orderDetails"]["vendorOrderStatusId"]["addressId"]["name"] != "" && e["orderDetails"]["vendorOrderStatusId"]["addressId"]["name"] != null ? e["orderDetails"]["vendorOrderStatusId"]["addressId"]["name"].toString() : "",
-                                address: e["orderDetails"]["vendorOrderStatusId"]["addressId"]["address"] != "" && e["orderDetails"]["vendorOrderStatusId"]["addressId"]["address"] != null ? e["orderDetails"]["vendorOrderStatusId"]["addressId"]["address"].toString() : "",
-                                mobile: e["orderDetails"]["vendorOrderStatusId"]["addressId"]["mobile"] != "" && e["orderDetails"]["vendorOrderStatusId"]["addressId"]["mobile"] != null ? e["orderDetails"]["vendorOrderStatusId"]["addressId"]["mobile"].toString() : "",
-                                date: e["orderDetails"]["vendorOrderStatusId"]["updatedAt"] != "" && e["orderDetails"]["vendorOrderStatusId"]["updatedAt"] != null ? getFormattedDate(e["orderDetails"]["vendorOrderStatusId"]["updatedAt"].toString()) : "",
-                                cashAmount: e["orderDetails"]["collectableCash"] != "" && e["orderDetails"]["collectableCash"] != null ? e["orderDetails"]["collectableCash"].toString() : "",
-                                receivedAmount: e["orderDetails"]["cashReceive"] != "" && e["orderDetails"]["cashReceive"] != null ? e["orderDetails"]["cashReceive"].toString() : "",
-                              );
-                            },
-                          ),
-                      ],
+                    child: RefreshIndicator(
+                      onRefresh: () async {
+                        cashSettlementController.onRefresh();
+                      },
+                      child: ListView(
+                        children: [
+                          if (cashSettlementController.codSettlementList.isNotEmpty)
+                            ...cashSettlementController.codSettlementList.map(
+                              (e) {
+                                return CommonCashSettlementCard(
+                                  orderNo: e["desc"] != "" && e["desc"] != null ? e["desc"].toString() : "",
+                                  personName: e["orderDetails"]["vendorOrderStatusId"]["addressId"]["name"] != "" && e["orderDetails"]["vendorOrderStatusId"]["addressId"]["name"] != null ? e["orderDetails"]["vendorOrderStatusId"]["addressId"]["name"].toString() : "",
+                                  address: e["orderDetails"]["vendorOrderStatusId"]["addressId"]["address"] != "" && e["orderDetails"]["vendorOrderStatusId"]["addressId"]["address"] != null ? e["orderDetails"]["vendorOrderStatusId"]["addressId"]["address"].toString() : "",
+                                  mobile: e["orderDetails"]["vendorOrderStatusId"]["addressId"]["mobile"] != "" && e["orderDetails"]["vendorOrderStatusId"]["addressId"]["mobile"] != null ? e["orderDetails"]["vendorOrderStatusId"]["addressId"]["mobile"].toString() : "",
+                                  date: e["orderDetails"]["vendorOrderStatusId"]["updatedAt"] != "" && e["orderDetails"]["vendorOrderStatusId"]["updatedAt"] != null ? getFormattedDate(e["orderDetails"]["vendorOrderStatusId"]["updatedAt"].toString()) : "",
+                                  cashAmount: e["orderDetails"]["collectableCash"] != "" && e["orderDetails"]["collectableCash"] != null ? e["orderDetails"]["collectableCash"].toString() : "",
+                                  receivedAmount: e["orderDetails"]["cashReceive"] != "" && e["orderDetails"]["cashReceive"] != null ? e["orderDetails"]["cashReceive"].toString() : "",
+                                );
+                              },
+                            ),
+                        ],
+                      ),
                     ),
                   ),
                 ],

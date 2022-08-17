@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:fw_vendor/core/widgets/custom_widgets/custom_nodata.dart';
 import 'package:fw_vendor/screen/Addresses/global_directory/global_directory_details_screen.dart';
 import 'package:fw_vendor/screen/Addresses/global_directory/global_directory_screen.dart';
+import 'package:fw_vendor/screen/Addresses/request_addresses/request_address_edit_screen.dart';
 import 'package:fw_vendor/screen/Addresses/request_addresses/request_address_screen.dart';
 import 'package:fw_vendor/screen/Addresses/save_addresses/save_address_screen.dart';
 import 'package:fw_vendor/screen/chat/chat_screen.dart';
@@ -43,6 +44,7 @@ class AppRoutes {
   static String locationScreen = "/locationScreen";
   static String saveAddressScreen = "/saveAddressScreen";
   static String requestAddressScreen = "/requestAddressScreen";
+  static String requestAddressEditScreen = "/requestAddressEditScreen";
   static String billCopySettlementScreen = "/billCopySettlementScreen";
   static String cashSettlementScreen = "/cashSettlementScreen";
   static String returnSettlementScreen = "/returnSettlementScreen";
@@ -68,6 +70,7 @@ class AppRoutes {
     GetPage(name: saveAddressScreen, page: () => SaveAddressScreen()),
     GetPage(name: showAdrresBookScreen, page: () => const ShowAdrresBookScreen()),
     GetPage(name: requestAddressScreen, page: () => const RequestAddressScreen()),
+    GetPage(name: requestAddressEditScreen, page: () => const RequestAddressEditScreen()),
     GetPage(name: billCopySettlementScreen, page: () => const BillCopySettementScreen()),
     GetPage(name: cashSettlementScreen, page: () => const CashSettlementScreen()),
     GetPage(name: returnSettlementScreen, page: () => const ReturnOrderSettlementScreen()),

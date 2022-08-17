@@ -105,52 +105,62 @@ class SaveAddressScreen extends StatelessWidget {
           ),
           body: Stack(
             children: [
-              ListView(
-                children: [
-                  if (saveAddressController.saveAddressList.isNotEmpty && saveAddressController.isMapper != true)
-                    ...saveAddressController.saveAddressList.map(
-                      (e) {
-                        return OrderAddressCard(
-                          addressHeder: e["globalAddressId"]["name"].toString(),
-                          personName: e["globalAddressId"]["person"].toString(),
-                          mobileNumber: e["globalAddressId"]["mobile"].toString(),
-                          date: getFormattedDate(e["globalAddressId"]["updatedAt"].toString()),
-                          address: e["globalAddressId"]["address"],
-                          area: e["globalAddressId"]["routeId"]["areaId"]["name"].toString().capitalizeFirst,
-                          deleteIcon: Icons.close,
-                          iconSize: 22,
-                          deleteIconBoxColor: Colors.red,
-                          onTap: () {
-                            saveAddressController.onDeleteClick(e, e["_id"]);
-                          },
-                        );
-                      },
-                    ),
-                  if (saveAddressController.mappedAddressList.isNotEmpty && saveAddressController.isMapper != false)
-                    ...saveAddressController.mappedAddressList.map(
-                      (e) {
-                        return OrderAddressCard(
-                          addressHeder: e["globalAddressId"]["name"].toString(),
-                          personName: e["globalAddressId"]["person"].toString(),
-                          mobileNumber: e["globalAddressId"]["mobile"].toString(),
-                          date: getFormattedDate(e["globalAddressId"]["updatedAt"].toString()),
-                          address: e["globalAddressId"]["address"],
-                          area: e["globalAddressId"]["routeId"]["areaId"]["name"].toString().capitalizeFirst,
-                          yourAddress: e["addressName"].toString().capitalizeFirst,
-                          deleteIcon: Icons.close,
-                          iconSize: 22,
-                          deleteIconBoxColor: Colors.red,
-                          type: e["type"].toString().capitalizeFirst,
-                          onTypeClick: () {
-                            saveAddressController.onTypeClick(e["_id"]);
-                          },
-                          onTap: () {
-                            saveAddressController.onDeleteMappedClick(e, e["_id"]);
-                          },
-                        );
-                      },
-                    ),
-                ],
+              RefreshIndicator(
+                onRefresh: () async {
+                  if (saveAddressController.saveAddressList.isNotEmpty && saveAddressController.isMapper != true) {
+                    saveAddressController.onRefresh();
+                  }
+                  if (saveAddressController.mappedAddressList.isNotEmpty && saveAddressController.isMapper != false) {
+                    saveAddressController.onRefreshMapper();
+                  }
+                },
+                child: ListView(
+                  children: [
+                    if (saveAddressController.saveAddressList.isNotEmpty && saveAddressController.isMapper != true)
+                      ...saveAddressController.saveAddressList.map(
+                        (e) {
+                          return OrderAddressCard(
+                            addressHeder: e["globalAddressId"]["name"].toString(),
+                            personName: e["globalAddressId"]["person"].toString(),
+                            mobileNumber: e["globalAddressId"]["mobile"].toString(),
+                            date: getFormattedDate(e["globalAddressId"]["updatedAt"].toString()),
+                            address: e["globalAddressId"]["address"],
+                            area: e["globalAddressId"]["routeId"]["areaId"]["name"].toString().capitalizeFirst,
+                            deleteIcon: Icons.close,
+                            iconSize: 22,
+                            deleteIconBoxColor: Colors.red,
+                            onTap: () {
+                              saveAddressController.onDeleteClick(e, e["_id"]);
+                            },
+                          );
+                        },
+                      ),
+                    if (saveAddressController.mappedAddressList.isNotEmpty && saveAddressController.isMapper != false)
+                      ...saveAddressController.mappedAddressList.map(
+                        (e) {
+                          return OrderAddressCard(
+                            addressHeder: e["globalAddressId"]["name"].toString(),
+                            personName: e["globalAddressId"]["person"].toString(),
+                            mobileNumber: e["globalAddressId"]["mobile"].toString(),
+                            date: getFormattedDate(e["globalAddressId"]["updatedAt"].toString()),
+                            address: e["globalAddressId"]["address"],
+                            area: e["globalAddressId"]["routeId"]["areaId"]["name"].toString().capitalizeFirst,
+                            yourAddress: e["addressName"].toString().capitalizeFirst,
+                            deleteIcon: Icons.close,
+                            iconSize: 22,
+                            deleteIconBoxColor: Colors.red,
+                            type: e["type"].toString().capitalizeFirst,
+                            onTypeClick: () {
+                              saveAddressController.onTypeClick(e["_id"]);
+                            },
+                            onTap: () {
+                              saveAddressController.onDeleteMappedClick(e, e["_id"]);
+                            },
+                          );
+                        },
+                      ),
+                  ],
+                ),
               ),
               if (saveAddressController.saveAddressList.isEmpty && saveAddressController.isMapper != true)
                 Column(

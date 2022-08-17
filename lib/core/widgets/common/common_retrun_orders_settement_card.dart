@@ -63,6 +63,29 @@ class _CommonReturnOrderSettlementCardState extends State<CommonReturnOrderSettl
                   ),
               ],
             ).paddingOnly(bottom: 8),
+            if (widget.billNo != null && widget.billNo != "")
+              Container(
+                color: Colors.white,
+                child: Row(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    Text(
+                      "Bill No : ",
+                      style: AppCss.footnote.copyWith(
+                        fontSize: 13,
+                        color: Colors.black,
+                      ),
+                    ),
+                    Text(
+                      widget.billNo ?? "",
+                      style: AppCss.footnote.copyWith(
+                        fontSize: 13,
+                        color: Colors.black,
+                      ),
+                    ),
+                  ],
+                ),
+              ).paddingOnly(bottom: 8),
             Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
@@ -93,35 +116,6 @@ class _CommonReturnOrderSettlementCardState extends State<CommonReturnOrderSettl
                     style: AppCss.caption.copyWith(
                       color: Colors.black,
                       fontSize: 12,
-                    ),
-                  ).paddingOnly(bottom: 8),
-                if (widget.billNo != null && widget.billNo != "")
-                  Container(
-                    padding: const EdgeInsets.all(5),
-                    decoration: const BoxDecoration(
-                      color: Colors.blue,
-                      borderRadius: BorderRadius.all(
-                        Radius.circular(2),
-                      ),
-                    ),
-                    child: Row(
-                      mainAxisSize: MainAxisSize.min,
-                      children: [
-                        Text(
-                          "Bill NO : ",
-                          style: AppCss.footnote.copyWith(
-                            fontSize: 13,
-                            color: Colors.white,
-                          ),
-                        ),
-                        Text(
-                          widget.billNo ?? "",
-                          style: AppCss.footnote.copyWith(
-                            fontSize: 13,
-                            color: Colors.white,
-                          ),
-                        ),
-                      ],
                     ),
                   ),
                 if (widget.cashAmount != null && widget.cashAmount != "")

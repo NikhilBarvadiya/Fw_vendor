@@ -10,7 +10,7 @@ import 'package:stylish_dialog/stylish_dialog.dart';
 
 class GlobalDirectoryController extends GetxController {
   TextEditingController txtSearch = TextEditingController();
-
+  int limit = 10;
   bool isLoading = false;
   bool isSearch = false;
   String areaSelected = "";
@@ -106,13 +106,20 @@ class GlobalDirectoryController extends GetxController {
     } else {}
   }
 
+  void onRefresh() async {
+    if (globalAddressesList.length == limit) {
+      limit = (globalAddressesList.length) + 10;
+      await _vendorGlobalAddresses();
+    }
+  }
+
   _vendorGlobalAddresses() async {
     try {
       isLoading = true;
       update();
       var body = {
         "page": 1,
-        "limit": 10,
+        "limit": limit,
         "search": txtSearch.text,
         "areaId": areaSelected,
       };

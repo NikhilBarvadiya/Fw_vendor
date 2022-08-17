@@ -12,6 +12,7 @@ class ShowAddressBookController extends GetxController {
   TextEditingController txtSearch = TextEditingController();
   bool isLoading = false;
   bool isSearch = false;
+  int limit = 10;
   List getCustomerAddressList = [];
 
   @override
@@ -38,6 +39,13 @@ class ShowAddressBookController extends GetxController {
     update();
   }
 
+  void onRefresh() async {
+    if (getCustomerAddressList.length == limit) {
+      limit = (getCustomerAddressList.length) + 10;
+      await _saveCustomerAddress();
+    }
+  }
+
   _saveCustomerAddress() async {
     try {
       isLoading = true;
@@ -45,7 +53,7 @@ class ShowAddressBookController extends GetxController {
       var body = {
         "search": txtSearch.text,
         "page": 1,
-        "limit": 10,
+        "limit": limit,
       };
       var resData = await apis.call(
         apiMethods.getCustomerAddress,

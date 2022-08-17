@@ -1,5 +1,7 @@
 import 'dart:convert';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
+import 'package:fw_vendor/controller/return_order_settlement_controller.dart';
+import 'package:fw_vendor/core/configuration/app_routes.dart';
 import 'package:fw_vendor/services/firbase/firbase_notification_service.dart';
 import 'package:get/get.dart';
 
@@ -68,6 +70,11 @@ class NotificationManager {
       var nData = json.decode(datas);
       if (nData!['screen'] == "/home") {
         Get.to(() => FirebaseNotificationService(), arguments: nData);
+      }
+      if (nData!['screen'] == "/returnSettlementScreen") {
+        if (!Get.isRegistered<ReturnOrderSettlementController>()) {
+          Get.toNamed(AppRoutes.returnSettlementScreen);
+        }
       }
     }
     return datas;

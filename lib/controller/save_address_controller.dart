@@ -13,6 +13,8 @@ class SaveAddressController extends GetxController {
   bool isLoading = false;
   bool isSearch = false;
   bool isMapper = false;
+  int limit = 10;
+  int limitMapper = 10;
 
   @override
   void onInit() {
@@ -42,13 +44,20 @@ class SaveAddressController extends GetxController {
     update();
   }
 
+  void onRefresh() async {
+    if (saveAddressList.length == limit) {
+      limit = (saveAddressList.length) + 10;
+      await _vendorAddresses();
+    }
+  }
+
   _vendorAddresses() async {
     try {
       isLoading = true;
       update();
       var body = {
         "page": 1,
-        "limit": 10,
+        "limit": limit,
         "search": txtSearch.text,
       };
       var resData = await apis.call(
@@ -136,13 +145,20 @@ class SaveAddressController extends GetxController {
     update();
   }
 
+  void onRefreshMapper() async {
+    if (mappedAddressList.length == limitMapper) {
+      limitMapper = (mappedAddressList.length) + 10;
+      await _vendorMappedAddress();
+    }
+  }
+
   _vendorMappedAddress() async {
     try {
       isLoading = true;
       update();
       var data = {
         "page": 1,
-        "limit": "10",
+        "limit": limitMapper,
         "search": txtSearch.text,
         "filter": "database",
       };

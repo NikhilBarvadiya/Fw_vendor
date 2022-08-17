@@ -122,67 +122,72 @@ class OrderScreen extends StatelessWidget {
                       )
                   ],
                 ),
-                ListView(
-                  children: [
-                    if (ordersController.ordersDetailsList.length != null)
-                      ...ordersController.ordersDetailsList.map(
-                        (e) {
-                          ordersController.locationData = e;
-                          return Column(
-                            children: [
-                              if (ordersController.ordersDetailsList != null && e["orderStatus"].length != 0)
-                                CommonOrdersDetails(
-                                  orderNo: e["orderNo"] != "" ? e["orderNo"].toString() : "",
-                                  orderType: e["orderType"] != "" ? e["orderType"].toString().toUpperCase() : "",
-                                  date: e["updatedAt"] != "" ? getFormattedDate(e["updatedAt"].toString()) : "",
-                                  locations: e["orderStatus"] != "" ? e["orderStatus"].length.toString() : "",
-                                  locationClick: () {
-                                    if (e["orderStatus"] != null) {
-                                      ordersController.onLocationClick(e["orderStatus"]);
-                                    } else {
-                                      snackBar("No pacakge data found", Colors.deepOrange);
-                                    }
-                                  },
-                                  items: Wrap(
-                                    direction: Axis.horizontal,
-                                    children: [
-                                      if (e["deliveredCount"] != null)
-                                        CommonActionChip(
-                                          count: e['deliveryReport']["delivered"].length.toString(),
-                                          status: e["deliveredCount"].toString(),
-                                          color: Colors.green,
-                                          onTap: () => ordersController.onLocationClick(e["deliveryReport"]["delivered"]),
-                                        ),
-                                      if (e["runningCount"] != null)
-                                        CommonActionChip(
-                                          count: e['deliveryReport']["running"].length.toString(),
-                                          status: e["runningCount"].toString(),
-                                          color: Colors.blueAccent,
-                                          onTap: () => ordersController.onLocationClick(e["deliveryReport"]["running"]),
-                                        ),
-                                      if (e["returnedCount"] != null)
-                                        CommonActionChip(
-                                          count: e['deliveryReport']["returned"].length.toString(),
-                                          status: e["returnedCount"].toString(),
-                                          color: Colors.deepOrange.shade500,
-                                          onTap: () => ordersController.onLocationClick(e["deliveryReport"]["returned"]),
-                                        ),
-                                      if (e["cancelledCount"] != null)
-                                        CommonActionChip(
-                                          count: e['deliveryReport']["cancelled"].length.toString(),
-                                          status: e["cancelledCount"].toString(),
-                                          color: Colors.red,
-                                          onTap: () => ordersController.onLocationClick(e["deliveryReport"]["cancelled"]),
-                                        ),
-                                    ],
+                RefreshIndicator(
+                  onRefresh: () async {
+                    ordersController.onRefresh();
+                  },
+                  child: ListView(
+                    children: [
+                      if (ordersController.ordersDetailsList.length != null)
+                        ...ordersController.ordersDetailsList.map(
+                          (e) {
+                            ordersController.locationData = e;
+                            return Column(
+                              children: [
+                                if (ordersController.ordersDetailsList != null && e["orderStatus"].length != 0)
+                                  CommonOrdersDetails(
+                                    orderNo: e["orderNo"] != "" ? e["orderNo"].toString() : "",
+                                    orderType: e["orderType"] != "" ? e["orderType"].toString().toUpperCase() : "",
+                                    date: e["updatedAt"] != "" ? getFormattedDate(e["updatedAt"].toString()) : "",
+                                    locations: e["orderStatus"] != "" ? e["orderStatus"].length.toString() : "",
+                                    locationClick: () {
+                                      if (e["orderStatus"] != null) {
+                                        ordersController.onLocationClick(e["orderStatus"]);
+                                      } else {
+                                        snackBar("No pacakge data found", Colors.deepOrange);
+                                      }
+                                    },
+                                    items: Wrap(
+                                      direction: Axis.horizontal,
+                                      children: [
+                                        if (e["deliveredCount"] != null)
+                                          CommonActionChip(
+                                            count: e['deliveryReport']["delivered"].length.toString(),
+                                            status: e["deliveredCount"].toString(),
+                                            color: Colors.green,
+                                            onTap: () => ordersController.onLocationClick(e["deliveryReport"]["delivered"]),
+                                          ),
+                                        if (e["runningCount"] != null)
+                                          CommonActionChip(
+                                            count: e['deliveryReport']["running"].length.toString(),
+                                            status: e["runningCount"].toString(),
+                                            color: Colors.blueAccent,
+                                            onTap: () => ordersController.onLocationClick(e["deliveryReport"]["running"]),
+                                          ),
+                                        if (e["returnedCount"] != null)
+                                          CommonActionChip(
+                                            count: e['deliveryReport']["returned"].length.toString(),
+                                            status: e["returnedCount"].toString(),
+                                            color: Colors.deepOrange.shade500,
+                                            onTap: () => ordersController.onLocationClick(e["deliveryReport"]["returned"]),
+                                          ),
+                                        if (e["cancelledCount"] != null)
+                                          CommonActionChip(
+                                            count: e['deliveryReport']["cancelled"].length.toString(),
+                                            status: e["cancelledCount"].toString(),
+                                            color: Colors.red,
+                                            onTap: () => ordersController.onLocationClick(e["deliveryReport"]["cancelled"]),
+                                          ),
+                                      ],
+                                    ),
                                   ),
-                                ),
-                            ],
-                          );
-                        },
-                      ),
-                  ],
-                ).paddingOnly(top: 30),
+                              ],
+                            );
+                          },
+                        ),
+                    ],
+                  ).paddingOnly(top: 30),
+                ),
                 if (ordersController.locationData != null && ordersController.locationData["orderStatus"].length == 0)
                   Column(
                     mainAxisAlignment: MainAxisAlignment.center,

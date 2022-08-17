@@ -27,6 +27,14 @@ class _RequestAddressScreenState extends State<RequestAddressScreen> {
             automaticallyImplyLeading: false,
             foregroundColor: Colors.white,
             title: const Text("Request address"),
+            leading: IconButton(
+              icon: const Icon(
+                Icons.arrow_back,
+              ),
+              onPressed: () {
+                requestAddressControler.willPopScope();
+              },
+            ),
             actions: [
               IconButton(
                 onPressed: () {
@@ -66,24 +74,32 @@ class _RequestAddressScreenState extends State<RequestAddressScreen> {
           ),
           body: Stack(
             children: [
-              ListView(
-                children: [
-                  ...requestAddressControler.vendorRequestAddressList.map(
-                    (e) {
-                      return RequestAddressCard(
-                        addressName: e["addressName"].toString(),
-                        date: getFormattedDate(e["updatedAt"].toString()),
-                        mobileNumber: e["mobile"].toString(),
-                        address: e["address"].toString(),
-                        type: e["isApprove"] == true ? "Approved" : "Pending",
-                        onDeleteClick: () {
-                          requestAddressControler.onRequestAddressDelete(e["_id"], e);
+              RefreshIndicator(
+                onRefresh: () async {
+                  requestAddressControler.onRefresh();
+                },
+                child: ListView(
+                  children: [
+                    if (requestAddressControler.vendorRequestAddressList.isNotEmpty)
+                      ...requestAddressControler.vendorRequestAddressList.map(
+                        (e) {
+                          return RequestAddressCard(
+                            addressName: e["addressName"].toString(),
+                            date: getFormattedDate(e["updatedAt"].toString()),
+                            mobileNumber: e["mobile"].toString(),
+                            address: e["address"].toString(),
+                            type: e["isApprove"] == true ? "Approved" : "Pending",
+                            onDeleteClick: () {
+                              requestAddressControler.onRequestAddressDelete(e["_id"], e);
+                            },
+                            onEditClick: () {
+                              requestAddressControler.onRequestAddressEdit(e);
+                            },
+                          );
                         },
-                        onEditClick: () {},
-                      );
-                    },
-                  ),
-                ],
+                      ),
+                  ],
+                ),
               ),
               if (requestAddressControler.vendorRequestAddressList.isEmpty)
                 Column(

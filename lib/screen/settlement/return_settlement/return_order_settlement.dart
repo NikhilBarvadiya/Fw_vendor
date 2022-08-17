@@ -93,23 +93,28 @@ class _ReturnOrderSettlementScreenState extends State<ReturnOrderSettlementScree
                     ],
                   ).paddingOnly(bottom: 10),
                   Expanded(
-                    child: ListView(
-                      children: [
-                        if (returnOrderSettlementController.returnOrderSettlementList.isNotEmpty)
-                          ...returnOrderSettlementController.returnOrderSettlementList.map(
-                            (e) {
-                              return CommonReturnOrderSettlementCard(
-                                orderNo: e["vendorOrderId"]["orderNo"] != "" && e["vendorOrderId"]["orderNo"] != null ? e["vendorOrderId"]["orderNo"].toString() : "",
-                                personName: e["addressId"] != "" && e["addressId"] != null ? e["addressId"]["name"].toString() : e["name"].toString(),
-                                address: e["addressId"] != "" && e["addressId"] != null ? e["addressId"]["address"].toString() : e["address"].toString(),
-                                mobile: e["addressId"] != "" && e["addressId"] != null ? e["addressId"]["mobile"].toString() : e["mobile"].toString(),
-                                date: e["vendorOrderId"]["updatedAt"] != "" && e["vendorOrderId"]["updatedAt"] != null ? getFormattedDate(e["vendorOrderId"]["updatedAt"].toString()) : "",
-                                cashAmount: e["cash"] != "" && e["cash"] != null ? e["cash"].toString() : "",
-                                billNo: e["billNo"] != "" && e["billNo"] != null ? e["billNo"].toString() : "",
-                              );
-                            },
-                          ),
-                      ],
+                    child: RefreshIndicator(
+                      onRefresh: () async {
+                        returnOrderSettlementController.onRefresh();
+                      },
+                      child: ListView(
+                        children: [
+                          if (returnOrderSettlementController.returnOrderSettlementList.isNotEmpty)
+                            ...returnOrderSettlementController.returnOrderSettlementList.map(
+                              (e) {
+                                return CommonReturnOrderSettlementCard(
+                                  orderNo: e["vendorOrderId"]["orderNo"] != "" && e["vendorOrderId"]["orderNo"] != null ? e["vendorOrderId"]["orderNo"].toString() : "",
+                                  personName: e["addressId"] != "" && e["addressId"] != null ? e["addressId"]["name"].toString() : e["name"].toString(),
+                                  address: e["addressId"] != "" && e["addressId"] != null ? e["addressId"]["address"].toString() : e["address"].toString(),
+                                  mobile: e["addressId"] != "" && e["addressId"] != null ? e["addressId"]["mobile"].toString() : e["mobile"].toString(),
+                                  date: e["vendorOrderId"]["updatedAt"] != "" && e["vendorOrderId"]["updatedAt"] != null ? getFormattedDate(e["vendorOrderId"]["updatedAt"].toString()) : "",
+                                  cashAmount: e["cash"] != "" && e["cash"] != null ? e["cash"].toString() : "",
+                                  billNo: e["billNo"] != "" && e["billNo"] != null ? e["billNo"].toString() : "",
+                                );
+                              },
+                            ),
+                        ],
+                      ),
                     ),
                   ),
                 ],
