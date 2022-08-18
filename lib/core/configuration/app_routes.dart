@@ -77,14 +77,13 @@ class AppRoutes {
     GetPage(name: chatScreen, page: () => const ChatScreen()),
     GetPage(
       name: noInternet,
-      page: () => Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: const [
-          NoDataWidget(
+      page: () => const Scaffold(
+        body: Center(
+          child: NoDataWidget(
             title: "No data !",
             body: "No internet found",
           ),
-        ],
+        ),
       ),
     ),
   ];

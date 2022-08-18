@@ -94,9 +94,6 @@ class _RequestAddressEditScreenState extends State<RequestAddressEditScreen> {
                   minLines: 1,
                   maxLines: 4,
                 ),
-                SizedBox(
-                  height: MediaQuery.of(context).size.height * 0.25,
-                ),
                 Row(
                   children: [
                     commonButton(

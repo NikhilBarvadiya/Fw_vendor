@@ -71,7 +71,7 @@ class NotificationManager {
       if (nData!['screen'] == "/home") {
         Get.to(() => FirebaseNotificationService(), arguments: nData);
       }
-      if (nData!['screen'] == "/returnSettlementScreen][8") {
+      if (nData!['screen'] == "/returnSettlementScreen") {
         if (!Get.isRegistered<ReturnOrderSettlementController>()) {
           Get.toNamed(AppRoutes.returnSettlementScreen);
         }

@@ -8,9 +8,10 @@ Widget commonButton({
   dynamic width,
   dynamic color,
   dynamic txtColor,
+  dynamic elevation,
 }) {
   return Card(
-    elevation: 5,
+    elevation: elevation ?? 5,
     shape: const RoundedRectangleBorder(
       borderRadius: BorderRadius.all(
         Radius.circular(8),
