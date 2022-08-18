@@ -19,7 +19,7 @@ class NotificationManager {
     AndroidNotificationDetails androidPlatformChannelSpecifics = const AndroidNotificationDetails(
       '150',
       'order_sound',
-      // 'Order Notification',
+      channelDescription: 'Order Notification',
       importance: Importance.max,
       priority: Priority.high,
       playSound: true,
@@ -44,7 +44,7 @@ class NotificationManager {
     AndroidNotificationDetails androidPlatformChannelSpecifics = const AndroidNotificationDetails(
       '160',
       'normal_sound',
-      // 'Normal Notification',
+      channelDescription: 'Normal Notification',
       importance: Importance.max,
       priority: Priority.high,
       playSound: true,
@@ -71,7 +71,7 @@ class NotificationManager {
       if (nData!['screen'] == "/home") {
         Get.to(() => FirebaseNotificationService(), arguments: nData);
       }
-      if (nData!['screen'] == "/returnSettlementScreen") {
+      if (nData!['screen'] == "/returnSettlementScreen][8") {
         if (!Get.isRegistered<ReturnOrderSettlementController>()) {
           Get.toNamed(AppRoutes.returnSettlementScreen);
         }

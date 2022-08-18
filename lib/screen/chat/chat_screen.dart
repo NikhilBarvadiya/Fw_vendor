@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_chat_bubble/bubble_type.dart';
 import 'package:flutter_chat_bubble/chat_bubble.dart';
 import 'package:flutter_chat_bubble/clippers/chat_bubble_clipper_1.dart';
-import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:flutter_speed_dial/flutter_speed_dial.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:fw_vendor/controller/chat_controller.dart';
@@ -35,7 +34,6 @@ class _ChatScreenState extends State<ChatScreen> {
         child: Scaffold(
           appBar: AppBar(
             elevation: 1,
-            backgroundColor: const Color(0xFF128C7E),
             foregroundColor: Colors.white,
             title: const Text("Chat"),
           ),
@@ -62,46 +60,58 @@ class _ChatScreenState extends State<ChatScreen> {
                     itemCount: chatController.allChatList.length,
                     itemBuilder: (BuildContext context, int index) {
                       return (chatController.allChatList[index]['fromId'] == chatController.loginData["_id"])
-                          ? Slidable(
-                              key: ValueKey(index),
-                              endActionPane: ActionPane(
-                                motion: const DrawerMotion(),
-                                children: [
-                                  SlidableAction(
-                                    onPressed: (_) {},
-                                    backgroundColor: Colors.black12,
-                                    foregroundColor: Colors.black,
-                                    label: chatController.loginData["name"].toString(),
-                                  ),
-                                ],
-                              ),
-                              child: ChatBubble(
-                                elevation: 1,
-                                clipper: ChatBubbleClipper1(type: BubbleType.sendBubble),
-                                alignment: Alignment.topRight,
-                                margin: const EdgeInsets.only(top: 5, bottom: 5),
-                                backGroundColor: const Color(0xff075E54),
-                                child: Container(
-                                  constraints: BoxConstraints(maxWidth: MediaQuery.maybeOf(context)!.size.width * 0.7),
-                                  child: Column(
-                                    crossAxisAlignment: CrossAxisAlignment.start,
-                                    children: [
+                          ? ChatBubble(
+                              elevation: 1,
+                              clipper: ChatBubbleClipper1(type: BubbleType.sendBubble),
+                              alignment: Alignment.topRight,
+                              margin: const EdgeInsets.only(top: 5, bottom: 5),
+                              backGroundColor: Colors.grey.shade800,
+                              child: Container(
+                                constraints: BoxConstraints(maxWidth: MediaQuery.maybeOf(context)!.size.width * 0.7),
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.end,
+                                  children: [
+                                    if (chatController.allChatList[index]["messageType"] == "text" && chatController.allChatList[index]["message"] != "")
                                       Text(
-                                        getFormattedDate(chatController.allChatList[index]["updatedAt"].toString()),
-                                        style: const TextStyle(
-                                          color: Colors.white,
-                                          fontSize: 10,
-                                        ),
+                                        chatController.allChatList[index]["message"].toString().capitalizeFirst.toString(),
+                                        style: AppCss.body1.copyWith(color: Colors.white),
                                       ),
-                                      if (chatController.allChatList[index]["messageType"] == "text" && chatController.allChatList[index]["message"] != "")
-                                        Text(
-                                          chatController.allChatList[index]["message"].toString().capitalizeFirst.toString(),
-                                          style: AppCss.body1.copyWith(color: Colors.white),
-                                        ).paddingOnly(top: 5),
-                                      if (chatController.allChatList[index]["messageType"] == "image" && chatController.allChatList[index]["message"] != "")
-                                        SizedBox(
-                                          height: 130,
-                                          width: 130,
+                                    if (chatController.allChatList[index]["messageType"] == "image" && chatController.allChatList[index]["message"] != "")
+                                      SizedBox(
+                                        height: 130,
+                                        width: 130,
+                                        child: GestureDetector(
+                                          onTap: () {
+                                            showDialog(
+                                              builder: (BuildContext context) => Container(
+                                                color: Colors.black,
+                                                child: AlertDialog(
+                                                  backgroundColor: Colors.black,
+                                                  insetPadding: const EdgeInsets.all(2),
+                                                  title: SizedBox(
+                                                    height: MediaQuery.of(context).size.height / 2,
+                                                    width: MediaQuery.of(context).size.width,
+                                                    child: InteractiveViewer(
+                                                      child: Image.network(
+                                                        environment["imagesbaseUrl"] + chatController.allChatList[index]["message"].toString(),
+                                                        loadingBuilder: (BuildContext context, Widget child, ImageChunkEvent? loadingProgress) {
+                                                          if (loadingProgress == null) {
+                                                            return child;
+                                                          }
+                                                          return Center(
+                                                            child: CircularProgressIndicator(
+                                                              value: loadingProgress.expectedTotalBytes != null ? loadingProgress.cumulativeBytesLoaded / loadingProgress.expectedTotalBytes! : null,
+                                                            ),
+                                                          );
+                                                        },
+                                                      ),
+                                                    ),
+                                                  ),
+                                                ),
+                                              ),
+                                              context: context,
+                                            );
+                                          },
                                           child: Image.network(
                                             environment["imagesbaseUrl"] + chatController.allChatList[index]["message"].toString(),
                                             fit: BoxFit.cover,
@@ -116,142 +126,135 @@ class _ChatScreenState extends State<ChatScreen> {
                                               );
                                             },
                                           ),
-                                        ).paddingOnly(top: 5),
-                                      if (chatController.allChatList[index]["messageType"] == "file" || chatController.allChatList[index]["messageType"] == "audio" && chatController.allChatList[index]["message"] != "")
-                                        Link(
-                                          uri: Uri.parse(
-                                            environment["imagesbaseUrl"] + chatController.allChatList[index]["message"],
-                                          ),
-                                          target: LinkTarget.blank,
-                                          builder: (BuildContext ctx, FollowLink? openLink) {
-                                            return TextButton.icon(
-                                              onPressed: openLink,
-                                              label: Text(
-                                                chatController.allChatList[index]["messageType"] == "file"
-                                                    ? 'Show file'
-                                                    : chatController.allChatList[index]["messageType"] == "audio"
-                                                        ? 'Show audio'
-                                                        : "",
-                                                style: AppCss.body1.copyWith(
-                                                  color: Colors.white,
-                                                ),
-                                              ),
-                                              icon: Icon(
-                                                chatController.allChatList[index]["messageType"] == "file"
-                                                    ? FontAwesomeIcons.solidFile
-                                                    : chatController.allChatList[index]["messageType"] == "audio"
-                                                        ? Icons.audiotrack
-                                                        : null,
-                                                color: chatController.allChatList[index]["messageType"] == "file"
-                                                    ? Colors.amber
-                                                    : chatController.allChatList[index]["messageType"] == "audio"
-                                                        ? Colors.red
-                                                        : null,
-                                              ),
-                                            );
-                                          },
                                         ),
-                                    ],
-                                  ),
+                                      ).paddingOnly(top: 5),
+                                    if (chatController.allChatList[index]["messageType"] == "file" || chatController.allChatList[index]["messageType"] == "audio" && chatController.allChatList[index]["message"] != "")
+                                      Link(
+                                        uri: Uri.parse(
+                                          environment["imagesbaseUrl"] + chatController.allChatList[index]["message"],
+                                        ),
+                                        target: LinkTarget.blank,
+                                        builder: (BuildContext ctx, FollowLink? openLink) {
+                                          return TextButton.icon(
+                                            onPressed: openLink,
+                                            label: Text(
+                                              chatController.allChatList[index]["messageType"] == "file"
+                                                  ? 'Show file'
+                                                  : chatController.allChatList[index]["messageType"] == "audio"
+                                                      ? 'Show audio'
+                                                      : "",
+                                              style: AppCss.body1.copyWith(
+                                                color: Colors.white,
+                                              ),
+                                            ),
+                                            icon: Icon(
+                                              chatController.allChatList[index]["messageType"] == "file"
+                                                  ? FontAwesomeIcons.solidFile
+                                                  : chatController.allChatList[index]["messageType"] == "audio"
+                                                      ? Icons.audiotrack
+                                                      : null,
+                                              color: chatController.allChatList[index]["messageType"] == "file"
+                                                  ? Colors.amber
+                                                  : chatController.allChatList[index]["messageType"] == "audio"
+                                                      ? Colors.red
+                                                      : null,
+                                            ),
+                                          );
+                                        },
+                                      ),
+                                    Text(
+                                      getFormattedDate(chatController.allChatList[index]["updatedAt"].toString()),
+                                      style: const TextStyle(
+                                        color: Colors.white,
+                                        fontSize: 10,
+                                      ),
+                                    ).paddingOnly(top: 5),
+                                  ],
                                 ).paddingOnly(right: 5),
                               ),
                             )
-                          : Slidable(
-                              key: ValueKey(index),
-                              startActionPane: ActionPane(
-                                motion: const DrawerMotion(),
-                                children: [
-                                  SlidableAction(
-                                    onPressed: (_) {},
-                                    backgroundColor: Colors.black12,
-                                    foregroundColor: Colors.black,
-                                    label: "Admin",
-                                  ),
-                                ],
-                              ),
-                              child: ChatBubble(
-                                elevation: 1,
-                                clipper: ChatBubbleClipper1(type: BubbleType.receiverBubble),
-                                alignment: Alignment.topLeft,
-                                margin: const EdgeInsets.only(top: 5, bottom: 5),
-                                backGroundColor: const Color(0xFFEEEEEE),
-                                child: Container(
-                                  constraints: BoxConstraints(maxWidth: MediaQuery.maybeOf(context)!.size.width * 0.7),
-                                  child: Column(
-                                    crossAxisAlignment: CrossAxisAlignment.start,
-                                    children: [
+                          : ChatBubble(
+                              elevation: 1,
+                              clipper: ChatBubbleClipper1(type: BubbleType.receiverBubble),
+                              alignment: Alignment.topLeft,
+                              margin: const EdgeInsets.only(top: 5, bottom: 5),
+                              backGroundColor: const Color(0xFFEEEEEE),
+                              child: Container(
+                                constraints: BoxConstraints(maxWidth: MediaQuery.maybeOf(context)!.size.width * 0.7),
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.end,
+                                  children: [
+                                    if (chatController.allChatList[index]["messageType"] == "text" && chatController.allChatList[index]["message"] != "")
                                       Text(
-                                        getFormattedDate(chatController.allChatList[index]["updatedAt"].toString()),
+                                        chatController.allChatList[index]["message"],
                                         style: const TextStyle(
                                           color: Colors.black,
-                                          fontSize: 10,
+                                          fontSize: 16,
                                         ),
                                       ),
-                                      if (chatController.allChatList[index]["messageType"] == "text" && chatController.allChatList[index]["message"] != "")
-                                        Text(
-                                          chatController.allChatList[index]["message"],
-                                          style: const TextStyle(
-                                            color: Colors.black,
-                                            fontSize: 16,
-                                          ),
-                                        ).paddingOnly(top: 5),
-                                      if (chatController.allChatList[index]["messageType"] == "image" && chatController.allChatList[index]["message"] != "")
-                                        SizedBox(
-                                          height: 130,
-                                          width: 130,
-                                          child: Image.network(
-                                            environment["imagesbaseUrl"] + chatController.allChatList[index]["message"].toString(),
-                                            fit: BoxFit.cover,
-                                            loadingBuilder: (BuildContext context, Widget child, ImageChunkEvent? loadingProgress) {
-                                              if (loadingProgress == null) {
-                                                return child;
-                                              }
-                                              return Center(
-                                                child: CircularProgressIndicator(
-                                                  value: loadingProgress.expectedTotalBytes != null ? loadingProgress.cumulativeBytesLoaded / loadingProgress.expectedTotalBytes! : null,
-                                                ),
-                                              );
-                                            },
-                                          ),
-                                        ).paddingOnly(top: 5),
-                                      if (chatController.allChatList[index]["messageType"] == "file" || chatController.allChatList[index]["messageType"] == "audio" && chatController.allChatList[index]["message"] != "")
-                                        Link(
-                                          uri: Uri.parse(
-                                            environment["imagesbaseUrl"] + chatController.allChatList[index]["message"],
-                                          ),
-                                          target: LinkTarget.blank,
-                                          builder: (BuildContext ctx, FollowLink? openLink) {
-                                            return TextButton.icon(
-                                              onPressed: openLink,
-                                              label: Text(
-                                                chatController.allChatList[index]["messageType"] == "file"
-                                                    ? 'Show file'
-                                                    : chatController.allChatList[index]["messageType"] == "audio"
-                                                        ? 'Show audio'
-                                                        : "",
-                                                style: AppCss.body1.copyWith(
-                                                  color: Colors.white,
-                                                ),
-                                              ),
-                                              icon: Icon(
-                                                chatController.allChatList[index]["messageType"] == "file"
-                                                    ? FontAwesomeIcons.solidFile
-                                                    : chatController.allChatList[index]["messageType"] == "audio"
-                                                        ? Icons.audiotrack
-                                                        : null,
-                                                color: chatController.allChatList[index]["messageType"] == "file"
-                                                    ? Colors.amber
-                                                    : chatController.allChatList[index]["messageType"] == "audio"
-                                                        ? Colors.red
-                                                        : null,
+                                    if (chatController.allChatList[index]["messageType"] == "image" && chatController.allChatList[index]["message"] != "")
+                                      SizedBox(
+                                        height: 130,
+                                        width: 130,
+                                        child: Image.network(
+                                          environment["imagesbaseUrl"] + chatController.allChatList[index]["message"].toString(),
+                                          fit: BoxFit.cover,
+                                          loadingBuilder: (BuildContext context, Widget child, ImageChunkEvent? loadingProgress) {
+                                            if (loadingProgress == null) {
+                                              return child;
+                                            }
+                                            return Center(
+                                              child: CircularProgressIndicator(
+                                                value: loadingProgress.expectedTotalBytes != null ? loadingProgress.cumulativeBytesLoaded / loadingProgress.expectedTotalBytes! : null,
                                               ),
                                             );
                                           },
                                         ),
-                                    ],
-                                  ),
-                                ).paddingOnly(left: 5),
-                              ),
+                                      ).paddingOnly(top: 5),
+                                    if (chatController.allChatList[index]["messageType"] == "file" || chatController.allChatList[index]["messageType"] == "audio" && chatController.allChatList[index]["message"] != "")
+                                      Link(
+                                        uri: Uri.parse(
+                                          environment["imagesbaseUrl"] + chatController.allChatList[index]["message"],
+                                        ),
+                                        target: LinkTarget.blank,
+                                        builder: (BuildContext ctx, FollowLink? openLink) {
+                                          return TextButton.icon(
+                                            onPressed: openLink,
+                                            label: Text(
+                                              chatController.allChatList[index]["messageType"] == "file"
+                                                  ? 'Show file'
+                                                  : chatController.allChatList[index]["messageType"] == "audio"
+                                                      ? 'Show audio'
+                                                      : "",
+                                              style: AppCss.body1.copyWith(
+                                                color: Colors.white,
+                                              ),
+                                            ),
+                                            icon: Icon(
+                                              chatController.allChatList[index]["messageType"] == "file"
+                                                  ? FontAwesomeIcons.solidFile
+                                                  : chatController.allChatList[index]["messageType"] == "audio"
+                                                      ? Icons.audiotrack
+                                                      : null,
+                                              color: chatController.allChatList[index]["messageType"] == "file"
+                                                  ? Colors.amber
+                                                  : chatController.allChatList[index]["messageType"] == "audio"
+                                                      ? Colors.red
+                                                      : null,
+                                            ),
+                                          );
+                                        },
+                                      ),
+                                    Text(
+                                      getFormattedDate(chatController.allChatList[index]["updatedAt"].toString()),
+                                      style: const TextStyle(
+                                        color: Colors.black,
+                                        fontSize: 10,
+                                      ),
+                                    ).paddingOnly(top: 5),
+                                  ],
+                                ),
+                              ).paddingOnly(left: 5),
                             );
                     },
                   ),
@@ -274,39 +277,39 @@ class _ChatScreenState extends State<ChatScreen> {
                         elevation: 0,
                         activeIcon: Icons.close,
                         backgroundColor: Colors.white,
-                        foregroundColor: const Color(0xFF128C7E),
-                        activeBackgroundColor: const Color(0xFF128C7E),
+                        foregroundColor: Theme.of(context).primaryColor,
+                        activeBackgroundColor: Theme.of(context).primaryColor,
                         activeForegroundColor: Colors.white,
                         children: [
                           SpeedDialChild(
                             onTap: () => chatController.sendImage(ImageSource.camera),
-                            child: const Icon(
+                            child: Icon(
                               FontAwesomeIcons.camera,
-                              color: Color(0xFF128C7E),
+                              color: Colors.grey.shade800,
                               size: 18,
                             ),
                           ),
                           SpeedDialChild(
                             onTap: () => chatController.sendImage(ImageSource.gallery),
-                            child: const Icon(
+                            child: Icon(
                               FontAwesomeIcons.images,
-                              color: Color(0xFF128C7E),
+                              color: Colors.grey.shade800,
                               size: 18,
                             ),
                           ),
                           SpeedDialChild(
                             onTap: () => chatController.sendFile(FileType.any),
-                            child: const Icon(
+                            child: Icon(
                               FontAwesomeIcons.file,
-                              color: Color(0xFF128C7E),
+                              color: Colors.grey.shade800,
                               size: 18,
                             ),
                           ),
                           SpeedDialChild(
                             onTap: () => chatController.sendFile(FileType.audio),
-                            child: const Icon(
+                            child: Icon(
                               FontAwesomeIcons.music,
-                              color: Color(0xFF128C7E),
+                              color: Colors.grey.shade800,
                               size: 18,
                             ),
                           ),
@@ -332,9 +335,9 @@ class _ChatScreenState extends State<ChatScreen> {
                       ),
                       IconButton(
                         highlightColor: Colors.transparent,
-                        icon: const Icon(
+                        icon: Icon(
                           Icons.send,
-                          color: Color(0xFF128C7E),
+                          color: Theme.of(context).primaryColor,
                         ),
                         onPressed: () {
                           chatController.sendTextMessage();

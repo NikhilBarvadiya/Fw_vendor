@@ -1,8 +1,10 @@
+import 'dart:convert';
 import 'dart:developer';
 import 'package:fw_vendor/common/config.dart';
 import 'package:fw_vendor/controller/chat_controller.dart';
 import 'package:fw_vendor/controller/return_order_settlement_controller.dart';
 import 'package:fw_vendor/core/utilities/storage_utils.dart';
+import 'package:fw_vendor/socket/index.dart';
 import 'package:get/get.dart';
 import 'package:socket_io_client/socket_io_client.dart';
 
@@ -30,10 +32,41 @@ class SocketServerController extends GetxController {
       socket.on(
         'onNewMessage',
         (message) async {
-          if (Get.isRegistered<ChatController>()) {
-            ChatController chatController = Get.find();
-            await chatController.getAllChats();
-            chatController.update();
+          if (message != null && message != '') {
+            if (Get.isRegistered<ChatController>()) {
+              ChatController chatController = Get.find();
+              await chatController.getAllChats();
+              chatController.update();
+              if (message!['type'] == 'order_notification') {
+                vendor.createNotificationOrder(
+                  message!['title'],
+                  message!['description'],
+                  json.encode(
+                    message!['data'],
+                  ),
+                );
+              }
+            }
+          }
+        },
+      );
+
+      //on sound notification received
+      socket.on(
+        'letsPlay',
+        (data) async {
+          log("Received notification by server");
+          if (data != null && data != '') {
+            data = jsonDecode(data);
+            if (data!['type'] == 'order_notification') {
+              vendor.createNotificationOrder(
+                data!['title'],
+                data!['description'],
+                json.encode(
+                  data!['data'],
+                ),
+              );
+            }
           }
         },
       );
@@ -42,10 +75,20 @@ class SocketServerController extends GetxController {
       socket.on(
         'onReturnOTP',
         (data) async {
-          if (Get.isRegistered<ReturnOrderSettlementController>()) {
-            ReturnOrderSettlementController returnOrderSettlementController = Get.find();
-            await returnOrderSettlementController.onSearch();
-            update();
+          if (data != null && data != '') {
+            data = jsonDecode(data);
+            if (Get.isRegistered<ReturnOrderSettlementController>()) {
+              ReturnOrderSettlementController returnOrderSettlementController = Get.find();
+              returnOrderSettlementController.update();
+              if (data['notification'] != null) {
+                var notificationData = data['notification'];
+                await vendor.showNormalNotification(
+                  notificationData["title"],
+                  notificationData["description"],
+                  notificationData["payload"],
+                );
+              }
+            }
           }
         },
       );
