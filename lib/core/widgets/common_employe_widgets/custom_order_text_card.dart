@@ -1,7 +1,7 @@
 // ignore_for_file: file_names
 import 'package:flutter/material.dart';
-import 'package:fw_vendor/view/auth_checking_view/controller/app_controller.dart';
-import 'package:fw_vendor/core/theme/index.dart';
+import 'package:fw_vendor/core/theme/app_css.dart';
+import 'package:get/get.dart';
 
 Widget commonTextField({
   TextEditingController? controller,
@@ -11,22 +11,24 @@ Widget commonTextField({
   String? labelText,
   dynamic height,
   dynamic width,
-  bool obscureText = false,
+  dynamic minLines,
+  dynamic maxLines,
+  bool readOnly = false,
 }) {
   return Column(
     crossAxisAlignment: CrossAxisAlignment.start,
     children: [
       Text(
         labelText ?? '',
-        style: AppCss.h3.copyWith(
-          color: AppController().appTheme.bgGray,
-        ),
+        style: AppCss.h3,
       ),
       Card(
-        elevation: 5,
+        elevation: 1,
+        margin: EdgeInsets.zero,
+        color: readOnly == true ? Colors.grey.shade300 : Colors.white,
         shape: const RoundedRectangleBorder(
           borderRadius: BorderRadius.all(
-            Radius.circular(8),
+            Radius.circular(2),
           ),
         ),
         child: Container(
@@ -41,17 +43,20 @@ Widget commonTextField({
             controller: controller,
             keyboardType: keyboardType,
             maxLength: maxLength,
-            obscureText: obscureText,
+            minLines: minLines,
+            maxLines: maxLines,
+            readOnly: readOnly,
+            style: AppCss.body1.copyWith(fontSize: 13, fontWeight: FontWeight.w600),
             decoration: InputDecoration(
               counterText: '',
               hintText: hintText,
               hintStyle: const TextStyle(fontSize: 12, color: Colors.grey),
-              contentPadding: const EdgeInsets.only(left: 15),
+              contentPadding: const EdgeInsets.only(left: 10),
               border: InputBorder.none,
             ),
           ),
         ),
       ),
     ],
-  );
+  ).paddingOnly(bottom: 10);
 }

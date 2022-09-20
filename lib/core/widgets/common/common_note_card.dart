@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_html/flutter_html.dart';
-import 'package:fw_vendor/common_controller/app_controller.dart';
+import 'package:fw_vendor/view/auth_checking_view/controller/app_controller.dart';
 import 'package:fw_vendor/core/theme/index.dart';
 import 'package:get/get.dart';
 

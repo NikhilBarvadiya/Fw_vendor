@@ -1,5 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:fw_vendor/core/widgets/custom_widgets/custom_nodata.dart';
+import 'package:fw_vendor/view/auth_checking_view/type_screen.dart';
+import 'package:fw_vendor/view/employe_view/screen/draft/employe_home.dart';
+import 'package:fw_vendor/view/employe_view/screen/login/employe_login.dart';
+import 'package:fw_vendor/view/employe_view/screen/scanner/scanner_screen.dart';
+import 'package:fw_vendor/view/employe_view/screen/scanner/verify_address.dart';
 import 'package:fw_vendor/view/vendor_view/screen/Addresses/global_directory/global_directory_details_screen.dart';
 import 'package:fw_vendor/view/vendor_view/screen/Addresses/global_directory/global_directory_screen.dart';
 import 'package:fw_vendor/view/vendor_view/screen/Addresses/request_addresses/request_address_edit_screen.dart';
@@ -8,7 +13,7 @@ import 'package:fw_vendor/view/vendor_view/screen/Addresses/save_addresses/save_
 import 'package:fw_vendor/view/vendor_view/screen/chat/chat_screen.dart';
 import 'package:fw_vendor/view/vendor_view/screen/dashboard/location_screen.dart';
 import 'package:fw_vendor/view/vendor_view/screen/home/home_screen.dart';
-import 'package:fw_vendor/view/vendor_view/screen/login/app_update_screen.dart';
+import 'package:fw_vendor/view/auth_checking_view/app_update_screen.dart';
 import 'package:fw_vendor/view/vendor_view/screen/login/login_screen.dart';
 import 'package:fw_vendor/view/vendor_view/screen/login/profile.dart/profile_screen.dart';
 import 'package:fw_vendor/view/auth_checking_view/splash_screen.dart';
@@ -28,6 +33,8 @@ import 'package:get/get.dart';
 
 class AppRoutes {
   static String splash = "/";
+  static String typeScreen = "/typeScreen";
+  //Vendor....
   static String login = "/loginScreen";
   static String appUpdate = '/appUpdate';
   static String home = "/homeScreen";
@@ -52,9 +59,16 @@ class AppRoutes {
   static String returnSettlementScreen = "/returnSettlementScreen";
   static String chatScreen = "/chatScreen";
   static String noInternet = "/noInternet";
+  //Employe......
+  static String employeLogin = "/employeLogin";
+  static String employeHome = "/employeHome";
+  static String verifyOrder = "/verifyOrder";
+  static String scanner = "/scanner";
+
 
   static List<GetPage> getPages = [
     GetPage(name: splash, page: () => SplashScreen()),
+    GetPage(name: typeScreen, page: () =>const TypeScreen()),
     GetPage(name: login, page: () => const LoginScreen()),
     GetPage(name: appUpdate, page: () => const AppUpdateScreen()),
     GetPage(name: home, page: () => const HomeScreen()),
@@ -89,5 +103,9 @@ class AppRoutes {
         ),
       ),
     ),
+    GetPage(name: employeLogin, page: () => const EmployeLoginScreen()),
+    GetPage(name: employeHome, page: () => const EmployeHomeScreen()),
+    GetPage(name: verifyOrder, page: () => const VerifyOrderScreen()),
+    GetPage(name: scanner, page: () => const ScannerScreen()),
   ];
 }

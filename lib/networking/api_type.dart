@@ -5,7 +5,7 @@ var apiVersion = environment['serverConfig']['apiVersion'];
 class ApiMethods {
   // Check app version
   String appVersion(type) => "$apiVersion/application-information/$type";
-  final String appVersions = "manager/appVersion";
+  final String appVersions = "vendorEmployee/appVersion";
   final String login = "vendor/vendorSignIn";
   final String changeShopOpenStatus = "vendor/changeShopOpenStatus";
   final String vendorWhoAmI = "vendor/whoAmI";
@@ -46,4 +46,11 @@ class ApiMethods {
   final String getAllChats = "vendor/getAllChats";
   final String sendMessageToAdmin = "vendor/sendMessageToAdmin";
   final String setBillDetails = "vendor/vendorData/setBillDetails/get";
+
+
+  final String employeLogin = "vendorEmployee/login";
+  final String getDraftOrders = "vendorEmployee/getDraftOrders";
+  final String verifyOrder = "vendorEmployee/getScanData/mappedAddress";
+  final String draftOrder = "vendorEmployee/setScanData/draftOrder";
+
 }

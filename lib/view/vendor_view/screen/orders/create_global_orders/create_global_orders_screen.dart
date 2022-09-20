@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:fw_vendor/common_controller/app_controller.dart';
+import 'package:fw_vendor/view/auth_checking_view/controller/app_controller.dart';
 import 'package:fw_vendor/core/theme/index.dart';
 import 'package:fw_vendor/core/widgets/common/common_button.dart';
 import 'package:fw_vendor/core/widgets/common/order_address_card.dart';

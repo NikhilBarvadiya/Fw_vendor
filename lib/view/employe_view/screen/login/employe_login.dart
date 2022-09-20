@@ -1,28 +1,24 @@
-// ignore_for_file: must_be_immutable
 import 'package:flutter/material.dart';
 import 'package:fw_vendor/core/assets/index.dart';
 import 'package:fw_vendor/core/utilities/index.dart';
+import 'package:fw_vendor/core/widgets/common_employe_widgets/custom_textfield.dart';
 import 'package:fw_vendor/core/widgets/common_loading/loading.dart';
-import 'package:fw_vendor/view/vendor_view/controller/login_controller.dart';
+import 'package:fw_vendor/view/employe_view/controller/employe_login_controller.dart';
 import 'package:get/get.dart';
-
-class LoginScreen extends StatefulWidget {
-  const LoginScreen({Key? key}) : super(key: key);
-
+class EmployeLoginScreen extends StatefulWidget {
+  const EmployeLoginScreen({Key? key}) : super(key: key);
   @override
-  State<LoginScreen> createState() => _LoginScreenState();
+  State<EmployeLoginScreen> createState() => _EmployeLoginScreenState();
 }
-
-class _LoginScreenState extends State<LoginScreen> {
-  LoginController loginController = Get.put(LoginController());
-
+class _EmployeLoginScreenState extends State<EmployeLoginScreen> {
+  EmployeLoginController controller = Get.put(EmployeLoginController());
   @override
   Widget build(BuildContext context) {
-    return GetBuilder<LoginController>(
+    return GetBuilder<EmployeLoginController>(
       builder: (_) => WillPopScope(
         onWillPop: () async => true,
         child: LoadingMode(
-          isLoading: loginController.isLoading,
+          isLoading: controller.isLoading,
           child: Scaffold(
             body: SizedBox(
               height: Get.height,
@@ -40,23 +36,13 @@ class _LoginScreenState extends State<LoginScreen> {
                           scale: 8,
                         ),
                         _uiTxtView(),
-                        _txtCard(
-                          name: "Email Id",
-                          obscureText: false,
-                          icon: Icons.email,
-                          controller: loginController.txtEmailController,
-                        ),
-                        _txtCard(
-                          name: "Password",
-                          obscureText: true,
-                          icon: Icons.lock,
-                          controller: loginController.txtPasswordController,
-                        ),
+                        const SizedBox(height: 5),
+                        _loginMobileNumber(),
                         SizedBox(height: appScreenUtil.screenHeight(MediaQuery.of(context).size.height) * 0.02),
                         _loginView(),
                       ],
                     ),
-                  )
+                  ),
                 ],
               ),
             ),
@@ -72,7 +58,7 @@ class _LoginScreenState extends State<LoginScreen> {
       mainAxisSize: MainAxisSize.min,
       children: [
         Text(
-          "Vendor Panel",
+          "Employe Panel",
           style: TextStyle(
             color: Theme.of(context).primaryColor,
             fontSize: appScreenUtil.fontSize(20),
@@ -80,7 +66,7 @@ class _LoginScreenState extends State<LoginScreen> {
           ),
         ),
         Text(
-          "Please login to start your vendor session.",
+          "Please login to start your employe session.",
           style: TextStyle(
             color: Colors.grey[700],
             fontSize: appScreenUtil.fontSize(12),
@@ -91,32 +77,14 @@ class _LoginScreenState extends State<LoginScreen> {
     ).paddingSymmetric(horizontal: 25, vertical: 10);
   }
 
-  _txtCard({name, icon, controller, obscureText}) {
-    return Card(
-      elevation: 2,
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(8.0),
-      ),
-      child: TextFormField(
-        controller: controller,
-        textAlign: TextAlign.start,
-        keyboardType: TextInputType.emailAddress,
-        obscureText: obscureText,
-        decoration: InputDecoration(
-          icon: Padding(
-            padding: const EdgeInsets.only(left: 15),
-            child: Icon(icon),
-          ),
-          border: InputBorder.none,
-          hintText: name,
-          counterText: "",
-          hintStyle: const TextStyle(
-            fontSize: 14,
-            color: Colors.grey,
-          ),
-        ),
-      ),
-    ).paddingOnly(left: 20, right: 20);
+  _loginMobileNumber() {
+    return customTextField(
+      name: "Mobile number",
+      maxLength: 10,
+      keyboardType: TextInputType.number,
+      controller: controller.txtMobileNumber,
+      focusNode: controller.focusMobileNumber,
+    );
   }
 
   _loginView() {
@@ -127,8 +95,8 @@ class _LoginScreenState extends State<LoginScreen> {
         shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(6)
         ),
-        color: loginController.isLoading ? Theme.of(context).primaryColor.withOpacity(.5) : Theme.of(context).primaryColor,
-        onPressed: () => loginController.onLoginButton(),
+        color: controller.isLoading ? Theme.of(context).primaryColor.withOpacity(.5) : Theme.of(context).primaryColor,
+        onPressed: () => controller.onLogin(),
         child: Padding(
           padding: const EdgeInsets.all(10),
           child: Row(

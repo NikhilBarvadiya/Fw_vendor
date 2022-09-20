@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_offline/flutter_offline.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:fw_vendor/common_controller/app_controller.dart';
+import 'package:fw_vendor/view/auth_checking_view/controller/app_controller.dart';
 import 'package:fw_vendor/core/configuration/app_config.dart';
 import 'package:fw_vendor/core/configuration/app_routes.dart';
 import 'package:fw_vendor/core/theme/index.dart';
@@ -13,9 +13,9 @@ import 'package:get_storage/get_storage.dart';
 import 'socket/index.dart';
 
 Future<void> main() async {
+  WidgetsFlutterBinding.ensureInitialized();
   Get.put(CommonController());
   Get.put(AppController());
-
   SystemChrome.setSystemUIOverlayStyle(
     SystemUiOverlayStyle(
       systemNavigationBarColor: AppController().appTheme.primary,
@@ -24,7 +24,6 @@ Future<void> main() async {
   );
   await GetStorage.init();
   socket.connectToServer();
-
   runApp(const MyApp());
 }
 

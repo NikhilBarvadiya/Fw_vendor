@@ -1,6 +1,6 @@
 // ignore_for_file: must_be_immutable, unnecessary_null_comparison
 import 'package:flutter/material.dart';
-import 'package:fw_vendor/common_controller/app_controller.dart';
+import 'package:fw_vendor/view/auth_checking_view/controller/app_controller.dart';
 import 'package:fw_vendor/core/theme/app_css.dart';
 import 'package:fw_vendor/core/widgets/common/common_action_chip.dart';
 import 'package:fw_vendor/core/widgets/common/common_chips.dart';

@@ -1,6 +1,6 @@
 // ignore_for_file: must_be_immutable
 import 'package:flutter/material.dart';
-import 'package:fw_vendor/common_controller/app_controller.dart';
+import 'package:fw_vendor/view/auth_checking_view/controller/app_controller.dart';
 import 'package:fw_vendor/core/widgets/common/common_chips.dart';
 import 'package:fw_vendor/core/widgets/common/common_note_card.dart';
 import 'package:fw_vendor/core/widgets/common/common_package.dart';

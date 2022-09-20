@@ -1,7 +1,7 @@
 // ignore_for_file: must_be_immutable, deprecated_member_use
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:fw_vendor/common_controller/app_controller.dart';
+import 'package:fw_vendor/view/auth_checking_view/controller/app_controller.dart';
 import 'package:fw_vendor/core/assets/index.dart';
 import 'package:fw_vendor/core/utilities/index.dart';
 import 'package:fw_vendor/core/widgets/common/menu_card.dart';

@@ -179,7 +179,7 @@ class HomeController extends GetxController {
               child: const Text("Ok"),
               onPressed: () {
                 clearStorage();
-                Get.offNamedUntil(AppRoutes.login, (Route<dynamic> route) => false);
+                Get.offNamedUntil(AppRoutes.typeScreen, (Route<dynamic> route) => false);
               },
             ),
             TextButton(
