@@ -75,10 +75,6 @@ class CommonOrdersDetails extends StatelessWidget {
               date ?? "",
               style: AppCss.footnote,
             ).paddingOnly(bottom: 10),
-            Text(
-              "Delivery report",
-              style: AppCss.h3,
-            ).paddingOnly(bottom: 10),
             Container(
               child: items,
             ),

@@ -61,10 +61,16 @@ class GlobalDirectoryScreen extends StatelessWidget {
                           focusNode: globalDirectoryController.txtSearchFocus,
                           hintText: "Search".tr,
                           fillColor: Colors.white,
-                          prefixIcon: const Icon(Icons.search),
+                          prefixIcon: GestureDetector(
+                            onTap: () => globalDirectoryController.onSearchGlobalAddress(),
+                            child: Icon(
+                              Icons.search_rounded,
+                              color: Colors.blueGrey.withOpacity(0.8),
+                              size: globalDirectoryController.txtSearch.text != "" ? 15 : 20,
+                            ),
+                          ),
                           padding: 15,
                           radius: 0,
-                          maxLength: 10,
                           counterText: "",
                           validator: (value) {
                             if (value!.isEmpty) {
@@ -73,9 +79,7 @@ class GlobalDirectoryScreen extends StatelessWidget {
                               return null;
                             }
                           },
-                          onChanged: (val) {
-                            globalDirectoryController.onSearchglobalAddress();
-                          },
+                          onEditingComplete: () => globalDirectoryController.onSearchGlobalAddress(),
                         ),
                       )
                     : Container(),
@@ -150,18 +154,18 @@ class GlobalDirectoryScreen extends StatelessWidget {
                   ).paddingAll(10),
                 if (globalDirectoryController.areaSelected != "")
                   Align(
-                  alignment: Alignment.bottomCenter,
-                  child: commonButton(
-                    borderRadius: 0.0,
-                    margin: EdgeInsets.zero,
-                    onTap: () {
-                      globalDirectoryController.onSelectedLocation();
-                    },
-                    color: globalDirectoryController.selectedOrderTrueList.isNotEmpty ? AppController().appTheme.primary1 : Colors.grey,
-                    text: "Selected location (${globalDirectoryController.selectedOrderTrueList.length})",
-                    height: 50.0,
+                    alignment: Alignment.bottomCenter,
+                    child: commonButton(
+                      borderRadius: 0.0,
+                      margin: EdgeInsets.zero,
+                      onTap: () {
+                        globalDirectoryController.onSelectedLocation();
+                      },
+                      color: globalDirectoryController.selectedOrderTrueList.isNotEmpty ? AppController().appTheme.primary1 : Colors.grey,
+                      text: "Selected location (${globalDirectoryController.selectedOrderTrueList.length})",
+                      height: 50.0,
+                    ),
                   ),
-                ),
                 if (globalDirectoryController.globalAddressesList.isEmpty && globalDirectoryController.areaSelected != "")
                   Column(
                     mainAxisAlignment: MainAxisAlignment.center,

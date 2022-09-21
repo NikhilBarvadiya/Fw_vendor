@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:fw_vendor/core/widgets/custom_widgets/custom_nodata.dart';
-import 'package:fw_vendor/view/auth_checking_view/type_screen.dart';
 import 'package:fw_vendor/view/employe_view/screen/draft/employe_home.dart';
-import 'package:fw_vendor/view/employe_view/screen/login/employe_login.dart';
 import 'package:fw_vendor/view/employe_view/screen/scanner/scanner_screen.dart';
 import 'package:fw_vendor/view/employe_view/screen/scanner/verify_address.dart';
 import 'package:fw_vendor/view/vendor_view/screen/Addresses/global_directory/global_directory_details_screen.dart';
@@ -11,18 +9,18 @@ import 'package:fw_vendor/view/vendor_view/screen/Addresses/request_addresses/re
 import 'package:fw_vendor/view/vendor_view/screen/Addresses/request_addresses/request_address_screen.dart';
 import 'package:fw_vendor/view/vendor_view/screen/Addresses/save_addresses/save_address_screen.dart';
 import 'package:fw_vendor/view/vendor_view/screen/chat/chat_screen.dart';
-import 'package:fw_vendor/view/vendor_view/screen/dashboard/location_screen.dart';
+import 'package:fw_vendor/view/vendor_view/screen/orders/create_orders/location_screen.dart';
 import 'package:fw_vendor/view/vendor_view/screen/home/home_screen.dart';
 import 'package:fw_vendor/view/auth_checking_view/app_update_screen.dart';
-import 'package:fw_vendor/view/vendor_view/screen/login/login_screen.dart';
-import 'package:fw_vendor/view/vendor_view/screen/login/profile.dart/profile_screen.dart';
+import 'package:fw_vendor/view/auth_checking_view/login_screen.dart';
 import 'package:fw_vendor/view/auth_checking_view/splash_screen.dart';
+import 'package:fw_vendor/view/vendor_view/screen/home/profile/profile_screen.dart';
 import 'package:fw_vendor/view/vendor_view/screen/orders/create_global_orders/create_global_orders_details_screen.dart';
 import 'package:fw_vendor/view/vendor_view/screen/orders/create_global_orders/create_global_orders_screen.dart';
 import 'package:fw_vendor/view/vendor_view/screen/orders/create_global_orders/place_orders_screen.dart';
 import 'package:fw_vendor/view/vendor_view/screen/orders/create_orders/orders_create_screen.dart';
 import 'package:fw_vendor/view/vendor_view/screen/orders/create_orders/orders_from_screen.dart';
-import 'package:fw_vendor/view/vendor_view/screen/orders/create_orders/orders_screen.dart';
+import 'package:fw_vendor/view/vendor_view/screen/dashboard/orders_screen.dart';
 import 'package:fw_vendor/view/vendor_view/screen/orders/create_orders/show_address_book_screen.dart';
 import 'package:fw_vendor/view/vendor_view/screen/orders/draft_orders/draft_orders.dart';
 import 'package:fw_vendor/view/vendor_view/screen/orders/draft_orders/edit_selected_location.dart';
@@ -33,7 +31,6 @@ import 'package:get/get.dart';
 
 class AppRoutes {
   static String splash = "/";
-  static String typeScreen = "/typeScreen";
   //Vendor....
   static String login = "/loginScreen";
   static String appUpdate = '/appUpdate';
@@ -60,7 +57,6 @@ class AppRoutes {
   static String chatScreen = "/chatScreen";
   static String noInternet = "/noInternet";
   //Employe......
-  static String employeLogin = "/employeLogin";
   static String employeHome = "/employeHome";
   static String verifyOrder = "/verifyOrder";
   static String scanner = "/scanner";
@@ -68,7 +64,6 @@ class AppRoutes {
 
   static List<GetPage> getPages = [
     GetPage(name: splash, page: () => SplashScreen()),
-    GetPage(name: typeScreen, page: () =>const TypeScreen()),
     GetPage(name: login, page: () => const LoginScreen()),
     GetPage(name: appUpdate, page: () => const AppUpdateScreen()),
     GetPage(name: home, page: () => const HomeScreen()),
@@ -103,7 +98,6 @@ class AppRoutes {
         ),
       ),
     ),
-    GetPage(name: employeLogin, page: () => const EmployeLoginScreen()),
     GetPage(name: employeHome, page: () => const EmployeHomeScreen()),
     GetPage(name: verifyOrder, page: () => const VerifyOrderScreen()),
     GetPage(name: scanner, page: () => const ScannerScreen()),

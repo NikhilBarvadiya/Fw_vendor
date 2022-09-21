@@ -27,6 +27,12 @@ class ShowAddressBookController extends GetxController {
     update();
   }
 
+  _screenFocus() {
+    isSearch = false;
+    txtSearch.text = "";
+    txtSearchFocus.unfocus();
+  }
+
   onSearchButtonTapped() {
     if (isSearch && txtSearch.text != "") {
       txtSearch.text = "";
@@ -43,6 +49,10 @@ class ShowAddressBookController extends GetxController {
   void onRefresh() async {
     if (getCustomerAddressList.length == limit) {
       limit = (getCustomerAddressList.length) + 10;
+      _screenFocus();
+      await _saveCustomerAddress();
+    } else {
+      _screenFocus();
       await _saveCustomerAddress();
     }
   }
@@ -110,6 +120,7 @@ class ShowAddressBookController extends GetxController {
   }
 
   onDeleteOrders(addressId) {
+    _screenFocus();
     if (addressId != null) {
       Get.dialog(
         AlertDialog(

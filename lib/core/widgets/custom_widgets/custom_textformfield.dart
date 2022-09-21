@@ -22,6 +22,7 @@ class CustomTextFormField extends StatelessWidget {
   final int? maxLength;
   final bool readOnly;
   final ValueChanged<String>? onChanged;
+  void Function()? onEditingComplete;
   List<TextInputFormatter>? inputFormatters;
 
   CustomTextFormField({
@@ -44,7 +45,9 @@ class CustomTextFormField extends StatelessWidget {
     this.maxLength,
     this.readOnly = false,
     this.counterText,
-    this.onChanged, required this.focusNode,
+    this.onChanged,
+    required this.focusNode,
+    this.onEditingComplete,
   }) : super(key: key);
 
   @override
@@ -87,6 +90,8 @@ class CustomTextFormField extends StatelessWidget {
       maxLines: maxLines,
       inputFormatters: inputFormatters,
       onChanged: onChanged,
+      onEditingComplete: onEditingComplete,
+      textInputAction: TextInputAction.search,
     );
   }
 }

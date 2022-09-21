@@ -6,11 +6,13 @@ import 'package:fw_vendor/core/theme/app_css.dart';
 import 'package:fw_vendor/core/widgets/common/common_button.dart';
 import 'package:fw_vendor/core/widgets/common/common_chips.dart';
 import 'package:fw_vendor/core/widgets/common/common_orders_text_card.dart';
+import 'package:fw_vendor/core/widgets/common_loading/loading.dart';
 import 'package:fw_vendor/view/vendor_view/controller/profile_controller.dart';
-import 'package:fw_vendor/view/vendor_view/screen/login/profile.dart/timing_add_edit.dart';
-import 'package:fw_vendor/view/vendor_view/screen/login/profile.dart/timing_bar.dart';
+import 'package:fw_vendor/view/vendor_view/screen/home/profile/timing_bar.dart';
 import 'package:get/get.dart';
 import 'package:url_launcher/url_launcher.dart';
+
+import 'timing_add_edit.dart';
 
 class ProfileScreen extends StatefulWidget {
   const ProfileScreen({Key? key}) : super(key: key);
@@ -31,79 +33,60 @@ class _ProfileScreenState extends State<ProfileScreen> {
         },
         child: DefaultTabController(
           length: 5,
-          child: Scaffold(
-            appBar: AppBar(
-              elevation: 1,
-              automaticallyImplyLeading: true,
-              foregroundColor: Colors.white,
-              title: const Text("Profile"),
-            ),
-            body: Column(
-              children: [
-                TabBar(
-                  physics: const ScrollPhysics(parent: AlwaysScrollableScrollPhysics()),
-                  isScrollable: true,
-                  indicatorColor: Theme.of(context).primaryColor,
-                  tabs: [
-                    Tab(
-                      child: Text(
-                        "Account",
-                        style: AppCss.h2.copyWith(
-                          fontWeight: FontWeight.w500,
-                        ),
-                      ),
+          child: LoadingMode(
+            isLoading: profileController.isLoading,
+            child: Scaffold(
+              appBar: AppBar(
+                elevation: 1,
+                automaticallyImplyLeading: true,
+                foregroundColor: Colors.white,
+                title: const Text("Profile"),
+              ),
+              body: Column(
+                children: [
+                  TabBar(
+                      physics: const ScrollPhysics(parent: AlwaysScrollableScrollPhysics()),
+                      isScrollable: true,
+                      indicatorColor: Theme.of(context).primaryColor,
+                      tabs: tab()),
+                  Expanded(
+                    child: TabBarView(
+                      children: [
+                        _account(),
+                        _changePassword(),
+                        _preparationTime(),
+                        _shopAvailibillty(),
+                        _gst(),
+                      ],
                     ),
-                    Tab(
-                      child: Text(
-                        "Change password",
-                        style: AppCss.h2.copyWith(
-                          fontWeight: FontWeight.w500,
-                        ),
-                      ),
-                    ),
-                    Tab(
-                      child: Text(
-                        "Preparation Time",
-                        style: AppCss.h2.copyWith(
-                          fontWeight: FontWeight.w500,
-                        ),
-                      ),
-                    ),
-                    Tab(
-                      child: Text(
-                        "Shop Availibility",
-                        style: AppCss.h2.copyWith(
-                          fontWeight: FontWeight.w500,
-                        ),
-                      ),
-                    ),
-                    Tab(
-                      child: Text(
-                        "Gst",
-                        style: AppCss.h2.copyWith(
-                          fontWeight: FontWeight.w500,
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
-                Expanded(
-                  child: TabBarView(
-                    children: [
-                      _account(),
-                      _changePassword(),
-                      _preparationTime(),
-                      _shopAvailibillty(),
-                      _gst(),
-                    ],
                   ),
-                ),
-              ],
+                ],
+              ),
             ),
           ),
         ),
       ),
     );
+  }
+
+  var tabList = [
+    {"tab": "Account"},
+    {"tab": "Change password"},
+    {"tab": "Preparation Time"},
+    {"tab": "Shop Availibility"},
+    {"tab": "Gst"}
+  ];
+
+  List<Widget> tab() {
+    return [
+      for (int i = 0; i < tabList.length; i++)
+        Tab(
+          child: Text(
+            tabList[i]["tab"].toString(),
+            style: AppCss.h2.copyWith(fontWeight: FontWeight.w500),
+          ),
+        ),
+    ];
   }
 
   Widget _commonRow(
@@ -316,12 +299,14 @@ class _ProfileScreenState extends State<ProfileScreen> {
                       child: CommonOrdersTextCard(
                         name: "Shop Name",
                         controller: profileController.txtShopName,
+                        focusNode: profileController.txtShopNameFocus,
                       ),
                     ),
                     Expanded(
                       child: CommonOrdersTextCard(
                         name: "Name",
                         controller: profileController.txtName,
+                        focusNode: profileController.txtNameFocus,
                       ),
                     ),
                   ],
@@ -330,21 +315,25 @@ class _ProfileScreenState extends State<ProfileScreen> {
                   name: "Email Id",
                   keyboardType: TextInputType.emailAddress,
                   controller: profileController.txtEmailId,
+                  focusNode: profileController.txtEmailIdFocus,
                 ),
                 CommonOrdersTextCard(
                   name: "Address",
                   keyboardType: TextInputType.streetAddress,
                   controller: profileController.txtAddress,
+                  focusNode: profileController.txtAddressFocus,
                   minLines: 1,
                   maxLines: 4,
                 ),
                 CommonOrdersTextCard(
                   name: "Area",
                   controller: profileController.txtArea,
+                  focusNode: profileController.txtAreaFocus,
                 ),
                 CommonOrdersTextCard(
-                  name: "Pincode",
-                  controller: profileController.txtPincode,
+                  name: "PinCode",
+                  controller: profileController.txtPinCode,
+                  focusNode: profileController.txtPinCodeFocus,
                 ),
                 Row(
                   children: [
@@ -352,12 +341,14 @@ class _ProfileScreenState extends State<ProfileScreen> {
                       child: CommonOrdersTextCard(
                         name: "Lat",
                         controller: profileController.txtLat,
+                        focusNode: profileController.txtLatFocus,
                       ),
                     ),
                     Expanded(
                       child: CommonOrdersTextCard(
                         name: "Long",
                         controller: profileController.txtLong,
+                        focusNode: profileController.txtLongFocus,
                       ),
                     ),
                   ],
@@ -395,6 +386,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
         CommonOrdersTextCard(
           name: "Time in minutes",
           controller: profileController.txtPreparationTime,
+          focusNode: profileController.txtPreparationTimeFocus,
         ),
         const Spacer(),
         commonButton(
@@ -532,14 +524,17 @@ class _ProfileScreenState extends State<ProfileScreen> {
             CommonOrdersTextCard(
               name: "Current Password",
               controller: profileController.txtCurrentPassword,
+              focusNode: profileController.txtCurrentPasswordFocus,
             ),
             CommonOrdersTextCard(
               name: "New Password",
               controller: profileController.txtNewPassword,
+              focusNode: profileController.txtNewPasswordFocus,
             ),
             CommonOrdersTextCard(
               name: "Confirm Password",
               controller: profileController.txtConfirmPassword,
+              focusNode: profileController.txtConfirmPasswordFocus,
             ),
             const Spacer(),
             commonButton(
@@ -549,15 +544,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
             ).paddingOnly(left: 5),
           ],
         ).paddingAll(10),
-        if (profileController.isLoading)
-          Container(
-            width: MediaQuery.of(context).size.width,
-            height: MediaQuery.of(context).size.height,
-            color: Colors.white.withOpacity(.8),
-            child: const Center(
-              child: CircularProgressIndicator(),
-            ),
-          ),
       ],
     );
   }

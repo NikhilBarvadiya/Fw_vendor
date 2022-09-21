@@ -20,6 +20,7 @@ class SaveAddressController extends GetxController {
   @override
   void onInit() {
     _vendorAddresses();
+    txtSearchFocus.unfocus();
     super.onInit();
   }
 
@@ -28,8 +29,14 @@ class SaveAddressController extends GetxController {
       isMapper = false;
       update();
     } else {
-      Get.offNamed(AppRoutes.home);
+      Get.offNamedUntil(AppRoutes.home, (Route<dynamic> route) => false);
     }
+  }
+
+  _screenFocus() {
+    txtSearch.text = "";
+    txtSearchFocus.unfocus();
+    update();
   }
 
   onSearchButtonTapped() {
@@ -41,14 +48,18 @@ class SaveAddressController extends GetxController {
   }
 
   onSearchAddress() async {
+    txtSearchFocus.unfocus();
     await _vendorAddresses();
-    update();
   }
 
   void onRefresh() async {
     if (saveAddressList.length == limit) {
       limit = (saveAddressList.length) + 10;
+      _screenFocus();
       await _vendorAddresses();
+    }else{
+      _screenFocus();
+      _vendorAddresses();
     }
   }
 
@@ -131,18 +142,22 @@ class SaveAddressController extends GetxController {
   }
 
   onMapperButtonTapped() async {
+    _screenFocus();
+    isSearch = false;
     isMapper = !isMapper;
     await _vendorMappedAddress();
     update();
   }
 
   onMapperModeBack() async {
+    _screenFocus();
     isMapper = false;
     update();
     await _vendorAddresses();
   }
 
   onSearchMapperAddress() async {
+    txtSearchFocus.unfocus();
     await _vendorMappedAddress();
     update();
   }
@@ -150,6 +165,10 @@ class SaveAddressController extends GetxController {
   void onRefreshMapper() async {
     if (mappedAddressList.length == limitMapper) {
       limitMapper = (mappedAddressList.length) + 10;
+      _screenFocus();
+      await _vendorMappedAddress();
+    }else{
+      _screenFocus();
       await _vendorMappedAddress();
     }
   }

@@ -5,12 +5,17 @@ import 'package:fw_vendor/core/theme/index.dart';
 import 'package:fw_vendor/core/widgets/common_dialog/scale_dialog.dart';
 import 'package:fw_vendor/networking/index.dart';
 import 'package:get/get.dart';
+import 'dart:convert';
 
-class CreateGlobalOrdersCntroller extends GetxController {
+class CreateGlobalOrdersController extends GetxController {
   bool isLoading = false;
+  bool isSearch = false;
+  TextEditingController txtSearch = TextEditingController();
+  FocusNode txtSearchFocus = FocusNode();
   List vendorAreaList = [];
   List vendorAddressesByAreaList = [];
   List selectedOrderTrueList = [];
+  List filteredList = [];
   String areaSelected = "";
   String areaSelectedId = "";
 
@@ -29,6 +34,12 @@ class CreateGlobalOrdersCntroller extends GetxController {
     update();
   }
 
+  _screenFocus() {
+    isSearch = false;
+    txtSearch.text = "";
+    txtSearchFocus.unfocus();
+  }
+
   willPopScope() {
     if (areaSelected != "") {
       _onClean();
@@ -36,6 +47,26 @@ class CreateGlobalOrdersCntroller extends GetxController {
     } else {
       Get.offNamedUntil(AppRoutes.home, (route) => false);
     }
+  }
+
+  onSearchButtonTapped() {
+    if (isSearch && txtSearch.text != "") {
+      txtSearch.text = "";
+    }
+    isSearch = !isSearch;
+    update();
+  }
+
+  filterSearch() {
+    if (txtSearch.text == "") {
+      filteredList.clear();
+      filteredList = json.decode(json.encode(vendorAddressesByAreaList));
+    } else {
+      filteredList = vendorAddressesByAreaList
+          .where((record) => record["globalAddressId"]["name"].toString().toLowerCase().contains(txtSearch.text.toLowerCase()))
+          .toList();
+    }
+    update();
   }
 
   _vendorArea() async {
@@ -99,6 +130,7 @@ class CreateGlobalOrdersCntroller extends GetxController {
       );
       if (resData.isSuccess && resData.data != 0) {
         vendorAddressesByAreaList = resData.data;
+        filteredList = resData.data;
       }
     } catch (e) {
       snackBar("No pacakge data found", Colors.red);
@@ -110,6 +142,7 @@ class CreateGlobalOrdersCntroller extends GetxController {
   }
 
   onSelectedLocation() {
+    _screenFocus();
     if (selectedOrderTrueList.isNotEmpty) {
       Get.toNamed(AppRoutes.createGlobalOrdersDetailsScreen);
     } else {

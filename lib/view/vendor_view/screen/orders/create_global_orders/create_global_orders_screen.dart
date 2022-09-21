@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:fw_vendor/core/widgets/custom_widgets/custom_textformfield.dart';
 import 'package:fw_vendor/view/auth_checking_view/controller/app_controller.dart';
 import 'package:fw_vendor/core/theme/index.dart';
 import 'package:fw_vendor/core/widgets/common/common_button.dart';
@@ -18,17 +19,17 @@ class CreateGlobalOrdersScreen extends StatefulWidget {
 }
 
 class _CreateGlobalOrdersScreenState extends State<CreateGlobalOrdersScreen> {
-  CreateGlobalOrdersCntroller createGlobalOrdersCntroller = Get.put(CreateGlobalOrdersCntroller());
+  CreateGlobalOrdersController createGlobalOrdersController = Get.put(CreateGlobalOrdersController());
 
   @override
   Widget build(BuildContext context) {
-    return GetBuilder<CreateGlobalOrdersCntroller>(
+    return GetBuilder<CreateGlobalOrdersController>(
       builder: (_) => WillPopScope(
         onWillPop: () async {
-          return createGlobalOrdersCntroller.willPopScope();
+          return createGlobalOrdersController.willPopScope();
         },
         child: LoadingMode(
-          isLoading: createGlobalOrdersCntroller.isLoading,
+          isLoading: createGlobalOrdersController.isLoading,
           child: Scaffold(
             appBar: AppBar(
               elevation: 1,
@@ -42,19 +43,61 @@ class _CreateGlobalOrdersScreenState extends State<CreateGlobalOrdersScreen> {
                   Icons.arrow_back,
                 ),
                 onPressed: () {
-                  createGlobalOrdersCntroller.willPopScope();
+                  createGlobalOrdersController.willPopScope();
                 },
+              ),
+              actions: [
+                if (createGlobalOrdersController.areaSelectedId != "")
+                  IconButton(
+                    onPressed: () {
+                      createGlobalOrdersController.onSearchButtonTapped();
+                    },
+                    icon: Icon(createGlobalOrdersController.isSearch ? Icons.close : Icons.search),
+                  ),
+              ],
+              bottom: PreferredSize(
+                preferredSize: Size.fromHeight(createGlobalOrdersController.isSearch ? 50 : 0),
+                child: createGlobalOrdersController.isSearch
+                    ? Container(
+                        color: Colors.white,
+                        child: CustomTextFormField(
+                          container: createGlobalOrdersController.txtSearch,
+                          focusNode: createGlobalOrdersController.txtSearchFocus,
+                          hintText: "Search".tr,
+                          fillColor: Colors.white,
+                          prefixIcon: GestureDetector(
+                            onTap: () => createGlobalOrdersController.filterSearch(),
+                            child: Icon(
+                              Icons.search_rounded,
+                              color: Colors.blueGrey.withOpacity(0.8),
+                              size: createGlobalOrdersController.txtSearch.text != "" ? 15 : 20,
+                            ),
+                          ),
+                          padding: 15,
+                          radius: 0,
+                          counterText: "",
+                          validator: (value) {
+                            if (value!.isEmpty) {
+                              return "";
+                            } else {
+                              return null;
+                            }
+                          },
+                          onChanged: (_) => createGlobalOrdersController.filterSearch(),
+                        ),
+                      )
+                    : Container(),
               ),
             ),
             body: Stack(
               children: [
-                if (createGlobalOrdersCntroller.vendorAreaList.isNotEmpty && createGlobalOrdersCntroller.areaSelectedId == "")
+                if (createGlobalOrdersController.vendorAreaList.isNotEmpty && createGlobalOrdersController.areaSelectedId == "")
                   SearchableListView(
                     isLive: false,
                     isOnSearch: false,
                     isOnheder: false,
                     isDivider: true,
-                    itemList: createGlobalOrdersCntroller.vendorAreaList,
+                    itemList: createGlobalOrdersController.vendorAreaList,
                     hederText: "Area",
                     bindText: 'name',
                     bindValue: '_id',
@@ -65,10 +108,10 @@ class _CreateGlobalOrdersScreenState extends State<CreateGlobalOrdersScreen> {
                       fontSize: 15,
                     ),
                     onSelect: (val, text, e) {
-                      createGlobalOrdersCntroller.onRouteSelected(val, text);
+                      createGlobalOrdersController.onRouteSelected(val, text);
                     },
                   ),
-                if (createGlobalOrdersCntroller.areaSelectedId != "")
+                if (createGlobalOrdersController.areaSelectedId != "")
                   Column(
                     children: [
                       Container(
@@ -76,7 +119,7 @@ class _CreateGlobalOrdersScreenState extends State<CreateGlobalOrdersScreen> {
                         width: double.infinity,
                         padding: const EdgeInsets.only(bottom: 5, left: 5),
                         child: Text(
-                          createGlobalOrdersCntroller.areaSelectedId,
+                          createGlobalOrdersController.areaSelectedId,
                           style: AppCss.footnote.copyWith(fontSize: 16),
                         ),
                       ),
@@ -87,8 +130,8 @@ class _CreateGlobalOrdersScreenState extends State<CreateGlobalOrdersScreen> {
                             bottom: MediaQuery.of(context).size.height * 0.06,
                           ),
                           children: [
-                            if (createGlobalOrdersCntroller.vendorAddressesByAreaList.isNotEmpty)
-                              ...createGlobalOrdersCntroller.vendorAddressesByAreaList.map(
+                            if (createGlobalOrdersController.filteredList.isNotEmpty)
+                              ...createGlobalOrdersController.filteredList.map(
                                 (e) {
                                   return OrderAddressCard(
                                     addressHeder: e["globalAddressId"]["name"].toString(),
@@ -97,7 +140,7 @@ class _CreateGlobalOrdersScreenState extends State<CreateGlobalOrdersScreen> {
                                     date: getFormattedDate(e["globalAddressId"]["updatedAt"].toString()),
                                     address: e["globalAddressId"]["address"],
                                     onTap: () {
-                                      createGlobalOrdersCntroller.addToSelectedList(e);
+                                      createGlobalOrdersController.addToSelectedList(e);
                                     },
                                     icon: e['selected'] == true ? true : false,
                                   );
@@ -108,21 +151,21 @@ class _CreateGlobalOrdersScreenState extends State<CreateGlobalOrdersScreen> {
                       ),
                     ],
                   ).paddingAll(10),
-                if (createGlobalOrdersCntroller.areaSelectedId != "")
-                Align(
-                  alignment: Alignment.bottomCenter,
-                  child: commonButton(
-                    onTap: () {
-                      createGlobalOrdersCntroller.onSelectedLocation();
-                    },
-                    borderRadius: 0.0,
-                    margin: EdgeInsets.zero,
-                    color: createGlobalOrdersCntroller.selectedOrderTrueList.isNotEmpty ? AppController().appTheme.primary1 : Colors.grey,
-                    text: "Selected location (${createGlobalOrdersCntroller.selectedOrderTrueList.length})",
-                    height: 50.0,
+                if (createGlobalOrdersController.areaSelectedId != "")
+                  Align(
+                    alignment: Alignment.bottomCenter,
+                    child: commonButton(
+                      onTap: () {
+                        createGlobalOrdersController.onSelectedLocation();
+                      },
+                      borderRadius: 0.0,
+                      margin: EdgeInsets.zero,
+                      color: createGlobalOrdersController.selectedOrderTrueList.isNotEmpty ? AppController().appTheme.primary1 : Colors.grey,
+                      text: "Selected location (${createGlobalOrdersController.selectedOrderTrueList.length})",
+                      height: 50.0,
+                    ),
                   ),
-                ),
-                if (createGlobalOrdersCntroller.vendorAddressesByAreaList.isEmpty && createGlobalOrdersCntroller.areaSelectedId != "")
+                if (createGlobalOrdersController.filteredList.isEmpty && createGlobalOrdersController.areaSelectedId != "")
                   Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: const [

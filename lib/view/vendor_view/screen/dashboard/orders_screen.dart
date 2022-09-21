@@ -52,6 +52,7 @@ class OrderScreen extends StatelessWidget {
                   ),
                   IconButton(
                     onPressed: () {
+                      ordersController.txtSearchFocus.unfocus();
                       commonBottomSheet(
                         context: context,
                         height: MediaQuery.of(context).size.height * 0.341,
@@ -81,26 +82,51 @@ class OrderScreen extends StatelessWidget {
                   child: ordersController.isSearch
                       ? Container(
                           color: Colors.white,
-                          child: CustomTextFormField(
-                            container: ordersController.txtSearch,
-                            focusNode: ordersController.txtSearchFocus,
-                            hintText: ordersController.filterSelected != "" ? ordersController.filterSelected : "Search".tr,
-                            fillColor: Colors.white,
-                            prefixIcon: const Icon(Icons.search),
-                            padding: 15,
-                            radius: 0,
-                            maxLength: 10,
-                            counterText: "",
-                            validator: (value) {
-                              if (value!.isEmpty) {
-                                return "";
-                              } else {
-                                return null;
-                              }
-                            },
-                            onChanged: (val) {
-                              ordersController.onSearchOrders();
-                            },
+                          child: Row(
+                            children: [
+                              Expanded(
+                                child: CustomTextFormField(
+                                    container: ordersController.txtSearch,
+                                    focusNode: ordersController.txtSearchFocus,
+                                    hintText: ordersController.filterSelected != "" ? ordersController.filterSelected : "Search".tr,
+                                    fillColor: Colors.white,
+                                    prefixIcon: GestureDetector(
+                                      onTap: () {
+                                        ordersController.onSearchOrders();
+                                      },
+                                      child: Icon(
+                                        Icons.search_rounded,
+                                        color: Colors.blueGrey.withOpacity(0.8),
+                                        size: ordersController.txtSearch.text != "" ? 15 : 20,
+                                      ),
+                                    ),
+                                    padding: 15,
+                                    radius: 0,
+                                    counterText: "",
+                                    validator: (value) {
+                                      if (value!.isEmpty) {
+                                        return "";
+                                      } else {
+                                        return null;
+                                      }
+                                    },
+                                    onEditingComplete: () => ordersController.onSearchOrders()),
+                              ),
+                              GestureDetector(
+                                onTap: () => ordersController.customDate(),
+                                child: Card(
+                                  elevation: 0,
+                                  child: Container(
+                                    padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
+                                    child: Icon(
+                                      Icons.date_range,
+                                      size: 25,
+                                      color: Theme.of(context).primaryColor,
+                                    ),
+                                  ),
+                                ),
+                              ),
+                            ],
                           ),
                         )
                       : Container(),
@@ -193,7 +219,7 @@ class OrderScreen extends StatelessWidget {
                       ],
                     ).paddingOnly(top: 30),
                   ),
-                  if (ordersController.ordersDetailsList.isEmpty || ordersController.ordersDetailsList.length == null)
+                  if (ordersController.ordersDetailsList.isEmpty || ordersController.ordersDetailsList.length == null && !ordersController.isLoading)
                     Column(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: const [

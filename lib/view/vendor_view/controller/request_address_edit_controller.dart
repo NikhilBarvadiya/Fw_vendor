@@ -8,11 +8,16 @@ import 'package:get/get.dart';
 import 'package:stylish_dialog/stylish_dialog.dart';
 
 class RequestAddressEditController extends GetxController {
-  TextEditingController txtMobile = TextEditingController();
   TextEditingController txtName = TextEditingController();
+  FocusNode txtNameFocus = FocusNode();
+  TextEditingController txtMobile = TextEditingController();
+  FocusNode txtMobileFocus = FocusNode();
   TextEditingController txtLatLng = TextEditingController();
+  FocusNode txtLatLngFocus = FocusNode();
   TextEditingController txtPlusCode = TextEditingController();
-  TextEditingController txtAdress = TextEditingController();
+  FocusNode txtPlusFocus = FocusNode();
+  TextEditingController txtAddress = TextEditingController();
+  FocusNode txtAddressFocus = FocusNode();
   dynamic getAddress;
   String routesSelected = "";
   String routesSelectedId = "";
@@ -23,7 +28,23 @@ class RequestAddressEditController extends GetxController {
   void onInit() {
     getAddress = Get.arguments;
     _setAddressData();
+    screenFocus();
     super.onInit();
+  }
+
+  screenFocus(){
+    txtNameFocus.unfocus();
+    txtMobileFocus.unfocus();
+    txtLatLngFocus.unfocus();
+    txtPlusFocus.unfocus();
+    txtAddressFocus.unfocus();
+    routesSelected = "";
+    txtName.text = "";
+    txtMobile.text = "";
+    txtLatLng.text = "";
+    txtPlusCode.text = "";
+    txtAddress.text = "";
+    update();
   }
 
   _setAddressData() async {
@@ -34,17 +55,7 @@ class RequestAddressEditController extends GetxController {
     txtMobile.text = getAddress["mobile"];
     txtLatLng.text = getAddress["latLong"];
     txtPlusCode.text = getAddress["plusCode"];
-    txtAdress.text = getAddress["address"];
-    update();
-  }
-
-  onClear() {
-    routesSelected = "";
-    txtName.text = "";
-    txtMobile.text = "";
-    txtLatLng.text = "";
-    txtPlusCode.text = "";
-    txtAdress.text = "";
+    txtAddress.text = getAddress["address"];
     update();
   }
 
@@ -60,7 +71,7 @@ class RequestAddressEditController extends GetxController {
         Get.back();
         update();
         Get.offNamedUntil(AppRoutes.requestAddressScreen, (Route<dynamic> route) => false);
-        },
+      },
     );
     update();
   }
@@ -111,7 +122,7 @@ class RequestAddressEditController extends GetxController {
       isLoading = true;
       update();
       var body = {
-        "address": txtAdress.text,
+        "address": txtAddress.text,
         "addressName": txtName.text,
         "id": getAddress["_id"],
         "latLong": txtLatLng.text,

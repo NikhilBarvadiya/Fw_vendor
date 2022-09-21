@@ -1,3 +1,4 @@
+import 'package:calendar_date_picker2/calendar_date_picker2.dart';
 import 'package:flutter/material.dart';
 import 'package:fw_vendor/common/config.dart';
 import 'package:fw_vendor/core/configuration/app_routes.dart';
@@ -13,6 +14,8 @@ class OrdersController extends GetxController {
   bool isSearch = false;
   String filterSelected = "";
   List ordersDetailsList = [];
+  String startDateVendor = "";
+  String endDateVendor = "";
   dynamic locationData;
   int limit = 10;
 
@@ -25,7 +28,7 @@ class OrdersController extends GetxController {
   }
 
   willPopScope() {
-    Get.offNamed(AppRoutes.home);
+    Get.offNamedUntil(AppRoutes.home, (route) => false);
   }
 
   List searchFilter = [
@@ -83,6 +86,13 @@ class OrdersController extends GetxController {
     update();
   }
 
+  _screenFocus() {
+    txtSearch.clear();
+    txtSearchFocus.unfocus();
+    startDateVendor = "";
+    endDateVendor = "";
+  }
+
   onSearchButtonTapped() {
     if (isSearch && txtSearch.text != "") {
       txtSearch.text = "";
@@ -102,6 +112,7 @@ class OrdersController extends GetxController {
   }
 
   onSearchOrders() async {
+    _screenFocus();
     await _vendorOrders();
     update();
   }
@@ -109,8 +120,58 @@ class OrdersController extends GetxController {
   void onRefresh() async {
     if (ordersDetailsList.length == limit) {
       limit = (ordersDetailsList.length) + 10;
+      _screenFocus();
+      await _vendorOrders();
+    } else {
+      _screenFocus();
       await _vendorOrders();
     }
+    update();
+  }
+
+  customDate() {
+    _screenFocus();
+    Get.defaultDialog(
+      title: "Select dates",
+      barrierDismissible: false,
+      onWillPop: () async {
+        return true;
+      },
+      content: SizedBox(
+        height: Get.height * 0.5,
+        width: Get.width * 0.8,
+        child: _customDatePicker(),
+      ),
+    );
+  }
+
+  _customDatePicker() {
+    var config = CalendarDatePicker2WithActionButtonsConfig(
+      calendarType: CalendarDatePicker2Type.range,
+    );
+    List<DateTime?> _selectedDate = [];
+    return CalendarDatePicker2WithActionButtons(
+      config: config,
+      initialValue: [
+        DateTime.now(),
+        DateTime.now().add(const Duration(days: 1)),
+      ],
+      onValueChanged: (values) async {
+        _selectedDate = values;
+        isLoading = true;
+        update();
+        startDateVendor =
+            '${_selectedDate[0]!.year}-${_selectedDate[0]!.month.toString().padLeft(2, '0')}-${_selectedDate[0]!.day.toString().padLeft(2, '0')}';
+        endDateVendor =
+            '${_selectedDate[1]!.year}-${_selectedDate[1]!.month.toString().padLeft(2, '0')}-${_selectedDate[1]!.day.toString().padLeft(2, '0')}';
+        await _vendorOrders();
+        isLoading = false;
+        update();
+      },
+      onCancelTapped: () {
+        Get.back();
+      },
+    );
   }
 
   _vendorOrders() async {
@@ -123,8 +184,8 @@ class OrdersController extends GetxController {
         "searchType": filterSelected != "" ? filterSelected : "Order No",
         "search": txtSearch.text,
         "status": status ?? "pending",
-        "fromDate": "",
-        "toDate": "",
+        "fromDate": startDateVendor,
+        "toDate": endDateVendor,
       };
       var resData = await apis.call(
         apiMethods.vendorOrders,
@@ -172,6 +233,7 @@ class OrdersController extends GetxController {
   }
 
   onLocationClick(data) {
+    _screenFocus();
     Get.toNamed(AppRoutes.locationScreen, arguments: data);
     update();
   }

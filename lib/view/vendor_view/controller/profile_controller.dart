@@ -18,19 +18,32 @@ class ProfileController extends GetxController {
   bool isLoading = false;
   List shopAvailability = [];
   TextEditingController txtShopName = TextEditingController();
+  FocusNode txtShopNameFocus = FocusNode();
   TextEditingController txtName = TextEditingController();
+  FocusNode txtNameFocus = FocusNode();
   TextEditingController txtEmailId = TextEditingController();
+  FocusNode txtEmailIdFocus = FocusNode();
   TextEditingController txtAddress = TextEditingController();
+  FocusNode txtAddressFocus = FocusNode();
   TextEditingController txtArea = TextEditingController();
-  TextEditingController txtPincode = TextEditingController();
+  FocusNode txtAreaFocus = FocusNode();
+  TextEditingController txtPinCode = TextEditingController();
+  FocusNode txtPinCodeFocus = FocusNode();
   TextEditingController txtLat = TextEditingController();
+  FocusNode txtLatFocus = FocusNode();
   TextEditingController txtLong = TextEditingController();
+  FocusNode txtLongFocus = FocusNode();
   TextEditingController txtPreparationTime = TextEditingController();
+  FocusNode txtPreparationTimeFocus = FocusNode();
+  TextEditingController txtCurrentPassword = TextEditingController();
+  FocusNode txtCurrentPasswordFocus = FocusNode();
+  TextEditingController txtNewPassword = TextEditingController();
+  FocusNode txtNewPasswordFocus = FocusNode();
+  TextEditingController txtConfirmPassword = TextEditingController();
+  FocusNode txtConfirmPasswordFocus = FocusNode();
   TextEditingController txtGst = TextEditingController();
   TextEditingController txtGSTCertificate = TextEditingController();
-  TextEditingController txtCurrentPassword = TextEditingController();
-  TextEditingController txtNewPassword = TextEditingController();
-  TextEditingController txtConfirmPassword = TextEditingController();
+
   @override
   void onInit() {
     profileData = Get.arguments;
@@ -57,7 +70,7 @@ class ProfileController extends GetxController {
       txtEmailId.text = profileData["emailId"].toString();
       txtAddress.text = profileData["address"]["address_line"].toString();
       txtArea.text = profileData["address"]["area"].toString();
-      txtPincode.text = profileData["address"]["pincode"].toString();
+      txtPinCode.text = profileData["address"]["pincode"].toString();
       txtLat.text = profileData["address"]["geoLocation"]["lat"].toString();
       txtLong.text = profileData["address"]["geoLocation"]["long"].toString();
       update();
@@ -116,7 +129,7 @@ class ProfileController extends GetxController {
         txtEmailId.clear();
         txtAddress.clear();
         txtArea.clear();
-        txtPincode.clear();
+        txtPinCode.clear();
         txtLat.clear();
         txtLong.clear();
         update();
@@ -126,6 +139,7 @@ class ProfileController extends GetxController {
   }
 
   onPreparationTime(context) async {
+    txtPreparationTimeFocus.unfocus();
     try {
       isLoading = true;
       update();
@@ -247,6 +261,9 @@ class ProfileController extends GetxController {
   }
 
   onChangePassword() async {
+    txtCurrentPasswordFocus.unfocus();
+    txtNewPasswordFocus.unfocus();
+    txtConfirmPasswordFocus.unfocus();
     if (txtNewPassword.text == txtConfirmPassword.text) {
       try {
         isLoading = true;

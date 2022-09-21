@@ -11,15 +11,25 @@ import 'package:stylish_dialog/stylish_dialog.dart';
 
 class OrdersCreateController extends GetxController {
   TextEditingController txtName = TextEditingController();
+  FocusNode txtNameFocus = FocusNode();
   TextEditingController txtAddress = TextEditingController();
+  FocusNode txtAddressFocus = FocusNode();
   TextEditingController txtMobile = TextEditingController();
+  FocusNode txtMobileFocus = FocusNode();
   TextEditingController txtBillNo = TextEditingController();
+  FocusNode txtBillNoFocus = FocusNode();
   TextEditingController txtLoosePkg = TextEditingController();
+  FocusNode txtLoosePkgFocus = FocusNode();
   TextEditingController txtBoxPkg = TextEditingController();
+  FocusNode txtBoxPkgFocus = FocusNode();
   TextEditingController txtNotes = TextEditingController();
+  FocusNode txtNotesFocus = FocusNode();
   TextEditingController txtAmount = TextEditingController();
+  FocusNode txtAmountFocus = FocusNode();
   TextEditingController txtBillAmount = TextEditingController();
+  FocusNode txtBillAmountFocus = FocusNode();
   TextEditingController txtLatLng = TextEditingController();
+  FocusNode txtLatLngFocus = FocusNode();
   bool isLoading = false;
   bool isPaymentMode = false;
   List vendorRoutesList = [];
@@ -60,16 +70,11 @@ class OrdersCreateController extends GetxController {
   }
 
   willPopScope() {
-    createList.clear();
-    addresses.clear();
-    onCLear();
-    Get.offNamed(AppRoutes.home);
+    Get.offNamedUntil(AppRoutes.home, (Route<dynamic> route) => false);
   }
 
   willPopScopeCreateOrdersFroms() {
-    onCLear();
-    update();
-    Get.back();
+    Get.offNamedUntil(AppRoutes.createOrders, (Route<dynamic> route) => false);
   }
 
   onAdd() {

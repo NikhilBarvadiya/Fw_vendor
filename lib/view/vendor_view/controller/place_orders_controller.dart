@@ -78,30 +78,24 @@ class PlaceOrdersController extends GetxController {
                 name: "Bill Number",
                 controller: txtBillNumber,
                 keyboardType: TextInputType.number,
-                hederStyle: AppCss.footnote.copyWith(
-                  fontSize: 15,
-                ),
+                hederStyle: AppCss.footnote.copyWith(fontSize: 15),
               ),
               Row(
                 children: [
                   Expanded(
                     child: CommonOrdersTextCard(
-                      name: "Losse pakage",
+                      name: "Loose package",
                       controller: txtLoose,
                       keyboardType: TextInputType.number,
-                      hederStyle: AppCss.footnote.copyWith(
-                        fontSize: 15,
-                      ),
+                      hederStyle: AppCss.footnote.copyWith(fontSize: 15),
                     ),
                   ),
                   Expanded(
                     child: CommonOrdersTextCard(
-                      name: "Box pakage",
+                      name: "Box package",
                       controller: txtBox,
                       keyboardType: TextInputType.number,
-                      hederStyle: AppCss.footnote.copyWith(
-                        fontSize: 15,
-                      ),
+                      hederStyle: AppCss.footnote.copyWith(fontSize: 15),
                     ),
                   ),
                 ],
@@ -114,9 +108,7 @@ class PlaceOrdersController extends GetxController {
                       name: "Bill Amount",
                       controller: txtCash,
                       keyboardType: TextInputType.number,
-                      hederStyle: AppCss.footnote.copyWith(
-                        fontSize: 15,
-                      ),
+                      hederStyle: AppCss.footnote.copyWith(fontSize: 15),
                     ),
                   ),
                   Expanded(
@@ -124,9 +116,7 @@ class PlaceOrdersController extends GetxController {
                       name: "Amount",
                       controller: txtAmount,
                       keyboardType: TextInputType.number,
-                      hederStyle: AppCss.footnote.copyWith(
-                        fontSize: 15,
-                      ),
+                      hederStyle: AppCss.footnote.copyWith(fontSize: 15),
                     ),
                   ),
                   CommonRequestAddressChips(
@@ -143,11 +133,11 @@ class PlaceOrdersController extends GetxController {
               CommonOrdersTextCard(
                 name: "Notes",
                 controller: txtNotes,
-                hederStyle: AppCss.footnote.copyWith(
-                  fontSize: 15,
-                ),
+                hederStyle: AppCss.footnote.copyWith(fontSize: 15),
               ),
               commonButton(
+                margin: EdgeInsets.zero,
+                borderRadius: 0.0,
                 onTap: () {
                   var data = {
                     "_id": index,
@@ -159,11 +149,7 @@ class PlaceOrdersController extends GetxController {
                     "nOfPackages": txtLoose.text != "" ? txtLoose.text.toString() : "0",
                     "notes": txtNotes.text != "" ? txtNotes.text.toString() : "---",
                   };
-                  editCheck = edit
-                      .where(
-                        (element) => (element["_id"] == data["_id"]),
-                      )
-                      .toList();
+                  editCheck = edit.where((element) => (element["_id"] == data["_id"])).toList();
                   if (editCheck.isEmpty) {
                     edit.add(data);
                     _onClear();
@@ -178,9 +164,9 @@ class PlaceOrdersController extends GetxController {
                 },
                 text: "Done",
                 height: 50.0,
-              ).paddingAll(10),
+              ),
             ],
-          ).paddingSymmetric(vertical: 10);
+          ).paddingOnly(top: 10);
         },
       ),
     );

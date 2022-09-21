@@ -48,6 +48,7 @@ class _OrdersFromScreenState extends State<OrdersFromScreen> {
                   CommonOrdersTextCard(
                     name: "Name",
                     controller: ordersCreateController.txtName,
+                    focusNode: ordersCreateController.txtNameFocus,
                     readOnly: true,
                     onTap: () {
                       ordersCreateController.onCLear();
@@ -75,6 +76,7 @@ class _OrdersFromScreenState extends State<OrdersFromScreen> {
                     name: "Address",
                     keyboardType: TextInputType.streetAddress,
                     controller: ordersCreateController.txtAddress,
+                    focusNode: ordersCreateController.txtAddressFocus,
                     minLines: 1,
                     maxLines: 4,
                   ),
@@ -114,6 +116,7 @@ class _OrdersFromScreenState extends State<OrdersFromScreen> {
                   CommonOrdersTextCard(
                     name: "Mobile",
                     controller: ordersCreateController.txtMobile,
+                    focusNode: ordersCreateController.txtMobileFocus,
                     keyboardType: TextInputType.number,
                   ),
                   Row(
@@ -122,6 +125,7 @@ class _OrdersFromScreenState extends State<OrdersFromScreen> {
                         child: CommonOrdersTextCard(
                           name: "Bill No",
                           controller: ordersCreateController.txtBillNo,
+                          focusNode: ordersCreateController.txtBillNoFocus,
                           keyboardType: TextInputType.number,
                         ),
                       ),
@@ -130,6 +134,7 @@ class _OrdersFromScreenState extends State<OrdersFromScreen> {
                           name: "Loose Pkg",
                           keyboardType: TextInputType.number,
                           controller: ordersCreateController.txtLoosePkg,
+                          focusNode: ordersCreateController.txtLoosePkgFocus,
                         ),
                       ),
                       Expanded(
@@ -137,6 +142,7 @@ class _OrdersFromScreenState extends State<OrdersFromScreen> {
                           name: "Box Pkg",
                           keyboardType: TextInputType.number,
                           controller: ordersCreateController.txtBoxPkg,
+                          focusNode: ordersCreateController.txtBoxPkgFocus,
                         ),
                       ),
                     ],
@@ -144,6 +150,7 @@ class _OrdersFromScreenState extends State<OrdersFromScreen> {
                   CommonOrdersTextCard(
                     name: "Notes",
                     controller: ordersCreateController.txtNotes,
+                    focusNode: ordersCreateController.txtNotesFocus,
                   ),
                   Row(
                     crossAxisAlignment: CrossAxisAlignment.start,
@@ -153,6 +160,7 @@ class _OrdersFromScreenState extends State<OrdersFromScreen> {
                           name: "Amount",
                           keyboardType: TextInputType.number,
                           controller: ordersCreateController.txtAmount,
+                          focusNode: ordersCreateController.txtAmountFocus,
                         ),
                       ),
                       Expanded(
@@ -160,6 +168,7 @@ class _OrdersFromScreenState extends State<OrdersFromScreen> {
                           name: "Bill Amount",
                           keyboardType: TextInputType.number,
                           controller: ordersCreateController.txtBillAmount,
+                          focusNode: ordersCreateController.txtBillAmountFocus,
                         ),
                       ),
                       CommonRequestAddressChips(
@@ -174,6 +183,7 @@ class _OrdersFromScreenState extends State<OrdersFromScreen> {
                   CommonOrdersTextCard(
                     name: "lat-Long",
                     controller: ordersCreateController.txtLatLng,
+                    focusNode: ordersCreateController.txtLatLngFocus,
                   ),
                 ],
               ),

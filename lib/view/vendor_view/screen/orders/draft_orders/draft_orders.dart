@@ -105,6 +105,7 @@ class _DraftOrderScreenState extends State<DraftOrderScreen> {
                     ),
                   ],
                 ).paddingAll(10),
+                if(draftOrdersController.getDraftOrderList.isNotEmpty)
                 Align(
                   alignment: Alignment.bottomCenter,
                   child: commonButton(

@@ -49,7 +49,7 @@ class EmployeHomeController extends GetxController with GetSingleTickerProviderS
               child: const Text("Ok"),
               onPressed: () {
                 clearStorage();
-                Get.offNamedUntil(AppRoutes.typeScreen, (route) => false);
+                Get.offNamedUntil(AppRoutes.login, (route) => false);
               },
             ),
             TextButton(

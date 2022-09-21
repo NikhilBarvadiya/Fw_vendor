@@ -20,6 +20,11 @@ class CashSettlementController extends GetxController {
     super.onInit();
   }
 
+  _screenFocus() {
+    txtSearch.text = "";
+    txtSearchFocus.unfocus();
+  }
+
   List filters = [
     {
       "label": "pending",
@@ -44,7 +49,7 @@ class CashSettlementController extends GetxController {
       if (a == i) {
         filters[a]["isActive"] = true;
         selectedFilters = filters[a]["label"];
-        txtSearchFocus.unfocus();
+        _screenFocus();
       } else {
         filters[a]["isActive"] = false;
       }
@@ -67,6 +72,7 @@ class CashSettlementController extends GetxController {
   }
 
   onSearchAddress() async {
+    _screenFocus();
     await _codSettlement();
     update();
   }
@@ -74,6 +80,10 @@ class CashSettlementController extends GetxController {
   void onRefresh() async {
     if (codSettlementList.length == limit) {
       limit = (codSettlementList.length) + 10;
+      _screenFocus();
+      await _codSettlement();
+    } else {
+      _screenFocus();
       await _codSettlement();
     }
   }

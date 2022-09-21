@@ -50,6 +50,7 @@ class BillCopySettlementController extends GetxController {
   }
 
   onSearchOrders() async {
+    txtSearchFocus.unfocus();
     await _setBillDetails();
     update();
   }

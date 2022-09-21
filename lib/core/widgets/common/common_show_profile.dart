@@ -1,7 +1,7 @@
 // ignore_for_file: must_be_immutable, deprecated_member_use
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:fw_vendor/view/vendor_view/controller/login_controller.dart';
+import 'package:fw_vendor/view/auth_checking_view/controller/login_controller.dart';
 import 'package:get/get.dart';
 
 class CommonShowProfile extends StatelessWidget {

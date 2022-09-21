@@ -1,9 +1,11 @@
 // ignore_for_file: must_be_immutable
 import 'package:flutter/material.dart';
 import 'package:fw_vendor/core/assets/index.dart';
+import 'package:fw_vendor/core/theme/app_css.dart';
 import 'package:fw_vendor/core/utilities/index.dart';
+import 'package:fw_vendor/core/widgets/common_employe_widgets/custom_textfield.dart';
 import 'package:fw_vendor/core/widgets/common_loading/loading.dart';
-import 'package:fw_vendor/view/vendor_view/controller/login_controller.dart';
+import 'package:fw_vendor/view/auth_checking_view/controller/login_controller.dart';
 import 'package:get/get.dart';
 
 class LoginScreen extends StatefulWidget {
@@ -20,7 +22,7 @@ class _LoginScreenState extends State<LoginScreen> {
   Widget build(BuildContext context) {
     return GetBuilder<LoginController>(
       builder: (_) => WillPopScope(
-        onWillPop: () async => true,
+        onWillPop: () async => false,
         child: LoadingMode(
           isLoading: loginController.isLoading,
           child: Scaffold(
@@ -40,20 +42,41 @@ class _LoginScreenState extends State<LoginScreen> {
                           scale: 8,
                         ),
                         _uiTxtView(),
-                        _txtCard(
-                          name: "Email Id",
-                          obscureText: false,
-                          icon: Icons.email,
-                          controller: loginController.txtEmailController,
-                        ),
-                        _txtCard(
-                          name: "Password",
-                          obscureText: true,
-                          icon: Icons.lock,
-                          controller: loginController.txtPasswordController,
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Row(
+                              children: [
+                                Checkbox(
+                                  checkColor: Colors.white,
+                                  value: loginController.isEmploye,
+                                  onChanged: (value) => loginController.employeLogin(value),
+                                ),
+                                Text(
+                                  "Employee",
+                                  style: AppCss.h1,
+                                ),
+                              ],
+                            ),
+                            SizedBox(width: appScreenUtil.screenHeight(MediaQuery.of(context).size.height) * 0.02),
+                            Row(
+                              children: [
+                                Checkbox(
+                                  checkColor: Colors.white,
+                                  value: loginController.isVendor,
+                                  onChanged: (value) => loginController.vendorLogin(value),
+                                ),
+                                Text(
+                                  "Vendor",
+                                  style: AppCss.h1,
+                                )
+                              ],
+                            ),
+                          ],
                         ),
                         SizedBox(height: appScreenUtil.screenHeight(MediaQuery.of(context).size.height) * 0.02),
-                        _loginView(),
+                        if (loginController.isVendor == true) _vendorLogin(),
+                        if (loginController.isVendor != true) _employeeLogin(),
                       ],
                     ),
                   )
@@ -80,7 +103,7 @@ class _LoginScreenState extends State<LoginScreen> {
           ),
         ),
         Text(
-          "Please login to start your vendor session.",
+          "Please login to start your ${loginController.isVendor != true ? "employee" : "vendor"} session.",
           style: TextStyle(
             color: Colors.grey[700],
             fontSize: appScreenUtil.fontSize(12),
@@ -119,16 +142,51 @@ class _LoginScreenState extends State<LoginScreen> {
     ).paddingOnly(left: 20, right: 20);
   }
 
-  _loginView() {
+  _employeeLogin() {
+    return Column(
+      children: [
+        customTextField(
+          name: "Mobile number",
+          maxLength: 10,
+          keyboardType: TextInputType.number,
+          controller: loginController.txtMobileNumber,
+          focusNode: loginController.focusMobileNumber,
+        ),
+        SizedBox(height: appScreenUtil.screenHeight(MediaQuery.of(context).size.height) * 0.02),
+        _loginView(onPressed: () => loginController.onEmployeeLogin()),
+      ],
+    );
+  }
+
+  _vendorLogin() {
+    return Column(
+      children: [
+        _txtCard(
+          name: "Email Id",
+          obscureText: false,
+          icon: Icons.email,
+          controller: loginController.txtEmailController,
+        ),
+        _txtCard(
+          name: "Password",
+          obscureText: true,
+          icon: Icons.lock,
+          controller: loginController.txtPasswordController,
+        ),
+        SizedBox(height: appScreenUtil.screenHeight(MediaQuery.of(context).size.height) * 0.02),
+        _loginView(onPressed: () => loginController.onVendorLogin()),
+      ],
+    );
+  }
+
+  _loginView({onPressed}) {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 25),
       child: MaterialButton(
         textColor: Colors.white,
-        shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(6)
-        ),
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(6)),
         color: loginController.isLoading ? Theme.of(context).primaryColor.withOpacity(.5) : Theme.of(context).primaryColor,
-        onPressed: () => loginController.onLoginButton(),
+        onPressed: onPressed,
         child: Padding(
           padding: const EdgeInsets.all(10),
           child: Row(
@@ -150,5 +208,4 @@ class _LoginScreenState extends State<LoginScreen> {
       ),
     );
   }
-
 }

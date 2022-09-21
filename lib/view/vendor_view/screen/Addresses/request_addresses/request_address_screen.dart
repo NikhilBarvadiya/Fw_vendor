@@ -58,10 +58,16 @@ class _RequestAddressScreenState extends State<RequestAddressScreen> {
                           focusNode: requestAddressControler.txtSearchFocus,
                           hintText: "Search".tr,
                           fillColor: Colors.white,
-                          prefixIcon: const Icon(Icons.search),
+                          prefixIcon: GestureDetector(
+                            onTap: () => requestAddressControler.onSearchAddress(),
+                            child: Icon(
+                              Icons.search_rounded,
+                              color: Colors.blueGrey.withOpacity(0.8),
+                              size: requestAddressControler.txtSearch.text != "" ? 15 : 20,
+                            ),
+                          ),
                           padding: 15,
                           radius: 0,
-                          maxLength: 10,
                           counterText: "",
                           validator: (value) {
                             if (value!.isEmpty) {
@@ -70,9 +76,7 @@ class _RequestAddressScreenState extends State<RequestAddressScreen> {
                               return null;
                             }
                           },
-                          onChanged: (val) {
-                            requestAddressControler.onSearchAddress();
-                          },
+                          onEditingComplete: () => requestAddressControler.onSearchAddress(),
                         ),
                       )
                     : Container(),

@@ -1,3 +1,5 @@
+// ignore_for_file: must_be_immutable
+
 import 'package:flutter/material.dart';
 import 'package:fw_vendor/core/theme/index.dart';
 import 'package:get/get_utils/src/extensions/widget_extensions.dart';
@@ -12,6 +14,7 @@ class CommonOrdersTextCard extends StatefulWidget {
   final dynamic elevation;
   final void Function()? onTap;
   final TextEditingController? controller;
+  final FocusNode? focusNode;
   final TextInputType? keyboardType;
   final TextStyle? hederStyle;
 
@@ -28,6 +31,7 @@ class CommonOrdersTextCard extends StatefulWidget {
     this.minLines,
     this.hederStyle,
     this.elevation,
+    this.focusNode,
   }) : super(key: key);
 
   @override
@@ -52,14 +56,16 @@ class _CommonOrdersTextCardState extends State<CommonOrdersTextCard> {
         children: [
           Text(
             widget.name ?? "",
-            style: widget.hederStyle ?? AppCss.footnote,
+            style: widget.hederStyle ?? AppCss.footnote.copyWith(fontSize: 14),
           ).paddingOnly(left: 5, top: 5),
           Container(
             color: Theme.of(context).canvasColor.withOpacity(.1),
             child: TextFormField(
+              autofocus: false,
               readOnly: widget.readOnly ?? false,
               onTap: widget.onTap,
               controller: widget.controller,
+              focusNode: widget.focusNode,
               keyboardType: widget.keyboardType ?? TextInputType.text,
               maxLines: widget.maxLines,
               minLines: widget.minLines,

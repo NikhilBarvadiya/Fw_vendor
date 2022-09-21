@@ -43,8 +43,7 @@ class GlobalDirectoryController extends GetxController {
       _onClean();
       update();
     } else {
-      _onClean();
-      Get.offNamed(AppRoutes.home);
+      Get.offNamedUntil(AppRoutes.home, (Route<dynamic> route) => false);
     }
   }
 
@@ -56,7 +55,8 @@ class GlobalDirectoryController extends GetxController {
     update();
   }
 
-  onSearchglobalAddress() async {
+  onSearchGlobalAddress() async {
+    txtSearchFocus.unfocus();
     await _vendorGlobalAddresses();
     update();
   }
@@ -108,9 +108,20 @@ class GlobalDirectoryController extends GetxController {
     } else {}
   }
 
+  _screenFocus() {
+    isSearch = false;
+    txtSearch.text = "";
+    txtSearchFocus.unfocus();
+    selectedOrderTrueList.clear();
+  }
+
   void onRefresh() async {
     if (globalAddressesList.length == limit) {
       limit = (globalAddressesList.length) + 10;
+      _screenFocus();
+      await _vendorGlobalAddresses();
+    } else {
+      _screenFocus();
       await _vendorGlobalAddresses();
     }
   }
@@ -158,7 +169,7 @@ class GlobalDirectoryController extends GetxController {
         selectedOrderTrueList.add(item);
         txtSearchFocus.unfocus();
         update();
-      }else{
+      } else {
         selectedOrderTrueList.remove(item);
         update();
       }

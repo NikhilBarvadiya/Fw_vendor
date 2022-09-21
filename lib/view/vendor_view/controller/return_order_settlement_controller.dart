@@ -17,6 +17,7 @@ class ReturnOrderSettlementController extends GetxController {
   @override
   void onInit() async {
     _cashControllerStart();
+    _screenFocus();
     super.onInit();
   }
 
@@ -39,12 +40,17 @@ class ReturnOrderSettlementController extends GetxController {
     onChange(0);
   }
 
+  _screenFocus() {
+    txtSearch.text = "";
+    txtSearchFocus.unfocus();
+  }
+
   onChange(int i) {
     for (int a = 0; a < filters.length; a++) {
       if (a == i) {
         filters[a]["isActive"] = true;
         selectedFilters = filters[a]["label"];
-        txtSearchFocus.unfocus();
+        _screenFocus();
       } else {
         filters[a]["isActive"] = false;
       }
@@ -67,6 +73,7 @@ class ReturnOrderSettlementController extends GetxController {
   }
 
   onSearch() async {
+    _screenFocus();
     await _returnSettlement();
     update();
   }
@@ -74,6 +81,7 @@ class ReturnOrderSettlementController extends GetxController {
   void onRefresh() async {
     if (returnOrderSettlementList.length == limit) {
       limit = (returnOrderSettlementList.length) + 10;
+      _screenFocus();
       await _returnSettlement();
     }
   }

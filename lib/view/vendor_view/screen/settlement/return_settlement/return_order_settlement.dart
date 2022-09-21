@@ -11,12 +11,14 @@ import 'package:get/get.dart';
 
 class ReturnOrderSettlementScreen extends StatefulWidget {
   const ReturnOrderSettlementScreen({Key? key}) : super(key: key);
+
   @override
   State<ReturnOrderSettlementScreen> createState() => _ReturnOrderSettlementScreenState();
 }
 
 class _ReturnOrderSettlementScreenState extends State<ReturnOrderSettlementScreen> {
   ReturnOrderSettlementController returnOrderSettlementController = Get.put(ReturnOrderSettlementController());
+
   @override
   Widget build(BuildContext context) {
     return GetBuilder<ReturnOrderSettlementController>(
@@ -56,10 +58,16 @@ class _ReturnOrderSettlementScreenState extends State<ReturnOrderSettlementScree
                         focusNode: returnOrderSettlementController.txtSearchFocus,
                         hintText: "Search".tr,
                         fillColor: Colors.white,
-                        prefixIcon: const Icon(Icons.search),
+                        prefixIcon: GestureDetector(
+                          onTap: () => returnOrderSettlementController.onSearch(),
+                          child: Icon(
+                            Icons.search_rounded,
+                            color: Colors.blueGrey.withOpacity(0.8),
+                            size: returnOrderSettlementController.txtSearch.text != "" ? 15 : 20,
+                          ),
+                        ),
                         padding: 15,
                         radius: 0,
-                        maxLength: 10,
                         counterText: "",
                         validator: (value) {
                           if (value!.isEmpty) {
@@ -68,9 +76,7 @@ class _ReturnOrderSettlementScreenState extends State<ReturnOrderSettlementScree
                             return null;
                           }
                         },
-                        onChanged: (val) {
-                          returnOrderSettlementController.onSearch();
-                        },
+                        onEditingComplete: () => returnOrderSettlementController.onSearch(),
                       ),
                     )
                   : Container(),
@@ -85,10 +91,14 @@ class _ReturnOrderSettlementScreenState extends State<ReturnOrderSettlementScree
                       for (int i = 0; i < returnOrderSettlementController.filters.length; i++)
                         CommonChips(
                           onTap: () => returnOrderSettlementController.onChange(i),
-                          color: returnOrderSettlementController.filters[i]["isActive"] ? AppController().appTheme.primary.withOpacity(.8) : Colors.white,
+                          color: returnOrderSettlementController.filters[i]["isActive"]
+                              ? AppController().appTheme.primary.withOpacity(.8)
+                              : Colors.white,
                           text: returnOrderSettlementController.filters[i]["label"].toString().capitalizeFirst,
                           style: AppCss.poppins.copyWith(
-                            color: returnOrderSettlementController.filters[i]["isActive"] ? Colors.white : AppController().appTheme.primary1.withOpacity(.8),
+                            color: returnOrderSettlementController.filters[i]["isActive"]
+                                ? Colors.white
+                                : AppController().appTheme.primary1.withOpacity(.8),
                           ),
                         ),
                     ],
@@ -104,11 +114,18 @@ class _ReturnOrderSettlementScreenState extends State<ReturnOrderSettlementScree
                             ...returnOrderSettlementController.returnOrderSettlementList.map(
                               (e) {
                                 return CommonReturnOrderSettlementCard(
-                                  orderNo: e["vendorOrderId"]["orderNo"] != "" && e["vendorOrderId"]["orderNo"] != null ? e["vendorOrderId"]["orderNo"].toString() : "",
-                                  personName: e["addressId"] != "" && e["addressId"] != null ? e["addressId"]["name"].toString() : e["name"].toString(),
-                                  address: e["addressId"] != "" && e["addressId"] != null ? e["addressId"]["address"].toString() : e["address"].toString(),
-                                  mobile: e["addressId"] != "" && e["addressId"] != null ? e["addressId"]["mobile"].toString() : e["mobile"].toString(),
-                                  date: e["vendorOrderId"]["updatedAt"] != "" && e["vendorOrderId"]["updatedAt"] != null ? getFormattedDate(e["vendorOrderId"]["updatedAt"].toString()) : "",
+                                  orderNo: e["vendorOrderId"]["orderNo"] != "" && e["vendorOrderId"]["orderNo"] != null
+                                      ? e["vendorOrderId"]["orderNo"].toString()
+                                      : "",
+                                  personName:
+                                      e["addressId"] != "" && e["addressId"] != null ? e["addressId"]["name"].toString() : e["name"].toString(),
+                                  address:
+                                      e["addressId"] != "" && e["addressId"] != null ? e["addressId"]["address"].toString() : e["address"].toString(),
+                                  mobile:
+                                      e["addressId"] != "" && e["addressId"] != null ? e["addressId"]["mobile"].toString() : e["mobile"].toString(),
+                                  date: e["vendorOrderId"]["updatedAt"] != "" && e["vendorOrderId"]["updatedAt"] != null
+                                      ? getFormattedDate(e["vendorOrderId"]["updatedAt"].toString())
+                                      : "",
                                   cashAmount: e["cash"] != "" && e["cash"] != null ? e["cash"].toString() : "",
                                   billNo: e["billNo"] != "" && e["billNo"] != null ? e["billNo"].toString() : "",
                                 );

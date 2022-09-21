@@ -81,10 +81,22 @@ class SaveAddressScreen extends StatelessWidget {
                         focusNode: saveAddressController.txtSearchFocus,
                         hintText: "Search".tr,
                         fillColor: Colors.white,
-                        prefixIcon: const Icon(Icons.search),
+                        prefixIcon: GestureDetector(
+                          onTap: () {
+                            if (saveAddressController.isMapper) {
+                              saveAddressController.onSearchMapperAddress();
+                            } else {
+                              saveAddressController.onSearchAddress();
+                            }
+                          },
+                          child: Icon(
+                            Icons.search_rounded,
+                            color: Colors.blueGrey.withOpacity(0.8),
+                            size: saveAddressController.txtSearch.text != "" ? 15 : 20,
+                          ),
+                        ),
                         padding: 15,
                         radius: 0,
-                        maxLength: 10,
                         counterText: "",
                         validator: (value) {
                           if (value!.isEmpty) {
@@ -93,7 +105,7 @@ class SaveAddressScreen extends StatelessWidget {
                             return null;
                           }
                         },
-                        onChanged: (val) {
+                        onEditingComplete: () {
                           if (saveAddressController.isMapper) {
                             saveAddressController.onSearchMapperAddress();
                           } else {

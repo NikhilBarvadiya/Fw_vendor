@@ -21,7 +21,7 @@ class RequestAddressControler extends GetxController {
   }
 
   willPopScope() {
-    Get.offNamed(AppRoutes.home);
+    Get.offNamedUntil(AppRoutes.home, (Route<dynamic> route) => false);
   }
 
   onSearchButtonTapped() {
@@ -32,7 +32,13 @@ class RequestAddressControler extends GetxController {
     update();
   }
 
+  _screenFocus() {
+    txtSearch.text = "";
+    txtSearchFocus.unfocus();
+  }
+
   onSearchAddress() async {
+    txtSearchFocus.unfocus();
     await _vendorRequestedAddress();
     update();
   }
@@ -40,6 +46,10 @@ class RequestAddressControler extends GetxController {
   void onRefresh() async {
     if (vendorRequestAddressList.length == limit) {
       limit = (vendorRequestAddressList.length) + 10;
+      _screenFocus();
+      await _vendorRequestedAddress();
+    } else {
+      _screenFocus();
       await _vendorRequestedAddress();
     }
   }

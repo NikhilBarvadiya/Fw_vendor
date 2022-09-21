@@ -14,6 +14,7 @@ Widget customTextField({
       borderRadius: BorderRadius.circular(8.0),
     ),
     child: TextFormField(
+      autofocus: false,
       controller: controller,
       focusNode: focusNode,
       textAlign: TextAlign.start,

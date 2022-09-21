@@ -113,7 +113,7 @@ class DashBoardScreen extends StatelessWidget {
                 child: CommonNoteCard(
                   note: dashboardController.bannersNote,
                 ),
-              )
+              ),
             ],
           ).paddingSymmetric(horizontal: Get.height * 0.01),
         );

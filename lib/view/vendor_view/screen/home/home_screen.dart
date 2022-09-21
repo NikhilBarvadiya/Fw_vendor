@@ -5,7 +5,7 @@ import 'package:flutter_switch/flutter_switch.dart';
 import 'package:fw_vendor/core/widgets/custom_widgets/drawer.dart';
 import 'package:fw_vendor/view/vendor_view/controller/common_controller.dart';
 import 'package:fw_vendor/view/vendor_view/controller/home_controller.dart';
-import 'package:fw_vendor/view/vendor_view/controller/login_controller.dart';
+import 'package:fw_vendor/view/auth_checking_view/controller/login_controller.dart';
 import 'package:fw_vendor/view/vendor_view/screen/dashboard/dashboard_screen.dart';
 import 'package:get/get.dart';
 
@@ -36,9 +36,7 @@ class _HomeScreenState extends State<HomeScreen> {
             foregroundColor: Colors.white,
             title: Text(
               homeController.pages[homeController.selectedIndex]["pageName"].toString(),
-              style: const TextStyle(
-                fontSize: 20,
-              ),
+              style: const TextStyle(fontSize: 20),
               textScaleFactor: 1,
               textAlign: TextAlign.center,
             ),
@@ -54,24 +52,12 @@ class _HomeScreenState extends State<HomeScreen> {
                 showOnOff: true,
                 activeToggleColor: Colors.white,
                 inactiveToggleColor: Colors.white,
-                activeSwitchBorder: Border.all(
-                  color: Theme.of(context).primaryColor.withOpacity(0.3),
-                  width: 1.0,
-                ),
-                inactiveSwitchBorder: Border.all(
-                  color: Theme.of(context).canvasColor,
-                  width: 1.0,
-                ),
+                activeSwitchBorder: Border.all(color: Theme.of(context).primaryColor.withOpacity(0.3), width: 1.0),
+                inactiveSwitchBorder: Border.all(color: Theme.of(context).canvasColor, width: 1.0),
                 activeColor: Colors.green,
                 inactiveColor: Colors.red,
-                activeIcon: const Icon(
-                  Icons.check,
-                  color: Colors.green,
-                ),
-                inactiveIcon: const Icon(
-                  Icons.close,
-                  color: Colors.red,
-                ),
+                activeIcon: const Icon(Icons.check, color: Colors.green),
+                inactiveIcon: const Icon(Icons.close, color: Colors.red),
                 activeText: 'On'.tr,
                 inactiveText: 'Off'.tr,
                 onToggle: (val) {

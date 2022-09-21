@@ -112,14 +112,7 @@ class Apis {
     } else if (response.statusCode == 401) {
       snackBar('unauthorized access please login');
       removeSpecificKeyStorage(Session.authToken.toString());
-      var userData = await getStorage(Session.userData);
-      if (userData != null && userData != 0) {
-        if (userData["userType"] == "vendor") {
-          Get.toNamed(AppRoutes.login);
-        } else {
-          Get.toNamed(AppRoutes.employeLogin);
-        }
-      }
+      Get.toNamed(AppRoutes.login);
       return APIDataClass(
         isSuccess: response.data['IsSuccess'],
         message: response.data['Message'],
