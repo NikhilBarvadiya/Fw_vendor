@@ -28,7 +28,7 @@ class _ReturnOrderSettlementScreenState extends State<ReturnOrderSettlementScree
           return returnOrderSettlementController.willPopScope();
         },
         child: LoadingMode(
-          isLoading:returnOrderSettlementController.isLoading,
+          isLoading: returnOrderSettlementController.isLoading,
           child: Scaffold(
             appBar: AppBar(
               elevation: 1,
@@ -48,7 +48,12 @@ class _ReturnOrderSettlementScreenState extends State<ReturnOrderSettlementScree
                   onPressed: () {
                     returnOrderSettlementController.onSearchButtonTapped();
                   },
-                  icon: Icon(returnOrderSettlementController.isSearch ? Icons.close : Icons.search),
+                  icon: Container(
+                    color: returnOrderSettlementController.isSearch ? Colors.redAccent : Theme.of(context).primaryColor,
+                    child: Icon(
+                      returnOrderSettlementController.isSearch ? Icons.close : Icons.search,
+                    ),
+                  ),
                 ),
               ],
               bottom: PreferredSize(
@@ -122,8 +127,9 @@ class _ReturnOrderSettlementScreenState extends State<ReturnOrderSettlementScree
                                         : "",
                                     personName:
                                         e["addressId"] != "" && e["addressId"] != null ? e["addressId"]["name"].toString() : e["name"].toString(),
-                                    address:
-                                        e["addressId"] != "" && e["addressId"] != null ? e["addressId"]["address"].toString() : e["address"].toString(),
+                                    address: e["addressId"] != "" && e["addressId"] != null
+                                        ? e["addressId"]["address"].toString()
+                                        : e["address"].toString(),
                                     mobile:
                                         e["addressId"] != "" && e["addressId"] != null ? e["addressId"]["mobile"].toString() : e["mobile"].toString(),
                                     date: e["vendorOrderId"]["updatedAt"] != "" && e["vendorOrderId"]["updatedAt"] != null
@@ -140,7 +146,7 @@ class _ReturnOrderSettlementScreenState extends State<ReturnOrderSettlementScree
                     ),
                   ],
                 ),
-                if (returnOrderSettlementController.returnOrderSettlementList.isEmpty&&!returnOrderSettlementController.isLoading)
+                if (returnOrderSettlementController.returnOrderSettlementList.isEmpty && !returnOrderSettlementController.isLoading)
                   Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: const [

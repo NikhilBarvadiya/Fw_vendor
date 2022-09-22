@@ -13,7 +13,7 @@ class GlobalDirectoryController extends GetxController {
   FocusNode txtSearchFocus = FocusNode();
   int limit = 10;
   bool isLoading = false;
-  bool isSearch = false;
+  bool isSearch = true;
   String areaSelected = "";
   String areaSelectedId = "";
   List requestsList = [];

@@ -11,7 +11,7 @@ class OrdersController extends GetxController {
   FocusNode txtSearchFocus = FocusNode();
   dynamic status;
   bool isLoading = false;
-  bool isSearch = false;
+  bool isSearch = true;
   String filterSelected = "";
   List ordersDetailsList = [];
   String startDateVendor = "";

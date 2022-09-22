@@ -9,7 +9,7 @@ class ReturnOrderSettlementController extends GetxController {
   TextEditingController txtSearch = TextEditingController();
   FocusNode txtSearchFocus = FocusNode();
   bool isLoading = false;
-  bool isSearch = false;
+  bool isSearch = true;
   int limit = 10;
   String selectedFilters = "";
   List returnOrderSettlementList = [];

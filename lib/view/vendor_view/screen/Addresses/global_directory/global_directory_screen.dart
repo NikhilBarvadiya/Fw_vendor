@@ -48,10 +48,15 @@ class GlobalDirectoryScreen extends StatelessWidget {
                     onPressed: () {
                       globalDirectoryController.onSearchButtonTapped();
                     },
-                    icon: Icon(globalDirectoryController.isSearch ? Icons.close : Icons.search),
+                    icon: Container(
+                      color: globalDirectoryController.isSearch ? Colors.redAccent : Theme.of(context).primaryColor,
+                      child: Icon(
+                        globalDirectoryController.isSearch ? Icons.close : Icons.search,
+                      ),
+                    ),
                   ),
               ],
-              bottom: PreferredSize(
+              bottom:globalDirectoryController.areaSelected != ""? PreferredSize(
                 preferredSize: Size.fromHeight(globalDirectoryController.isSearch ? 50 : 0),
                 child: globalDirectoryController.isSearch
                     ? Container(
@@ -83,7 +88,7 @@ class GlobalDirectoryScreen extends StatelessWidget {
                         ),
                       )
                     : Container(),
-              ),
+              ):null,
             ),
             body: Stack(
               children: [

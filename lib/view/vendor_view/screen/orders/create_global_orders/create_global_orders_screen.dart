@@ -52,42 +52,49 @@ class _CreateGlobalOrdersScreenState extends State<CreateGlobalOrdersScreen> {
                     onPressed: () {
                       createGlobalOrdersController.onSearchButtonTapped();
                     },
-                    icon: Icon(createGlobalOrdersController.isSearch ? Icons.close : Icons.search),
+                    icon: Container(
+                      color: createGlobalOrdersController.isSearch ? Colors.redAccent : Theme.of(context).primaryColor,
+                      child: Icon(
+                        createGlobalOrdersController.isSearch ? Icons.close : Icons.search,
+                      ),
+                    ),
                   ),
               ],
-              bottom: PreferredSize(
-                preferredSize: Size.fromHeight(createGlobalOrdersController.isSearch ? 50 : 0),
-                child: createGlobalOrdersController.isSearch
-                    ? Container(
-                        color: Colors.white,
-                        child: CustomTextFormField(
-                          container: createGlobalOrdersController.txtSearch,
-                          focusNode: createGlobalOrdersController.txtSearchFocus,
-                          hintText: "Search".tr,
-                          fillColor: Colors.white,
-                          prefixIcon: GestureDetector(
-                            onTap: () => createGlobalOrdersController.filterSearch(),
-                            child: Icon(
-                              Icons.search_rounded,
-                              color: Colors.blueGrey.withOpacity(0.8),
-                              size: createGlobalOrdersController.txtSearch.text != "" ? 15 : 20,
-                            ),
-                          ),
-                          padding: 15,
-                          radius: 0,
-                          counterText: "",
-                          validator: (value) {
-                            if (value!.isEmpty) {
-                              return "";
-                            } else {
-                              return null;
-                            }
-                          },
-                          onChanged: (_) => createGlobalOrdersController.filterSearch(),
-                        ),
-                      )
-                    : Container(),
-              ),
+              bottom: createGlobalOrdersController.areaSelectedId != ""
+                  ? PreferredSize(
+                      preferredSize: Size.fromHeight(createGlobalOrdersController.isSearch ? 50 : 0),
+                      child: createGlobalOrdersController.isSearch
+                          ? Container(
+                              color: Colors.white,
+                              child: CustomTextFormField(
+                                container: createGlobalOrdersController.txtSearch,
+                                focusNode: createGlobalOrdersController.txtSearchFocus,
+                                hintText: "Search".tr,
+                                fillColor: Colors.white,
+                                prefixIcon: GestureDetector(
+                                  onTap: () => createGlobalOrdersController.filterSearch(),
+                                  child: Icon(
+                                    Icons.search_rounded,
+                                    color: Colors.blueGrey.withOpacity(0.8),
+                                    size: createGlobalOrdersController.txtSearch.text != "" ? 15 : 20,
+                                  ),
+                                ),
+                                padding: 15,
+                                radius: 0,
+                                counterText: "",
+                                validator: (value) {
+                                  if (value!.isEmpty) {
+                                    return "";
+                                  } else {
+                                    return null;
+                                  }
+                                },
+                                onChanged: (_) => createGlobalOrdersController.filterSearch(),
+                              ),
+                            )
+                          : Container(),
+                    )
+                  : null,
             ),
             body: Stack(
               children: [

@@ -43,12 +43,6 @@ class _BillCopySettlementScreenState extends State<BillCopySettlementScreen> {
               actions: [
                 IconButton(
                   onPressed: () {
-                    billCopySettlementController.onSearchButtonTapped();
-                  },
-                  icon: Icon(billCopySettlementController.isSearch ? Icons.close : Icons.search),
-                ),
-                IconButton(
-                  onPressed: () {
                     commonBottomSheet(
                       context: context,
                       height: MediaQuery.of(context).size.height * 0.341,
@@ -71,6 +65,17 @@ class _BillCopySettlementScreenState extends State<BillCopySettlementScreen> {
                     );
                   },
                   icon: const Icon(Icons.filter_alt_sharp),
+                ),
+                IconButton(
+                  onPressed: () {
+                    billCopySettlementController.onSearchButtonTapped();
+                  },
+                  icon: Container(
+                    color: billCopySettlementController.isSearch ? Colors.redAccent : Theme.of(context).primaryColor,
+                    child: Icon(
+                      billCopySettlementController.isSearch ? Icons.close : Icons.search,
+                    ),
+                  ),
                 ),
               ],
               bottom: PreferredSize(
@@ -109,7 +114,7 @@ class _BillCopySettlementScreenState extends State<BillCopySettlementScreen> {
             ),
             body: Column(
               children: [
-                if (billCopySettlementController.billDetailsList.isNotEmpty&&!billCopySettlementController.isLoading)
+                if (billCopySettlementController.billDetailsList.isNotEmpty && !billCopySettlementController.isLoading)
                   Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: const [

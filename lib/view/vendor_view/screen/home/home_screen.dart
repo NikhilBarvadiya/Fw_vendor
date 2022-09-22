@@ -2,7 +2,7 @@
 // ignore_for_file: must_be_immutable
 import 'package:flutter/material.dart';
 import 'package:flutter_switch/flutter_switch.dart';
-import 'package:fw_vendor/core/widgets/custom_widgets/drawer.dart';
+import 'package:fw_vendor/view/vendor_view/screen/home/drawer.dart';
 import 'package:fw_vendor/view/vendor_view/controller/common_controller.dart';
 import 'package:fw_vendor/view/vendor_view/controller/home_controller.dart';
 import 'package:fw_vendor/view/auth_checking_view/controller/login_controller.dart';

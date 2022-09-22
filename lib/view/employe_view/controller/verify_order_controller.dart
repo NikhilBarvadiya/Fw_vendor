@@ -16,13 +16,17 @@ class VerifyOrderController extends GetxController {
   TextEditingController txtAmount = TextEditingController();
   TextEditingController txtBillNumber = TextEditingController();
   TextEditingController txtPKG = TextEditingController();
+  FocusNode txtPKGFocus = FocusNode();
   TextEditingController txtBOX = TextEditingController();
+  FocusNode txtBOXFocus = FocusNode();
   TextEditingController txtNote = TextEditingController();
+  FocusNode txtNoteFocus = FocusNode();
   TextEditingController txtPersonName = TextEditingController();
   bool isLoading = false;
   bool isAdd = false;
 
   dynamic employeUserData;
+
   @override
   void onInit() {
     arguments = Get.arguments;
@@ -37,6 +41,12 @@ class VerifyOrderController extends GetxController {
     txtBOX.text = "0";
     txtNote.text = "";
     super.onInit();
+  }
+
+  _screenFocus() {
+    txtPKGFocus.unfocus();
+    txtBOXFocus.unfocus();
+    txtNoteFocus.unfocus();
   }
 
   // Api calling.....
@@ -88,7 +98,7 @@ class VerifyOrderController extends GetxController {
           context: Get.context,
           alertType: StylishDialogType.INFO,
           contentText: "This bill number already in draft, You can increase PKG to update.",
-          confirmButton: Colors.green,
+          confirmButton: Colors.blue,
           onPressed: () {
             isAdd = true;
             update();
@@ -113,6 +123,7 @@ class VerifyOrderController extends GetxController {
   }
 
   draftOrderClick() async {
+    _screenFocus();
     await _draftOrder();
     update();
   }

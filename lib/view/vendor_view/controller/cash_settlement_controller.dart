@@ -9,7 +9,7 @@ class CashSettlementController extends GetxController {
   TextEditingController txtSearch = TextEditingController();
   FocusNode txtSearchFocus = FocusNode();
   bool isLoading = false;
-  bool searchButton = false;
+  bool searchButton = true;
   String selectedFilters = "";
   List codSettlementList = [];
   int limit = 10;
@@ -37,7 +37,7 @@ class CashSettlementController extends GetxController {
   ];
 
   willPopScope() {
-    Get.offNamed(AppRoutes.home);
+    Get.offNamedUntil(AppRoutes.home, (route) => false);
   }
 
   _cashControllerStart() {

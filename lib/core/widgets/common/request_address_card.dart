@@ -55,36 +55,38 @@ class _RequestAddressCardState extends State<RequestAddressCard> {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 if (widget.addressName != null)
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        widget.addressName ?? "",
-                        style: AppCss.h3.copyWith(
-                          color: Colors.black,
-                          fontSize: 15,
-                        ),
-                      ).paddingOnly(bottom: 5),
-                      Row(
-                        children: [
-                          Text(
-                            widget.date ?? "",
-                            style: AppCss.footnote.copyWith(
-                              color: Colors.black,
-                            ),
-                          ).paddingOnly(right: 8),
-                          if (widget.mobileNumber != null && widget.mobileNumber != "")
+                  Expanded(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          widget.addressName ?? "",
+                          style: AppCss.h3.copyWith(
+                            color: Colors.black,
+                            fontSize: 15,
+                          ),
+                        ).paddingOnly(bottom: 5),
+                        Row(
+                          children: [
                             Text(
-                              widget.mobileNumber ?? "",
-                              style: AppCss.body1.copyWith(
+                              widget.date ?? "",
+                              style: AppCss.footnote.copyWith(
                                 color: Colors.black,
-                                fontSize: 12,
-                                fontWeight: FontWeight.w500,
                               ),
-                            ),
-                        ],
-                      ),
-                    ],
+                            ).paddingOnly(right: 8),
+                            if (widget.mobileNumber != null && widget.mobileNumber != "")
+                              Text(
+                                widget.mobileNumber ?? "",
+                                style: AppCss.body1.copyWith(
+                                  color: Colors.black,
+                                  fontSize: 12,
+                                  fontWeight: FontWeight.w500,
+                                ),
+                              ),
+                          ],
+                        ),
+                      ],
+                    ),
                   ),
                 if (widget.type != null)
                   Card(

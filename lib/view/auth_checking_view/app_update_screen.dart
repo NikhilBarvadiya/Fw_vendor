@@ -25,7 +25,7 @@ class _AppUpdateScreenState extends State<AppUpdateScreen> {
           body: Stack(
             children: [
               Image.asset(
-                "assets/icons/background.png",
+                "assets/background.png",
                 height: MediaQuery.of(context).size.height,
                 width: MediaQuery.of(context).size.width,
                 colorBlendMode: BlendMode.modulate,
@@ -40,7 +40,7 @@ class _AppUpdateScreenState extends State<AppUpdateScreen> {
                     mainAxisSize: MainAxisSize.min,
                     children: [
                       Image.asset(
-                        "assets/icons/fastwhistle_loading.gif",
+                        "assets/fastwhistle_loading.gif",
                         height: 150,
                         width: 150,
                       ),
@@ -107,7 +107,7 @@ class _AppUpdateScreenState extends State<AppUpdateScreen> {
                 left: 0,
                 right: 0,
                 child: Image.asset(
-                  "assets/icons/text_logo.png",
+                  "assets/text_logo.png",
                   height: 120,
                   colorBlendMode: BlendMode.modulate,
                 ),

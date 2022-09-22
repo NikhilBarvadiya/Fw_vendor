@@ -46,7 +46,12 @@ class _ShowAddressBookScreenState extends State<ShowAddressBookScreen> {
                   onPressed: () {
                     showAddressBookController.onSearchButtonTapped();
                   },
-                  icon: Icon(showAddressBookController.isSearch ? Icons.close : Icons.search),
+                  icon: Container(
+                    color: showAddressBookController.isSearch ? Colors.redAccent : Theme.of(context).primaryColor,
+                    child: Icon(
+                      showAddressBookController.isSearch ? Icons.close : Icons.search,
+                    ),
+                  ),
                 ),
               ],
               bottom: PreferredSize(
@@ -106,7 +111,7 @@ class _ShowAddressBookScreenState extends State<ShowAddressBookScreen> {
                     ],
                   ).paddingAll(5),
                 ),
-                if (showAddressBookController.getCustomerAddressList.isEmpty&&!showAddressBookController.isLoading)
+                if (showAddressBookController.getCustomerAddressList.isEmpty && !showAddressBookController.isLoading)
                   Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: const [

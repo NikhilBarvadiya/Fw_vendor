@@ -12,7 +12,7 @@ class SaveAddressController extends GetxController {
   List saveAddressList = [];
   List mappedAddressList = [];
   bool isLoading = false;
-  bool isSearch = false;
+  bool isSearch = true;
   bool isMapper = false;
   int limit = 10;
   int limitMapper = 10;
@@ -143,7 +143,6 @@ class SaveAddressController extends GetxController {
 
   onMapperButtonTapped() async {
     _screenFocus();
-    isSearch = false;
     isMapper = !isMapper;
     await _vendorMappedAddress();
     update();

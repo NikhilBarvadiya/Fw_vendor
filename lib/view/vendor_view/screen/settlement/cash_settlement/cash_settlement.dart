@@ -48,7 +48,12 @@ class _CashSettlementScreenState extends State<CashSettlementScreen> {
                   onPressed: () {
                     cashSettlementController.onSearchButtonTapped();
                   },
-                  icon: Icon(cashSettlementController.searchButton ? Icons.close : Icons.search),
+                  icon: Container(
+                    color: cashSettlementController.searchButton ? Colors.redAccent : Theme.of(context).primaryColor,
+                    child: Icon(
+                      cashSettlementController.searchButton ? Icons.close : Icons.search,
+                    ),
+                  ),
                 ),
               ],
               bottom: PreferredSize(
@@ -97,7 +102,8 @@ class _CashSettlementScreenState extends State<CashSettlementScreen> {
                             color: cashSettlementController.filters[i]["isActive"] ? AppController().appTheme.primary.withOpacity(.8) : Colors.white,
                             text: cashSettlementController.filters[i]["label"].toString().capitalizeFirst,
                             style: AppCss.poppins.copyWith(
-                              color: cashSettlementController.filters[i]["isActive"] ? Colors.white : AppController().appTheme.primary1.withOpacity(.8),
+                              color:
+                                  cashSettlementController.filters[i]["isActive"] ? Colors.white : AppController().appTheme.primary1.withOpacity(.8),
                             ),
                           ),
                       ],
@@ -145,7 +151,7 @@ class _CashSettlementScreenState extends State<CashSettlementScreen> {
                     ),
                   ],
                 ),
-                if (cashSettlementController.codSettlementList.isEmpty&&!cashSettlementController.isLoading)
+                if (cashSettlementController.codSettlementList.isEmpty && !cashSettlementController.isLoading)
                   Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: const [

@@ -21,7 +21,7 @@ class BillCopySettlementController extends GetxController {
   }
 
   willPopScope() {
-    Get.offNamed(AppRoutes.home);
+    Get.offNamedUntil(AppRoutes.home, (route) => false);
   }
 
   List searchFilter = [

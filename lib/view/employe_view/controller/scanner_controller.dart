@@ -112,6 +112,9 @@ class ScannerController extends GetxController {
           onPressed: () {
             Get.back();
             qrViewController!.resumeCamera();
+            // Get.toNamed(AppRoutes.addOrder, arguments: shopName)!.then((value) {
+            //   qrViewController!.resumeCamera();
+            // });
           },
         );
       }

@@ -41,7 +41,12 @@ class _RequestAddressScreenState extends State<RequestAddressScreen> {
               actions: [
                 IconButton(
                   onPressed: () => requestAddressController.onSearchButtonTapped(),
-                  icon: Icon(requestAddressController.isSearch ? Icons.close : Icons.search),
+                  icon: Container(
+                    color: requestAddressController.isSearch ? Colors.redAccent : Theme.of(context).primaryColor,
+                    child: Icon(
+                      requestAddressController.isSearch ? Icons.close : Icons.search,
+                    ),
+                  ),
                 ),
               ],
               bottom: PreferredSize(
@@ -86,7 +91,7 @@ class _RequestAddressScreenState extends State<RequestAddressScreen> {
                   },
                   child: ListView(
                     padding: EdgeInsets.only(
-                      top: 10,
+                      top: 5,
                       bottom: MediaQuery.of(context).size.height * 0.06,
                     ),
                     children: [

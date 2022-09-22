@@ -30,9 +30,7 @@ class DraftOrdersController extends GetxController {
   }
 
   willPopScope() {
-    selectedOrderList.clear();
-    update();
-    Get.offNamed(AppRoutes.home);
+    Get.offNamedUntil(AppRoutes.home, (route) => false);
   }
 
   _getVendorDraftOrder() async {

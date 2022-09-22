@@ -9,7 +9,7 @@ import 'dart:convert';
 
 class CreateGlobalOrdersController extends GetxController {
   bool isLoading = false;
-  bool isSearch = false;
+  bool isSearch = true;
   TextEditingController txtSearch = TextEditingController();
   FocusNode txtSearchFocus = FocusNode();
   List vendorAreaList = [];

@@ -5,6 +5,7 @@ import 'package:get/get.dart';
 
 Widget commonTextField({
   TextEditingController? controller,
+  FocusNode? focusNode,
   TextInputType? keyboardType,
   int? maxLength,
   String? hintText,
@@ -13,6 +14,7 @@ Widget commonTextField({
   dynamic width,
   dynamic minLines,
   dynamic maxLines,
+  dynamic contentPadding,
   bool readOnly = false,
 }) {
   return Column(
@@ -40,7 +42,9 @@ Widget commonTextField({
             ),
           ),
           child: TextFormField(
+            autofocus: false,
             controller: controller,
+            focusNode: focusNode,
             keyboardType: keyboardType,
             maxLength: maxLength,
             minLines: minLines,
@@ -51,7 +55,7 @@ Widget commonTextField({
               counterText: '',
               hintText: hintText,
               hintStyle: const TextStyle(fontSize: 12, color: Colors.grey),
-              contentPadding: const EdgeInsets.only(left: 10),
+              contentPadding: contentPadding ?? const EdgeInsets.only(left: 10),
               border: InputBorder.none,
             ),
           ),

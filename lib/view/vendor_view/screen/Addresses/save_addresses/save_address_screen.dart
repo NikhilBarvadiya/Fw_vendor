@@ -54,7 +54,23 @@ class SaveAddressScreen extends StatelessWidget {
                   onPressed: () {
                     saveAddressController.onSearchButtonTapped();
                   },
-                  icon: Icon(saveAddressController.isSearch ? Icons.close : Icons.search),
+                  icon: Container(
+                    color: saveAddressController.isMapper
+                        ? saveAddressController.isSearch
+                            ? Colors.white
+                            : Colors.deepOrange
+                        : saveAddressController.isSearch
+                            ? Colors.redAccent
+                            : Theme.of(context).primaryColor,
+                    child: Icon(
+                      saveAddressController.isSearch ? Icons.close : Icons.search,
+                      color: saveAddressController.isMapper
+                          ? saveAddressController.isSearch
+                              ? Colors.deepOrange
+                              : Colors.white
+                          : Colors.white,
+                    ),
+                  ),
                 ),
                 !saveAddressController.isMapper
                     ? PopupMenuButton(

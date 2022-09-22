@@ -95,7 +95,7 @@ class _LoginScreenState extends State<LoginScreen> {
       mainAxisSize: MainAxisSize.min,
       children: [
         Text(
-          "Vendor Panel",
+          "${loginController.isVendor != true ? "Employee" : "Vendor"} Panel",
           style: TextStyle(
             color: Theme.of(context).primaryColor,
             fontSize: appScreenUtil.fontSize(20),
@@ -114,14 +114,16 @@ class _LoginScreenState extends State<LoginScreen> {
     ).paddingSymmetric(horizontal: 25, vertical: 10);
   }
 
-  _txtCard({name, icon, controller, obscureText}) {
+  _txtCard({name, icon, controller, obscureText, focusNode}) {
     return Card(
       elevation: 2,
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(8.0),
       ),
       child: TextFormField(
+        autofocus: false,
         controller: controller,
+        focusNode: focusNode,
         textAlign: TextAlign.start,
         keyboardType: TextInputType.emailAddress,
         obscureText: obscureText,
@@ -166,12 +168,14 @@ class _LoginScreenState extends State<LoginScreen> {
           obscureText: false,
           icon: Icons.email,
           controller: loginController.txtEmailController,
+          focusNode: loginController.focusEmailNumber,
         ),
         _txtCard(
           name: "Password",
           obscureText: true,
           icon: Icons.lock,
           controller: loginController.txtPasswordController,
+          focusNode: loginController.focusPasswordNumber,
         ),
         SizedBox(height: appScreenUtil.screenHeight(MediaQuery.of(context).size.height) * 0.02),
         _loginView(onPressed: () => loginController.onVendorLogin()),

@@ -46,12 +46,6 @@ class OrderScreen extends StatelessWidget {
                 actions: [
                   IconButton(
                     onPressed: () {
-                      ordersController.onSearchButtonTapped();
-                    },
-                    icon: Icon(ordersController.isSearch ? Icons.close : Icons.search),
-                  ),
-                  IconButton(
-                    onPressed: () {
                       ordersController.txtSearchFocus.unfocus();
                       commonBottomSheet(
                         context: context,
@@ -75,6 +69,18 @@ class OrderScreen extends StatelessWidget {
                       );
                     },
                     icon: const Icon(Icons.filter_alt_sharp),
+                  ),
+                  IconButton(
+                    onPressed: () {
+                      ordersController.onSearchButtonTapped();
+                    },
+                    icon: Container(
+                      color: ordersController.isSearch ? Colors.redAccent : Theme.of(context).primaryColor,
+                      child: Icon(
+                        ordersController.isSearch ? Icons.close : Icons.search,
+                        color: Colors.white,
+                      ),
+                    ),
                   ),
                 ],
                 bottom: PreferredSize(
@@ -159,6 +165,15 @@ class OrderScreen extends StatelessWidget {
                     },
                     child: ListView(
                       children: [
+                        if (ordersController.startDateVendor != "" && ordersController.endDateVendor != "")
+                          Container(
+                            alignment: Alignment.topLeft,
+                            child: Text(
+                              "${ordersController.startDateVendor} "
+                              "- ${ordersController.endDateVendor}",
+                              style: AppCss.h3,
+                            ),
+                          ).paddingOnly(left: 5),
                         if (ordersController.ordersDetailsList.length != null)
                           ...ordersController.ordersDetailsList.map(
                             (e) {
@@ -219,7 +234,17 @@ class OrderScreen extends StatelessWidget {
                       ],
                     ).paddingOnly(top: 30),
                   ),
-                  if (ordersController.ordersDetailsList.isEmpty || ordersController.ordersDetailsList.length == null && !ordersController.isLoading)
+                  if (ordersController.ordersDetailsList.isEmpty && !ordersController.isLoading)
+                    Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: const [
+                        NoDataWidget(
+                          title: "No data !",
+                          body: "No orders available",
+                        ),
+                      ],
+                    ),
+                  if (ordersController.ordersDetailsList.length == null && !ordersController.isLoading)
                     Column(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: const [
