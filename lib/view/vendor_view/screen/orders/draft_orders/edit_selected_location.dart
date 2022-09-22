@@ -17,17 +17,17 @@ class _EditSelectedLocationScreenState extends State<EditSelectedLocationScreen>
   @override
   Widget build(BuildContext context) {
     return GetBuilder<DraftOrdersController>(
-      builder: (_) => Scaffold(
-        appBar: AppBar(
-          elevation: 1,
-          foregroundColor: Colors.white,
-          title: const Text(
-            "Edit Selected Location",
+      builder: (_) => LoadingMode(
+        isLoading: draftOrdersController.isLoading,
+        child: Scaffold(
+          appBar: AppBar(
+            elevation: 1,
+            foregroundColor: Colors.white,
+            title: const Text(
+              "Edit Selected Location",
+            ),
           ),
-        ),
-        body: LoadingMode(
-          isLoading: draftOrdersController.isLoading,
-          child: Stack(
+          body: Stack(
             children: [
               ListView(
                 shrinkWrap: true,
@@ -40,7 +40,7 @@ class _EditSelectedLocationScreenState extends State<EditSelectedLocationScreen>
                   CommonOrdersTextCard(
                     name: "Address",
                     keyboardType: TextInputType.streetAddress,
-                    controller: draftOrdersController.txtAdress,
+                    controller: draftOrdersController.txtAddress,
                     readOnly: true,
                     minLines: 1,
                     maxLines: 4,

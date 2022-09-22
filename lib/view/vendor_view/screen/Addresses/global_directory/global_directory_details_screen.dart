@@ -14,23 +14,23 @@ class GlobalDirectoryDetailsScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return GetBuilder<GlobalDirectoryController>(
-      builder: (_) => Scaffold(
-        appBar: AppBar(
-          elevation: 1,
-          automaticallyImplyLeading: true,
-          foregroundColor: Colors.white,
-          title: const Text(
-            "Selected Addresses",
-            style: TextStyle(
-              fontSize: 20,
+      builder: (_) => LoadingMode(
+        isLoading: globalDirectoryController.isLoading,
+        child: Scaffold(
+          appBar: AppBar(
+            elevation: 1,
+            automaticallyImplyLeading: true,
+            foregroundColor: Colors.white,
+            title: const Text(
+              "Selected Addresses",
+              style: TextStyle(
+                fontSize: 20,
+              ),
+              textScaleFactor: 1,
+              textAlign: TextAlign.center,
             ),
-            textScaleFactor: 1,
-            textAlign: TextAlign.center,
           ),
-        ),
-        body: LoadingMode(
-          isLoading: globalDirectoryController.isLoading,
-          child: Stack(
+          body: Stack(
             children: [
               Column(
                 crossAxisAlignment: CrossAxisAlignment.start,

@@ -165,7 +165,9 @@ class _CreateGlobalOrdersScreenState extends State<CreateGlobalOrdersScreen> {
                       height: 50.0,
                     ),
                   ),
-                if (createGlobalOrdersController.filteredList.isEmpty && createGlobalOrdersController.areaSelectedId != "")
+                if (createGlobalOrdersController.filteredList.isEmpty &&
+                    createGlobalOrdersController.areaSelectedId != "" &&
+                    !createGlobalOrdersController.isLoading)
                   Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: const [

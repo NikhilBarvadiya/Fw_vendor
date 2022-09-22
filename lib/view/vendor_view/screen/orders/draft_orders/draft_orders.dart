@@ -26,24 +26,24 @@ class _DraftOrderScreenState extends State<DraftOrderScreen> {
         onWillPop: () async {
           return draftOrdersController.willPopScope();
         },
-        child: Scaffold(
-          appBar: AppBar(
-            elevation: 1,
-            automaticallyImplyLeading: false,
-            foregroundColor: Colors.white,
-            title: const Text("Your Draft Orders"),
-            leading: IconButton(
-              icon: const Icon(
-                Icons.arrow_back,
+        child: LoadingMode(
+          isLoading: draftOrdersController.isLoading,
+          child: Scaffold(
+            appBar: AppBar(
+              elevation: 1,
+              automaticallyImplyLeading: false,
+              foregroundColor: Colors.white,
+              title: const Text("Your Draft Orders"),
+              leading: IconButton(
+                icon: const Icon(
+                  Icons.arrow_back,
+                ),
+                onPressed: () {
+                  draftOrdersController.willPopScope();
+                },
               ),
-              onPressed: () {
-                draftOrdersController.willPopScope();
-              },
             ),
-          ),
-          body: LoadingMode(
-            isLoading: draftOrdersController.isLoading,
-            child: Stack(
+            body: Stack(
               children: [
                 ListView(
                   padding: EdgeInsets.only(
@@ -72,7 +72,7 @@ class _DraftOrderScreenState extends State<DraftOrderScreen> {
                             motion: const DrawerMotion(),
                             children: [
                               SlidableAction(
-                                onPressed: (_) => draftOrdersController.onDeleteorders(e, context),
+                                onPressed: (_) => draftOrdersController.onDeleteOrders(e, context),
                                 backgroundColor: Colors.redAccent.shade100,
                                 foregroundColor: Colors.red,
                                 icon: Icons.delete,
@@ -105,19 +105,19 @@ class _DraftOrderScreenState extends State<DraftOrderScreen> {
                     ),
                   ],
                 ).paddingAll(10),
-                if(draftOrdersController.getDraftOrderList.isNotEmpty)
-                Align(
-                  alignment: Alignment.bottomCenter,
-                  child: commonButton(
-                    margin: EdgeInsets.zero,
-                    borderRadius: 0.0,
-                    color: draftOrdersController.selectedOrderList.isNotEmpty ? AppController().appTheme.primary1 : Colors.grey,
-                    onTap: () => draftOrdersController.onProceed(draftOrdersController.selectedOrderList),
-                    text: "Proceed Addresses (${draftOrdersController.selectedOrderList.length})",
-                    height: 50.0,
+                if (draftOrdersController.getDraftOrderList.isNotEmpty)
+                  Align(
+                    alignment: Alignment.bottomCenter,
+                    child: commonButton(
+                      margin: EdgeInsets.zero,
+                      borderRadius: 0.0,
+                      color: draftOrdersController.selectedOrderList.isNotEmpty ? AppController().appTheme.primary1 : Colors.grey,
+                      onTap: () => draftOrdersController.onProceed(draftOrdersController.selectedOrderList),
+                      text: "Proceed Addresses (${draftOrdersController.selectedOrderList.length})",
+                      height: 50.0,
+                    ),
                   ),
-                ),
-                if (draftOrdersController.getDraftOrderList.isEmpty)
+                if (draftOrdersController.getDraftOrderList.isEmpty && !draftOrdersController.isLoading)
                   Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: const [

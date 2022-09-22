@@ -33,7 +33,7 @@ class ReturnOrderSettlementController extends GetxController {
   ];
 
   willPopScope() {
-    Get.offNamed(AppRoutes.home);
+    Get.offNamedUntil(AppRoutes.home, (Route<dynamic> route) => false);
   }
 
   _cashControllerStart() {

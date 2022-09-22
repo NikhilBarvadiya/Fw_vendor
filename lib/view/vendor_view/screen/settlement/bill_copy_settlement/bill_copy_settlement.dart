@@ -7,14 +7,14 @@ import 'package:fw_vendor/core/widgets/custom_widgets/custom_textformfield.dart'
 import 'package:fw_vendor/view/vendor_view/controller/bill_copy_controller.dart';
 import 'package:get/get.dart';
 
-class BillCopySettementScreen extends StatefulWidget {
-  const BillCopySettementScreen({Key? key}) : super(key: key);
+class BillCopySettlementScreen extends StatefulWidget {
+  const BillCopySettlementScreen({Key? key}) : super(key: key);
 
   @override
-  State<BillCopySettementScreen> createState() => _BillCopySettementScreenState();
+  State<BillCopySettlementScreen> createState() => _BillCopySettlementScreenState();
 }
 
-class _BillCopySettementScreenState extends State<BillCopySettementScreen> {
+class _BillCopySettlementScreenState extends State<BillCopySettlementScreen> {
   BillCopySettlementController billCopySettlementController = Get.put(BillCopySettlementController());
 
   @override
@@ -109,7 +109,7 @@ class _BillCopySettementScreenState extends State<BillCopySettementScreen> {
             ),
             body: Column(
               children: [
-                if (billCopySettlementController.billDetailsList.isNotEmpty)
+                if (billCopySettlementController.billDetailsList.isNotEmpty&&!billCopySettlementController.isLoading)
                   Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: const [

@@ -11,7 +11,7 @@ import 'package:stylish_dialog/stylish_dialog.dart';
 class DraftOrdersController extends GetxController {
   TextEditingController txtNotes = TextEditingController();
   TextEditingController txtAddressName = TextEditingController();
-  TextEditingController txtAdress = TextEditingController();
+  TextEditingController txtAddress = TextEditingController();
   TextEditingController txtLoosePkg = TextEditingController();
   TextEditingController txtBoxPkg = TextEditingController();
   TextEditingController txtBillNo = TextEditingController();
@@ -62,7 +62,7 @@ class DraftOrdersController extends GetxController {
       update();
       var data = {
         "addressId": {
-          "address": txtAdress.text != "" ? txtAdress.text : item["addressId"]["address"].toString(),
+          "address": txtAddress.text != "" ? txtAddress.text : item["addressId"]["address"].toString(),
           "businessCategoryId": item["addressId"]["businessCategoryId"].toString(),
           "createdAt": item["addressId"]["createdAt"].toString(),
           "flatFloorBuilding": item["addressId"]["flatFloorBuilding"].toString(),
@@ -189,7 +189,7 @@ class DraftOrdersController extends GetxController {
   onEdit(item) {
     editData = item;
     txtAddressName.text = item["addressId"]["name"].toString();
-    txtAdress.text = item["addressId"]["address"].toString();
+    txtAddress.text = item["addressId"]["address"].toString();
     txtBillNo.text = item["billNo"].toString();
     txtBillAmount.text = item["amount"].toString();
     txtAmount.text = item["cash"].toString();
@@ -200,7 +200,7 @@ class DraftOrdersController extends GetxController {
     Get.toNamed(AppRoutes.editSelectedLocationScreen);
   }
 
-  onDeleteorders(item, context) {
+  onDeleteOrders(item, context) {
     if (item != null) {
       stylishDialog(
         context: context,

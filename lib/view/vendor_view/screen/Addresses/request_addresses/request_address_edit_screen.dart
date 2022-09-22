@@ -17,6 +17,7 @@ class RequestAddressEditScreen extends StatefulWidget {
 
 class _RequestAddressEditScreenState extends State<RequestAddressEditScreen> {
   RequestAddressEditController requestAddressEditController = Get.put(RequestAddressEditController());
+
   @override
   Widget build(BuildContext context) {
     return GetBuilder<RequestAddressEditController>(
@@ -43,7 +44,9 @@ class _RequestAddressEditScreenState extends State<RequestAddressEditScreen> {
                 children: [
                   CommonOrdersTextCard(
                     name: "Routes",
-                    hintText: requestAddressEditController.routesSelected != "" ? requestAddressEditController.routesSelected.capitalizeFirst.toString() : "",
+                    hintText: requestAddressEditController.routesSelected != ""
+                        ? requestAddressEditController.routesSelected.capitalizeFirst.toString()
+                        : "",
                     readOnly: true,
                     suffixIcon: requestAddressEditController.routesSelected != ""
                         ? null
@@ -124,7 +127,7 @@ class _RequestAddressEditScreenState extends State<RequestAddressEditScreen> {
                   ).paddingSymmetric(vertical: 20, horizontal: 5),
                 ],
               ),
-              if (requestAddressEditController.getAddress.isEmpty)
+              if (requestAddressEditController.getAddress.isEmpty && !requestAddressEditController.isLoading)
                 Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: const [

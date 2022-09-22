@@ -166,7 +166,9 @@ class GlobalDirectoryScreen extends StatelessWidget {
                       height: 50.0,
                     ),
                   ),
-                if (globalDirectoryController.globalAddressesList.isEmpty && globalDirectoryController.areaSelected != "")
+                if (globalDirectoryController.globalAddressesList.isEmpty &&
+                    globalDirectoryController.areaSelected != "" &&
+                    !globalDirectoryController.isLoading)
                   Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: const [

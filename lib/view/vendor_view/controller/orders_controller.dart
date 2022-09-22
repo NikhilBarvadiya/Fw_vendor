@@ -149,7 +149,7 @@ class OrdersController extends GetxController {
     var config = CalendarDatePicker2WithActionButtonsConfig(
       calendarType: CalendarDatePicker2Type.range,
     );
-    List<DateTime?> _selectedDate = [];
+    List<DateTime?> selectedDate = [];
     return CalendarDatePicker2WithActionButtons(
       config: config,
       initialValue: [
@@ -157,13 +157,13 @@ class OrdersController extends GetxController {
         DateTime.now().add(const Duration(days: 1)),
       ],
       onValueChanged: (values) async {
-        _selectedDate = values;
+        selectedDate = values;
         isLoading = true;
         update();
         startDateVendor =
-            '${_selectedDate[0]!.year}-${_selectedDate[0]!.month.toString().padLeft(2, '0')}-${_selectedDate[0]!.day.toString().padLeft(2, '0')}';
+            '${selectedDate[0]!.year}-${selectedDate[0]!.month.toString().padLeft(2, '0')}-${selectedDate[0]!.day.toString().padLeft(2, '0')}';
         endDateVendor =
-            '${_selectedDate[1]!.year}-${_selectedDate[1]!.month.toString().padLeft(2, '0')}-${_selectedDate[1]!.day.toString().padLeft(2, '0')}';
+            '${selectedDate[1]!.year}-${selectedDate[1]!.month.toString().padLeft(2, '0')}-${selectedDate[1]!.day.toString().padLeft(2, '0')}';
         await _vendorOrders();
         isLoading = false;
         update();

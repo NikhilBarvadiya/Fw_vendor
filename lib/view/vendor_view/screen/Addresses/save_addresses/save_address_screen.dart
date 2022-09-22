@@ -21,105 +21,105 @@ class SaveAddressScreen extends StatelessWidget {
         onWillPop: () async {
           return saveAddressController.willPopScope();
         },
-        child: Scaffold(
-          appBar: AppBar(
-            elevation: 1,
-            automaticallyImplyLeading: false,
-            foregroundColor: Colors.white,
-            backgroundColor: saveAddressController.isMapper ? Colors.deepOrange : Theme.of(context).primaryColor,
-            title: Text(
-              saveAddressController.isMapper ? "Mapped addresses" : "Saved addresses",
-              style: const TextStyle(
-                fontSize: 20,
+        child: LoadingMode(
+          isLoading: saveAddressController.isLoading,
+          child: Scaffold(
+            appBar: AppBar(
+              elevation: 1,
+              automaticallyImplyLeading: false,
+              foregroundColor: Colors.white,
+              backgroundColor: saveAddressController.isMapper ? Colors.deepOrange : Theme.of(context).primaryColor,
+              title: Text(
+                saveAddressController.isMapper ? "Mapped addresses" : "Saved addresses",
+                style: const TextStyle(
+                  fontSize: 20,
+                ),
+                textScaleFactor: 1,
+                textAlign: TextAlign.center,
               ),
-              textScaleFactor: 1,
-              textAlign: TextAlign.center,
-            ),
-            leading: IconButton(
-              icon: const Icon(
-                Icons.arrow_back,
-              ),
-              onPressed: () {
-                if (saveAddressController.isMapper) {
-                  saveAddressController.onMapperModeBack();
-                } else {
-                  saveAddressController.willPopScope();
-                }
-              },
-            ),
-            actions: [
-              IconButton(
+              leading: IconButton(
+                icon: const Icon(
+                  Icons.arrow_back,
+                ),
                 onPressed: () {
-                  saveAddressController.onSearchButtonTapped();
+                  if (saveAddressController.isMapper) {
+                    saveAddressController.onMapperModeBack();
+                  } else {
+                    saveAddressController.willPopScope();
+                  }
                 },
-                icon: Icon(saveAddressController.isSearch ? Icons.close : Icons.search),
               ),
-              !saveAddressController.isMapper
-                  ? PopupMenuButton(
-                      onSelected: (value) {
-                        saveAddressController.onMapperButtonTapped();
-                      },
-                      itemBuilder: (context) => [
-                        PopupMenuItem(
-                          value: 1,
-                          child: Text(
-                            "Show mapped addresses",
-                            style: AppCss.body3,
+              actions: [
+                IconButton(
+                  onPressed: () {
+                    saveAddressController.onSearchButtonTapped();
+                  },
+                  icon: Icon(saveAddressController.isSearch ? Icons.close : Icons.search),
+                ),
+                !saveAddressController.isMapper
+                    ? PopupMenuButton(
+                        onSelected: (value) {
+                          saveAddressController.onMapperButtonTapped();
+                        },
+                        itemBuilder: (context) => [
+                          PopupMenuItem(
+                            value: 1,
+                            child: Text(
+                              "Show mapped addresses",
+                              style: AppCss.body3,
+                            ),
                           ),
-                        ),
-                      ],
-                    )
-                  : Container(),
-            ],
-            bottom: PreferredSize(
-              preferredSize: Size.fromHeight(saveAddressController.isSearch ? 50 : 0),
-              child: saveAddressController.isSearch
-                  ? Container(
-                      color: Colors.white,
-                      child: CustomTextFormField(
-                        container: saveAddressController.txtSearch,
-                        focusNode: saveAddressController.txtSearchFocus,
-                        hintText: "Search".tr,
-                        fillColor: Colors.white,
-                        prefixIcon: GestureDetector(
-                          onTap: () {
+                        ],
+                      )
+                    : Container(),
+              ],
+              bottom: PreferredSize(
+                preferredSize: Size.fromHeight(saveAddressController.isSearch ? 50 : 0),
+                child: saveAddressController.isSearch
+                    ? Container(
+                        color: Colors.white,
+                        child: CustomTextFormField(
+                          container: saveAddressController.txtSearch,
+                          focusNode: saveAddressController.txtSearchFocus,
+                          hintText: "Search".tr,
+                          fillColor: Colors.white,
+                          prefixIcon: GestureDetector(
+                            onTap: () {
+                              if (saveAddressController.isMapper) {
+                                saveAddressController.onSearchMapperAddress();
+                              } else {
+                                saveAddressController.onSearchAddress();
+                              }
+                            },
+                            child: Icon(
+                              Icons.search_rounded,
+                              color: Colors.blueGrey.withOpacity(0.8),
+                              size: saveAddressController.txtSearch.text != "" ? 15 : 20,
+                            ),
+                          ),
+                          padding: 15,
+                          radius: 0,
+                          counterText: "",
+                          validator: (value) {
+                            if (value!.isEmpty) {
+                              return "";
+                            } else {
+                              return null;
+                            }
+                          },
+                          onEditingComplete: () {
                             if (saveAddressController.isMapper) {
                               saveAddressController.onSearchMapperAddress();
                             } else {
                               saveAddressController.onSearchAddress();
                             }
                           },
-                          child: Icon(
-                            Icons.search_rounded,
-                            color: Colors.blueGrey.withOpacity(0.8),
-                            size: saveAddressController.txtSearch.text != "" ? 15 : 20,
-                          ),
                         ),
-                        padding: 15,
-                        radius: 0,
-                        counterText: "",
-                        validator: (value) {
-                          if (value!.isEmpty) {
-                            return "";
-                          } else {
-                            return null;
-                          }
-                        },
-                        onEditingComplete: () {
-                          if (saveAddressController.isMapper) {
-                            saveAddressController.onSearchMapperAddress();
-                          } else {
-                            saveAddressController.onSearchAddress();
-                          }
-                        },
-                      ),
-                    )
-                  : Container(),
+                      )
+                    : Container(),
+              ),
             ),
-          ),
-          body: LoadingMode(
-            isLoading: saveAddressController.isLoading,
-            child: Stack(
+            body: Stack(
               children: [
                 RefreshIndicator(
                   onRefresh: () async {
@@ -182,7 +182,17 @@ class SaveAddressScreen extends StatelessWidget {
                     ],
                   ),
                 ),
-                if (saveAddressController.saveAddressList.isEmpty && saveAddressController.isMapper != true)
+                if (saveAddressController.saveAddressList.isEmpty && saveAddressController.isMapper != true && !saveAddressController.isLoading)
+                  Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: const [
+                      NoDataWidget(
+                        title: "No data !",
+                        body: "No orders available",
+                      ),
+                    ],
+                  ),
+                if (saveAddressController.mappedAddressList.isEmpty && saveAddressController.isMapper != false && !saveAddressController.isLoading)
                   Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: const [

@@ -22,7 +22,7 @@ class _OrdersFromScreenState extends State<OrdersFromScreen> {
     return GetBuilder<OrdersCreateController>(
       builder: (_) => WillPopScope(
         onWillPop: () async {
-          return ordersCreateController.willPopScopeCreateOrdersFroms();
+          return ordersCreateController.willPopScopeCreateOrdersForms();
         },
         child: Scaffold(
           appBar: AppBar(
@@ -37,7 +37,7 @@ class _OrdersFromScreenState extends State<OrdersFromScreen> {
                 Icons.arrow_back,
               ),
               onPressed: () {
-                ordersCreateController.willPopScopeCreateOrdersFroms();
+                ordersCreateController.willPopScopeCreateOrdersForms();
               },
             ),
           ),

@@ -6,7 +6,7 @@ import 'package:fw_vendor/core/widgets/common_dialog/scale_dialog.dart';
 import 'package:fw_vendor/networking/index.dart';
 import 'package:get/get.dart';
 
-class RequestAddressControler extends GetxController {
+class RequestAddressController extends GetxController {
   TextEditingController txtSearch = TextEditingController();
   FocusNode txtSearchFocus = FocusNode();
   bool isLoading = false;
@@ -80,7 +80,7 @@ class RequestAddressControler extends GetxController {
     update();
   }
 
-  _vendordeleteRequestedAddress(id) async {
+  _vendorDeleteRequestedAddress(id) async {
     try {
       isLoading = true;
       update();
@@ -121,7 +121,7 @@ class RequestAddressControler extends GetxController {
             child: const Text("Ok"),
             onPressed: () async {
               vendorRequestAddressList.remove(address);
-              await _vendordeleteRequestedAddress(id);
+              await _vendorDeleteRequestedAddress(id);
               update();
               Get.back();
             },

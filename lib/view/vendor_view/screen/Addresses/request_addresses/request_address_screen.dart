@@ -15,17 +15,17 @@ class RequestAddressScreen extends StatefulWidget {
 }
 
 class _RequestAddressScreenState extends State<RequestAddressScreen> {
-  RequestAddressControler requestAddressControler = Get.put(RequestAddressControler());
+  RequestAddressController requestAddressController = Get.put(RequestAddressController());
 
   @override
   Widget build(BuildContext context) {
-    return GetBuilder<RequestAddressControler>(
+    return GetBuilder<RequestAddressController>(
       builder: (_) => WillPopScope(
         onWillPop: () async {
-          return requestAddressControler.willPopScope();
+          return requestAddressController.willPopScope();
         },
         child: LoadingMode(
-          isLoading: requestAddressControler.isLoading,
+          isLoading: requestAddressController.isLoading,
           child: Scaffold(
             appBar: AppBar(
               elevation: 1,
@@ -36,34 +36,30 @@ class _RequestAddressScreenState extends State<RequestAddressScreen> {
                 icon: const Icon(
                   Icons.arrow_back,
                 ),
-                onPressed: () {
-                  requestAddressControler.willPopScope();
-                },
+                onPressed: () => requestAddressController.willPopScope(),
               ),
               actions: [
                 IconButton(
-                  onPressed: () {
-                    requestAddressControler.onSearchButtonTapped();
-                  },
-                  icon: Icon(requestAddressControler.isSearch ? Icons.close : Icons.search),
+                  onPressed: () => requestAddressController.onSearchButtonTapped(),
+                  icon: Icon(requestAddressController.isSearch ? Icons.close : Icons.search),
                 ),
               ],
               bottom: PreferredSize(
-                preferredSize: Size.fromHeight(requestAddressControler.isSearch ? 50 : 0),
-                child: requestAddressControler.isSearch
+                preferredSize: Size.fromHeight(requestAddressController.isSearch ? 50 : 0),
+                child: requestAddressController.isSearch
                     ? Container(
                         color: Colors.white,
                         child: CustomTextFormField(
-                          container: requestAddressControler.txtSearch,
-                          focusNode: requestAddressControler.txtSearchFocus,
+                          container: requestAddressController.txtSearch,
+                          focusNode: requestAddressController.txtSearchFocus,
                           hintText: "Search".tr,
                           fillColor: Colors.white,
                           prefixIcon: GestureDetector(
-                            onTap: () => requestAddressControler.onSearchAddress(),
+                            onTap: () => requestAddressController.onSearchAddress(),
                             child: Icon(
                               Icons.search_rounded,
                               color: Colors.blueGrey.withOpacity(0.8),
-                              size: requestAddressControler.txtSearch.text != "" ? 15 : 20,
+                              size: requestAddressController.txtSearch.text != "" ? 15 : 20,
                             ),
                           ),
                           padding: 15,
@@ -76,7 +72,7 @@ class _RequestAddressScreenState extends State<RequestAddressScreen> {
                               return null;
                             }
                           },
-                          onEditingComplete: () => requestAddressControler.onSearchAddress(),
+                          onEditingComplete: () => requestAddressController.onSearchAddress(),
                         ),
                       )
                     : Container(),
@@ -86,7 +82,7 @@ class _RequestAddressScreenState extends State<RequestAddressScreen> {
               children: [
                 RefreshIndicator(
                   onRefresh: () async {
-                    requestAddressControler.onRefresh();
+                    requestAddressController.onRefresh();
                   },
                   child: ListView(
                     padding: EdgeInsets.only(
@@ -94,8 +90,8 @@ class _RequestAddressScreenState extends State<RequestAddressScreen> {
                       bottom: MediaQuery.of(context).size.height * 0.06,
                     ),
                     children: [
-                      if (requestAddressControler.vendorRequestAddressList.isNotEmpty)
-                        ...requestAddressControler.vendorRequestAddressList.map(
+                      if (requestAddressController.vendorRequestAddressList.isNotEmpty)
+                        ...requestAddressController.vendorRequestAddressList.map(
                           (e) {
                             return RequestAddressCard(
                               addressName: e["addressName"].toString(),
@@ -104,10 +100,10 @@ class _RequestAddressScreenState extends State<RequestAddressScreen> {
                               address: e["address"].toString(),
                               type: e["isApprove"] == true ? "Approved" : "Pending",
                               onDeleteClick: () {
-                                requestAddressControler.onRequestAddressDelete(e["_id"], e);
+                                requestAddressController.onRequestAddressDelete(e["_id"], e);
                               },
                               onEditClick: () {
-                                requestAddressControler.onRequestAddressEdit(e);
+                                requestAddressController.onRequestAddressEdit(e);
                               },
                             );
                           },
@@ -115,7 +111,7 @@ class _RequestAddressScreenState extends State<RequestAddressScreen> {
                     ],
                   ),
                 ),
-                if (requestAddressControler.vendorRequestAddressList.isEmpty)
+                if (requestAddressController.vendorRequestAddressList.isEmpty && !requestAddressController.isLoading)
                   Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: const [

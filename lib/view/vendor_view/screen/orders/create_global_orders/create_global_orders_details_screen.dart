@@ -20,23 +20,23 @@ class _CreateGlobalOrdersDetailsScreenState extends State<CreateGlobalOrdersDeta
   @override
   Widget build(BuildContext context) {
     return GetBuilder<CreateGlobalOrdersController>(
-      builder: (_) => Scaffold(
-        appBar: AppBar(
-          elevation: 1,
-          automaticallyImplyLeading: true,
-          foregroundColor: Colors.white,
-          title: const Text(
-            "Selected Addresses",
-            style: TextStyle(
-              fontSize: 20,
+      builder: (_) => LoadingMode(
+        isLoading: createGlobalOrdersController.isLoading,
+        child: Scaffold(
+          appBar: AppBar(
+            elevation: 1,
+            automaticallyImplyLeading: true,
+            foregroundColor: Colors.white,
+            title: const Text(
+              "Selected Addresses",
+              style: TextStyle(
+                fontSize: 20,
+              ),
+              textScaleFactor: 1,
+              textAlign: TextAlign.center,
             ),
-            textScaleFactor: 1,
-            textAlign: TextAlign.center,
           ),
-        ),
-        body: LoadingMode(
-          isLoading: createGlobalOrdersController.isLoading,
-          child: Stack(
+          body: Stack(
             children: [
               Expanded(
                 child: ListView(

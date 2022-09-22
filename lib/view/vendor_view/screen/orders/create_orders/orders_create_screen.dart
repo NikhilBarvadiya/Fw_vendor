@@ -8,6 +8,7 @@ import 'package:get/get.dart';
 
 class CreateOrderScreen extends StatefulWidget {
   const CreateOrderScreen({Key? key}) : super(key: key);
+
   @override
   State<CreateOrderScreen> createState() => _CreateOrderScreenState();
 }
@@ -95,7 +96,7 @@ class _CreateOrderScreenState extends State<CreateOrderScreen> {
                       height: 50.0,
                     ),
                   ),
-                if (ordersCreateController.createList.isEmpty)
+                if (ordersCreateController.createList.isEmpty && !ordersCreateController.isLoading)
                   Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: const [

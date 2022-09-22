@@ -121,7 +121,7 @@ class ProfileController extends GetxController {
       alertType: StylishDialogType.ERROR,
       titleText: 'Cancel',
       confirmButton: Colors.redAccent,
-      contentText: "Do you cancel edit procces account!",
+      contentText: "Do you cancel edit process account!",
       onPressed: () {
         isEdit = false;
         txtShopName.clear();

@@ -73,7 +73,7 @@ class OrdersCreateController extends GetxController {
     Get.offNamedUntil(AppRoutes.home, (Route<dynamic> route) => false);
   }
 
-  willPopScopeCreateOrdersFroms() {
+  willPopScopeCreateOrdersForms() {
     Get.offNamedUntil(AppRoutes.createOrders, (Route<dynamic> route) => false);
   }
 
@@ -319,7 +319,7 @@ class OrdersCreateController extends GetxController {
       } else {
         onCLear();
         update();
-        snackBar("Orders is allready available", Colors.deepOrange);
+        snackBar("Orders is all ready available", Colors.deepOrange);
       }
     } else {
       if (txtName.text.isEmpty) {

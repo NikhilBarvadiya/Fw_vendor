@@ -6,14 +6,14 @@ import 'package:fw_vendor/core/widgets/custom_widgets/custom_textformfield.dart'
 import 'package:fw_vendor/view/vendor_view/controller/show_address_book_controller.dart';
 import 'package:get/get.dart';
 
-class ShowAdrresBookScreen extends StatefulWidget {
-  const ShowAdrresBookScreen({Key? key}) : super(key: key);
+class ShowAddressBookScreen extends StatefulWidget {
+  const ShowAddressBookScreen({Key? key}) : super(key: key);
 
   @override
-  State<ShowAdrresBookScreen> createState() => _ShowAdrresBookScreenState();
+  State<ShowAddressBookScreen> createState() => _ShowAddressBookScreenState();
 }
 
-class _ShowAdrresBookScreenState extends State<ShowAdrresBookScreen> {
+class _ShowAddressBookScreenState extends State<ShowAddressBookScreen> {
   ShowAddressBookController showAddressBookController = Get.put(ShowAddressBookController());
 
   @override
@@ -23,67 +23,67 @@ class _ShowAdrresBookScreenState extends State<ShowAdrresBookScreen> {
         onWillPop: () async {
           return showAddressBookController.willPopScope();
         },
-        child: Scaffold(
-          appBar: AppBar(
-            elevation: 1,
-            automaticallyImplyLeading: false,
-            foregroundColor: Colors.white,
-            title: const Text(
-              "Address Book",
-            ),
-            leading: IconButton(
-              icon: const Icon(
-                Icons.arrow_back,
+        child: LoadingMode(
+          isLoading: showAddressBookController.isLoading,
+          child: Scaffold(
+            appBar: AppBar(
+              elevation: 1,
+              automaticallyImplyLeading: false,
+              foregroundColor: Colors.white,
+              title: const Text(
+                "Address Book",
               ),
-              onPressed: () {
-                showAddressBookController.willPopScope();
-              },
-            ),
-            actions: [
-              IconButton(
+              leading: IconButton(
+                icon: const Icon(
+                  Icons.arrow_back,
+                ),
                 onPressed: () {
-                  showAddressBookController.onSearchButtonTapped();
+                  showAddressBookController.willPopScope();
                 },
-                icon: Icon(showAddressBookController.isSearch ? Icons.close : Icons.search),
               ),
-            ],
-            bottom: PreferredSize(
-              preferredSize: Size.fromHeight(showAddressBookController.isSearch ? 50 : 0),
-              child: showAddressBookController.isSearch
-                  ? Container(
-                      color: Colors.white,
-                      child: CustomTextFormField(
-                        container: showAddressBookController.txtSearch,
-                        focusNode: showAddressBookController.txtSearchFocus,
-                        hintText: "Search".tr,
-                        fillColor: Colors.white,
-                        prefixIcon: GestureDetector(
-                          onTap: () => showAddressBookController.onSearchAddress(),
-                          child: Icon(
-                            Icons.search_rounded,
-                            color: Colors.blueGrey.withOpacity(0.8),
-                            size: showAddressBookController.txtSearch.text != "" ? 15 : 20,
+              actions: [
+                IconButton(
+                  onPressed: () {
+                    showAddressBookController.onSearchButtonTapped();
+                  },
+                  icon: Icon(showAddressBookController.isSearch ? Icons.close : Icons.search),
+                ),
+              ],
+              bottom: PreferredSize(
+                preferredSize: Size.fromHeight(showAddressBookController.isSearch ? 50 : 0),
+                child: showAddressBookController.isSearch
+                    ? Container(
+                        color: Colors.white,
+                        child: CustomTextFormField(
+                          container: showAddressBookController.txtSearch,
+                          focusNode: showAddressBookController.txtSearchFocus,
+                          hintText: "Search".tr,
+                          fillColor: Colors.white,
+                          prefixIcon: GestureDetector(
+                            onTap: () => showAddressBookController.onSearchAddress(),
+                            child: Icon(
+                              Icons.search_rounded,
+                              color: Colors.blueGrey.withOpacity(0.8),
+                              size: showAddressBookController.txtSearch.text != "" ? 15 : 20,
+                            ),
                           ),
+                          padding: 15,
+                          radius: 0,
+                          counterText: "",
+                          validator: (value) {
+                            if (value!.isEmpty) {
+                              return "";
+                            } else {
+                              return null;
+                            }
+                          },
+                          onEditingComplete: () => showAddressBookController.onSearchAddress(),
                         ),
-                        padding: 15,
-                        radius: 0,
-                        counterText: "",
-                        validator: (value) {
-                          if (value!.isEmpty) {
-                            return "";
-                          } else {
-                            return null;
-                          }
-                        },
-                        onEditingComplete: () => showAddressBookController.onSearchAddress(),
-                      ),
-                    )
-                  : Container(),
+                      )
+                    : Container(),
+              ),
             ),
-          ),
-          body: LoadingMode(
-            isLoading: showAddressBookController.isLoading,
-            child: Stack(
+            body: Stack(
               children: [
                 RefreshIndicator(
                   onRefresh: () async {

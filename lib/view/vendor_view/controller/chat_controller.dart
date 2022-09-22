@@ -12,6 +12,7 @@ import 'package:image_picker/image_picker.dart';
 
 class ChatController extends GetxController {
   TextEditingController txtMessage = TextEditingController();
+  FocusNode txtMessageFocus = FocusNode();
   ScrollController controller = ScrollController();
   List allChatList = [];
   String messageType = "text";
@@ -27,6 +28,7 @@ class ChatController extends GetxController {
     getAllChats();
     controller = ScrollController();
     controller.addListener(_scrollListener);
+    txtMessageFocus.unfocus();
     super.onInit();
   }
 
@@ -37,8 +39,14 @@ class ChatController extends GetxController {
   void _scrollListener() async {
     if (allChatList.length == limit) {
       limit = (allChatList.length) + 20;
+      _screenFocus();
       await getAllChats();
     }
+  }
+
+  _screenFocus() {
+    txtMessage.text = "";
+    txtMessageFocus.unfocus();
   }
 
   void sendImage(source) async {
