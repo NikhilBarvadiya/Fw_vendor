@@ -47,8 +47,8 @@ android {
         applicationId "com.example.fw_vendor"
         minSdkVersion 20
         targetSdkVersion 33
-        versionCode flutterVersionCode.toInteger()
-        versionName flutterVersionName
+        versionCode 1
+        versionName "1.0"
         multiDexEnabled true
     }
 

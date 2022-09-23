@@ -10,6 +10,7 @@ import 'package:fw_vendor/networking/index.dart';
 import 'package:get/get.dart';
 import 'package:qr_code_scanner/qr_code_scanner.dart';
 import 'package:stylish_dialog/stylish_dialog.dart';
+import 'package:vibration/vibration.dart';
 
 class ScannerController extends GetxController {
   Barcode? result;
@@ -39,6 +40,7 @@ class ScannerController extends GetxController {
             var json = result!.code;
             var finalJSON = "${json!.substring(0, json.length - 2)}}";
             qrViewController!.stopCamera();
+            Vibration.vibrate(duration: 300);
             await _verifyOrder(jsonDecode(finalJSON));
           } catch (e) {
             stylishDialog(
@@ -112,9 +114,6 @@ class ScannerController extends GetxController {
           onPressed: () {
             Get.back();
             qrViewController!.resumeCamera();
-            // Get.toNamed(AppRoutes.addOrder, arguments: shopName)!.then((value) {
-            //   qrViewController!.resumeCamera();
-            // });
           },
         );
       }
