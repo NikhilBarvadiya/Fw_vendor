@@ -50,6 +50,12 @@ class _ScannerScreenState extends State<ScannerScreen> {
           ),
           onPermissionSet: (ctrl, p) => scannerController.onPermissionSet(context, ctrl, p),
         ),
+        if (scannerController.isSuccess == true)
+          Container(
+            height: MediaQuery.of(context).size.height,
+            width: MediaQuery.of(context).size.width,
+            color: Colors.red.withOpacity(0.2),
+          ),
         Padding(
           padding: const EdgeInsets.all(10),
           child: Align(

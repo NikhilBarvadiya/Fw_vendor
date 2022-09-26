@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:fw_vendor/common/config.dart';
 import 'package:fw_vendor/core/configuration/app_routes.dart';
@@ -6,9 +8,15 @@ import 'package:fw_vendor/networking/index.dart';
 import 'package:get/get.dart';
 
 class EmployeHomeController extends GetxController with GetSingleTickerProviderStateMixin {
+  TextEditingController txtSearch = TextEditingController();
+  FocusNode txtSearchFocus = FocusNode();
   dynamic employeUserData;
   bool isLoading = false;
   TabController? tabController;
+  List draftList = [];
+  List myDraftList = [];
+  List allFilteredList = [];
+  List myFilteredList = [];
   String type = "all";
 
   @override
@@ -17,15 +25,15 @@ class EmployeHomeController extends GetxController with GetSingleTickerProviderS
     tabController = TabController(length: 2, vsync: this);
     employeUserData = getStorage(Session.employeUserData);
     _getUserData();
+    txtSearchFocus.unfocus();
   }
-
-  List draftList = [];
-  List myDraftList = [];
 
   // Tap Click......
   onTapClick(selectedIndex) async {
+    txtSearch.text = "";
+    txtSearchFocus.unfocus();
     type = selectedIndex == 1 ? "my" : " all";
-    draftOrders(type);
+    await draftOrders(type);
     update();
   }
 
@@ -67,6 +75,7 @@ class EmployeHomeController extends GetxController with GetSingleTickerProviderS
 
   // Routes......
   onScanner() {
+    txtSearchFocus.unfocus();
     Get.toNamed(AppRoutes.scanner);
     update();
   }
@@ -74,15 +83,24 @@ class EmployeHomeController extends GetxController with GetSingleTickerProviderS
   // Apis.....
   draftOrders(type) async {
     try {
+      txtSearch.text = "";
       isLoading = true;
       update();
-      var request = {"skip": 0, "limit": 1000, "vendorId": employeUserData["vendorId"]["_id"], "type": type, "search": ""};
+      var request = {
+        "skip": 0,
+        "limit": 1000,
+        "vendorId": employeUserData["vendorId"]["_id"],
+        "type": type,
+        "search": "",
+      };
       var resData = await apis.call(apiMethods.getDraftOrders, request, ApiType.post);
       if (resData.isSuccess == true && resData.data != 0) {
         if (type == "all") {
+          allFilteredList = resData.data;
           draftList = resData.data;
         } else {
           myDraftList = resData.data;
+          myFilteredList = resData.data;
         }
       }
       isLoading = false;
@@ -91,5 +109,32 @@ class EmployeHomeController extends GetxController with GetSingleTickerProviderS
       isLoading = false;
       update();
     }
+  }
+
+  void runFilter(String enteredKeyword) {
+    if (type == "all") {
+      if (enteredKeyword == "") {
+        allFilteredList.clear();
+        allFilteredList = json.decode(json.encode(draftList));
+      } else {
+        allFilteredList = draftList
+            .where(
+              (record) => (record["addressId"]["name"].toString().toLowerCase().contains(enteredKeyword.toLowerCase())),
+            )
+            .toList();
+      }
+    } else {
+      if (enteredKeyword == "") {
+        myFilteredList.clear();
+        myFilteredList = json.decode(json.encode(myDraftList));
+      } else {
+        myFilteredList = myDraftList
+            .where(
+              (record) => (record["addressId"]["name"].toString().toLowerCase().contains(enteredKeyword.toLowerCase())),
+            )
+            .toList();
+      }
+    }
+    update();
   }
 }

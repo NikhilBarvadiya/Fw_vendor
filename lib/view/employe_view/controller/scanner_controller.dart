@@ -16,6 +16,7 @@ class ScannerController extends GetxController {
   Barcode? result;
   QRViewController? qrViewController;
   final GlobalKey qrKey = GlobalKey(debugLabel: 'QR');
+  bool isSuccess = false;
 
   @override
   void onInit() {
@@ -106,14 +107,17 @@ class ScannerController extends GetxController {
           qrViewController!.resumeCamera();
         });
       } else {
+        isSuccess = true;
         stylishDialog(
           context: Get.context,
-          alertType: StylishDialogType.INFO,
+          alertType: StylishDialogType.ERROR,
           contentText: resData.message.toString(),
-          confirmButton: Colors.green,
+          confirmButton: Colors.redAccent,
           onPressed: () {
             Get.back();
             qrViewController!.resumeCamera();
+            isSuccess = false;
+            update();
           },
         );
       }

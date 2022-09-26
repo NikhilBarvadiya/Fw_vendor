@@ -75,23 +75,37 @@ class _EmployeHomeScreenState extends State<EmployeHomeScreen> {
                     children: [
                       RefreshIndicator(
                         onRefresh: () => Future.sync(() => homeController.draftOrders("all")),
-                        child: ListView(
-                          shrinkWrap: true,
+                        child: Column(
                           children: [
-                            ...homeController.draftList.map((a) {
-                              return _draftDataCard(a);
-                            }).toList(),
+                            _searchCard(),
+                            Expanded(
+                              child: ListView(
+                                shrinkWrap: true,
+                                children: [
+                                  ...homeController.allFilteredList.map((a) {
+                                    return _draftDataCard(a);
+                                  }).toList(),
+                                ],
+                              ),
+                            ),
                           ],
                         ),
                       ),
                       RefreshIndicator(
                         onRefresh: () => Future.sync(() => homeController.draftOrders("my")),
-                        child: ListView(
-                          shrinkWrap: true,
+                        child: Column(
                           children: [
-                            ...homeController.myDraftList.map((a) {
-                              return _draftDataCard(a);
-                            }).toList(),
+                            _searchCard(),
+                            Expanded(
+                              child: ListView(
+                                shrinkWrap: true,
+                                children: [
+                                  ...homeController.myDraftList.map((a) {
+                                    return _draftDataCard(a);
+                                  }).toList(),
+                                ],
+                              ),
+                            ),
                           ],
                         ),
                       ),
@@ -102,6 +116,42 @@ class _EmployeHomeScreenState extends State<EmployeHomeScreen> {
             ),
           ),
         ),
+      ),
+    );
+  }
+
+  _searchCard() {
+    return Container(
+      padding: const EdgeInsets.only(right: 15, left: 10),
+      margin: const EdgeInsets.all(5),
+      decoration: BoxDecoration(
+        borderRadius: BorderRadiusDirectional.circular(4),
+        border: Border.all(
+          color: Colors.blueGrey.withOpacity(0.8),
+        ),
+      ),
+      child: Row(
+        children: [
+          Expanded(
+            child: TextFormField(
+              autofocus: false,
+              controller: homeController.txtSearch,
+              focusNode: homeController.txtSearchFocus,
+              style: AppCss.body1,
+              textInputAction: TextInputAction.done,
+              decoration: const InputDecoration(border: InputBorder.none, hintText: "Search by"),
+              onChanged: (search) => homeController.runFilter(homeController.txtSearch.text),
+            ),
+          ),
+          GestureDetector(
+            onTap: () => homeController.runFilter(homeController.txtSearch.text),
+            child: Icon(
+              Icons.search_rounded,
+              color: Colors.blueGrey.withOpacity(0.8),
+              size: homeController.txtSearch.text != "" ? 15 : 20,
+            ),
+          ),
+        ],
       ),
     );
   }
