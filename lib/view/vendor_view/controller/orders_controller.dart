@@ -232,9 +232,13 @@ class OrdersController extends GetxController {
     return output;
   }
 
-  onLocationClick(data) {
+  onLocationClick(location, e) {
     _screenFocus();
-    Get.toNamed(AppRoutes.locationScreen, arguments: data);
+    var arguments = {
+      "location": location,
+      "ordersDetails": e,
+    };
+    Get.toNamed(AppRoutes.locationScreen, arguments: arguments);
     update();
   }
 }

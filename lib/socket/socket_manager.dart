@@ -15,7 +15,7 @@ class SocketServerController extends GetxController {
     try {
       // initializing
       socket = io(
-        'http://admin.fastwhistle.com:3100',
+        'https://fastwhistle.com',
         OptionBuilder().setTransports(['websocket']).enableAutoConnect().build(),
       );
 

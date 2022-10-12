@@ -24,7 +24,7 @@ class LocationScreen extends StatelessWidget {
           ),
           body: ListView(
             children: [
-              ...locationController.status.map(
+              ...locationController.status["location"].map(
                 (e) {
                   return CustomLocationCard(
                     shopName: e["addressId"] != null
@@ -55,6 +55,8 @@ class LocationScreen extends StatelessWidget {
                     driverNote: e["driverNotes"] != null ? e["driverNotes"].toString().capitalizeFirst : "",
                     notes: e["notes"] != null ? e["notes"].toString().capitalizeFirst : "",
                     date: e["updatedAt"] != "" ? getFormattedDate(e["updatedAt"].toString()) : "",
+                    onPressed: () => locationController.resolvedOrders(e),
+                    tickets: "Raise Ticket",
                     imageShow: e["images"] != null
                         ? Wrap(
                             children: [
@@ -78,7 +80,9 @@ class LocationScreen extends StatelessWidget {
                                                 }
                                                 return Center(
                                                   child: CircularProgressIndicator(
-                                                    value: loadingProgress.expectedTotalBytes != null ? loadingProgress.cumulativeBytesLoaded / loadingProgress.expectedTotalBytes! : null,
+                                                    value: loadingProgress.expectedTotalBytes != null
+                                                        ? loadingProgress.cumulativeBytesLoaded / loadingProgress.expectedTotalBytes!
+                                                        : null,
                                                   ),
                                                 );
                                               },
@@ -97,7 +101,9 @@ class LocationScreen extends StatelessWidget {
                                       }
                                       return Center(
                                         child: CircularProgressIndicator(
-                                          value: loadingProgress.expectedTotalBytes != null ? loadingProgress.cumulativeBytesLoaded / loadingProgress.expectedTotalBytes! : null,
+                                          value: loadingProgress.expectedTotalBytes != null
+                                              ? loadingProgress.cumulativeBytesLoaded / loadingProgress.expectedTotalBytes!
+                                              : null,
                                         ),
                                       );
                                     },

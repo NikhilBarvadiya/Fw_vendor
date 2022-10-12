@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:fw_vendor/core/theme/index.dart';
 import 'package:fw_vendor/core/widgets/common/common_button.dart';
+import 'package:fw_vendor/core/widgets/custom_widgets/custom_nodata.dart';
 import 'package:get/get.dart';
 
 class SearchableListView extends StatefulWidget {
@@ -185,6 +186,18 @@ class _SearchableListViewState extends State<SearchableListView> {
                               color: Colors.grey,
                             )
                           : Container(),
+                      if (resultList.isEmpty && itemList.isEmpty)
+                        Column(
+                          children: [
+                            Padding(
+                              padding: EdgeInsets.symmetric(vertical: MediaQuery.of(context).size.height / 2.6),
+                              child: const NoDataWidget(
+                                title: "No data !",
+                                body: "No data available",
+                              ),
+                            ),
+                          ],
+                        ),
                     ],
                   );
                 },

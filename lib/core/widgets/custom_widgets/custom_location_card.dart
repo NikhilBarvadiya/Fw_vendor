@@ -11,10 +11,12 @@ class CustomLocationCard extends StatelessWidget {
   final String? cash;
   final String? cashReceived;
   final String? status;
+  final String? tickets;
   final String? driverName;
   final String? driverNote;
   final String? notes;
   final String? date;
+  final void Function()? onPressed;
   final dynamic imageShow;
 
   const CustomLocationCard({
@@ -32,6 +34,8 @@ class CustomLocationCard extends StatelessWidget {
     this.driverNote,
     this.notes,
     this.date,
+    this.onPressed,
+    this.tickets,
   }) : super(key: key);
 
   @override
@@ -50,17 +54,14 @@ class CustomLocationCard extends StatelessWidget {
                           ? Colors.red.shade500
                           : status == "Completed"
                               ? Colors.blueGrey
-                              : Colors.transparent,
+                              : Colors.black,
       clipBehavior: Clip.antiAlias,
       surfaceTintColor: Theme.of(context).canvasColor,
       semanticContainer: true,
       margin: const EdgeInsets.all(10),
       shape: RoundedRectangleBorder(
-        borderRadius: const BorderRadius.all(
-          Radius.circular(4),
-        ),
+        borderRadius: BorderRadius.circular(4),
         side: BorderSide(
-          // color: Colors.black26,
           color: status == "Pending"
               ? Colors.amber.shade500
               : status == "Delivered"
@@ -84,30 +85,19 @@ class CustomLocationCard extends StatelessWidget {
           if (shopName != null)
             Text(
               shopName ?? "",
-              style: AppCss.h3.copyWith(
-                color: Colors.black,
-                fontSize: 15,
-              ),
+              style: AppCss.h3.copyWith(color: Colors.black, fontSize: 15),
             ).paddingOnly(bottom: 5),
           Row(
             children: [
               if (personName != null && personName != "")
                 Text(
                   personName ?? "",
-                  style: AppCss.body1.copyWith(
-                    color: Colors.black,
-                    fontSize: 12,
-                    fontWeight: FontWeight.w500,
-                  ),
+                  style: AppCss.body1.copyWith(color: Colors.black, fontSize: 12, fontWeight: FontWeight.w500),
                 ).paddingOnly(right: 8),
               if (mobileNumber != null)
                 Text(
                   mobileNumber ?? "",
-                  style: AppCss.body1.copyWith(
-                    color: Colors.black,
-                    fontSize: 12,
-                    fontWeight: FontWeight.w500,
-                  ),
+                  style: AppCss.body1.copyWith(color: Colors.black, fontSize: 12, fontWeight: FontWeight.w500),
                 ),
             ],
           ).paddingOnly(bottom: 5),
@@ -118,52 +108,29 @@ class CustomLocationCard extends StatelessWidget {
                 Expanded(
                   child: Text(
                     address ?? "",
-                    style: AppCss.poppins.copyWith(
-                      color: Colors.black,
-                      fontSize: 12,
-                    ),
+                    style: AppCss.poppins.copyWith(color: Colors.black, fontSize: 12),
                   ),
                 ),
                 Text(
                   date ?? "",
-                  style: AppCss.footnote.copyWith(
-                    color: Colors.black,
-                  ),
+                  style: AppCss.footnote.copyWith(color: Colors.black),
                 ).paddingOnly(left: 8),
               ],
             ).paddingOnly(bottom: 8),
-          if (imageShow != null)
-            Container(
-              child: imageShow,
-            ),
+          if (imageShow != null) Container(child: imageShow),
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              _cardWidget(
-                context,
-                "Bill Amount",
-                billAmount ?? "",
-              ),
-              _cardWidget(
-                context,
-                "Cash",
-                cash ?? "",
-              ),
-              _cardWidget(
-                context,
-                "Received Cash",
-                cashReceived ?? "",
-              ),
+              _cardWidget(context, "Bill Amount", billAmount ?? ""),
+              _cardWidget(context, "Cash", cash ?? ""),
+              _cardWidget(context, "Received Cash", cashReceived ?? ""),
               Chip(
-                shape: const RoundedRectangleBorder(
-                  borderRadius: BorderRadius.all(
-                    Radius.circular(4),
-                  ),
-                ),
+                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(4)),
+                elevation: status == "Delivered" ? 1 : 0,
                 backgroundColor: status == "Pending"
                     ? Colors.amber.shade500
                     : status == "Delivered"
-                        ? Colors.green.shade500
+                        ? Colors.white
                         : status == "Running"
                             ? Colors.blue.shade500
                             : status == "Cancelled"
@@ -175,80 +142,96 @@ class CustomLocationCard extends StatelessWidget {
                                         : Colors.transparent,
                 label: Text(
                   status ?? "",
-                  style: AppCss.poppins.copyWith(
-                    color: Colors.white,
-                    fontWeight: FontWeight.bold,
-                  ),
+                  style: AppCss.poppins.copyWith(color: status == "Delivered" ? Colors.black : Colors.white, fontWeight: FontWeight.bold),
                 ),
-              )
+              ),
             ],
           ),
-          if (driverName != null && driverName != "")
-            Row(
-              children: [
-                Text(
-                  "Driver name : ",
-                  style: AppCss.body1.copyWith(
-                    color: Colors.black,
-                    fontSize: 12,
-                    fontWeight: FontWeight.bold,
-                  ),
+          Row(
+            children: [
+              Expanded(
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    if (driverName != null && driverName != "")
+                      Row(
+                        mainAxisSize: MainAxisSize.min,
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            "Driver name : ",
+                            style: AppCss.body1.copyWith(color: Colors.black, fontSize: 12, fontWeight: FontWeight.bold),
+                          ),
+                          Expanded(
+                            child: Text(
+                              driverName ?? "",
+                              style: AppCss.body1.copyWith(color: Colors.black, fontSize: 12),
+                            ),
+                          ),
+                        ],
+                      ).paddingOnly(top: 8, left: 2),
+                    if (driverNote != null && driverNote != "")
+                      Row(
+                        mainAxisSize: MainAxisSize.min,
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            "Driver notes : ",
+                            style: AppCss.body1.copyWith(color: Colors.black, fontSize: 12, fontWeight: FontWeight.bold),
+                          ),
+                          Expanded(
+                            child: Text(
+                              driverNote ?? "",
+                              style: AppCss.body1.copyWith(color: Colors.black, fontSize: 12),
+                            ),
+                          ),
+                        ],
+                      ).paddingOnly(left: 2, top: 5),
+                    if (notes != null && notes != "")
+                      Row(
+                        mainAxisSize: MainAxisSize.min,
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            "Notes : ",
+                            style: AppCss.body1.copyWith(color: Colors.black, fontSize: 12, fontWeight: FontWeight.bold),
+                          ),
+                          Expanded(
+                            child: Text(
+                              notes ?? "",
+                              style: AppCss.body1.copyWith(color: Colors.black, fontSize: 12),
+                            ),
+                          ),
+                        ],
+                      ).paddingOnly(left: 2, top: 5),
+                  ],
                 ),
-                Text(
-                  driverName ?? "",
-                  style: AppCss.body1.copyWith(
-                    color: Colors.black,
-                    fontSize: 12,
-                  ),
+              ),
+              if (status == "Delivered")
+                Align(
+                  alignment: Alignment.topRight,
+                  child: InputChip(
+                    elevation: 1,
+                    onPressed: onPressed,
+                    shadowColor: Colors.deepOrange.shade500,
+                    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(4)),
+                    backgroundColor: Colors.white,
+                    label: Text(
+                      tickets ?? "",
+                      style: AppCss.poppins.copyWith(color: Colors.deepOrange.shade500, fontWeight: FontWeight.bold),
+                    ),
+                  ).paddingOnly(top: 5),
                 ),
-              ],
-            ).paddingOnly(top: 8, left: 2),
-          if (driverNote != null && driverNote != "")
-            Row(
-              children: [
-                Text(
-                  "Driver notes : ",
-                  style: AppCss.body1.copyWith(
-                    color: Colors.black,
-                    fontSize: 12,
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),
-                Text(
-                  driverNote ?? "",
-                  style: AppCss.body1.copyWith(
-                    color: Colors.black,
-                    fontSize: 12,
-                  ),
-                ),
-              ],
-            ).paddingOnly(left: 2, top: 5),
-          if (notes != null && notes != "")
-            Row(
-              children: [
-                Text(
-                  "Notes : ",
-                  style: AppCss.body1.copyWith(
-                    color: Colors.black,
-                    fontSize: 12,
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),
-                Text(
-                  notes ?? "",
-                  style: AppCss.body1.copyWith(
-                    color: Colors.black,
-                    fontSize: 12,
-                  ),
-                ),
-              ],
-            ).paddingOnly(left: 2, top: 5),
+            ],
+          ),
         ],
       ).paddingSymmetric(horizontal: 5, vertical: 8),
     );
   }
 
-  Widget _cardWidget(context, String heder, String amount) {
+  Widget _cardWidget(context, String header, String amount) {
     return Card(
       elevation: 0.5,
       shadowColor: status == "Pending"
@@ -269,26 +252,17 @@ class CustomLocationCard extends StatelessWidget {
       semanticContainer: true,
       margin: const EdgeInsets.all(0),
       color: Colors.white,
-      shape: const RoundedRectangleBorder(
-        borderRadius: BorderRadius.all(
-          Radius.circular(4),
-        ),
-      ),
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(4)),
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
           Text(
-            heder,
-            style: AppCss.caption.copyWith(
-              fontWeight: FontWeight.bold,
-              color: billAmount != "₹0.00" ? Colors.green : Colors.black,
-            ),
+            header,
+            style: AppCss.caption.copyWith(fontWeight: FontWeight.bold, color: billAmount != "₹0.00" ? Colors.green : Colors.black),
           ).paddingOnly(bottom: 2),
           Text(
             amount,
-            style: AppCss.caption.copyWith(
-              fontWeight: FontWeight.bold,
-            ),
+            style: AppCss.caption.copyWith(fontWeight: FontWeight.bold),
           ),
         ],
       ).paddingSymmetric(horizontal: 10, vertical: 4),

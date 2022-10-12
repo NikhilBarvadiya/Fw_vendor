@@ -69,10 +69,7 @@ class _CustomDrawerState extends State<CustomDrawer> {
                     title: const Text("Addresses"),
                     leading: const Padding(
                       padding: EdgeInsets.only(left: 8),
-                      child: Icon(
-                        FontAwesomeIcons.addressCard,
-                        size: 20,
-                      ),
+                      child: Icon(FontAwesomeIcons.addressCard, color: Colors.grey, size: 20),
                     ),
                     children: [
                       MenuCard(
@@ -99,10 +96,7 @@ class _CustomDrawerState extends State<CustomDrawer> {
                     title: const Text("Vendor orders"),
                     leading: const Padding(
                       padding: EdgeInsets.only(left: 8),
-                      child: Icon(
-                        FontAwesomeIcons.box,
-                        size: 20,
-                      ),
+                      child: Icon(FontAwesomeIcons.box, color: Colors.grey, size: 20),
                     ),
                     children: [
                       MenuCard(
@@ -135,10 +129,7 @@ class _CustomDrawerState extends State<CustomDrawer> {
                     title: const Text("Settlement"),
                     leading: const Padding(
                       padding: EdgeInsets.only(left: 8),
-                      child: Icon(
-                        FontAwesomeIcons.wrench,
-                        size: 20,
-                      ),
+                      child: Icon(FontAwesomeIcons.wrench, color: Colors.grey, size: 20),
                     ),
                     children: [
                       MenuCard(
@@ -160,6 +151,32 @@ class _CustomDrawerState extends State<CustomDrawer> {
                         onPress: () => homeController.onReturnSettementClick(),
                       ),
                     ],
+                  ),
+                  ExpansionTile(
+                    title: const Text("Tickets"),
+                    leading: const Padding(
+                      padding: EdgeInsets.only(left: 8),
+                      child: Icon(FontAwesomeIcons.ticket, color: Colors.grey, size: 20),
+                    ),
+                    children: [
+                      MenuCard(
+                        title: "Request Complaint",
+                        icon: Icons.circle,
+                        iconSize: 8.0,
+                        onPress: () => homeController.onRequestComplaintClick(),
+                      ),
+                      MenuCard(
+                        title: "Complaint",
+                        icon: Icons.circle,
+                        iconSize: 8.0,
+                        onPress: () => homeController.onComplaintClick(),
+                      ),
+                    ],
+                  ),
+                  MenuCard(
+                    title: "Return orders",
+                    icon: FontAwesomeIcons.replyAll,
+                    onPress: () => homeController.onReturnOrdersClick(),
                   ),
                   MenuCard(
                     icon: FontAwesomeIcons.solidMessage,

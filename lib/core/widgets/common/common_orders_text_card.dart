@@ -13,6 +13,7 @@ class CommonOrdersTextCard extends StatefulWidget {
   final int? minLines;
   final dynamic elevation;
   final void Function()? onTap;
+  final void Function()? onFieldSubmitted;
   final TextEditingController? controller;
   final FocusNode? focusNode;
   final TextInputType? keyboardType;
@@ -32,6 +33,7 @@ class CommonOrdersTextCard extends StatefulWidget {
     this.hederStyle,
     this.elevation,
     this.focusNode,
+    this.onFieldSubmitted,
   }) : super(key: key);
 
   @override
@@ -46,11 +48,7 @@ class _CommonOrdersTextCardState extends State<CommonOrdersTextCard> {
       clipBehavior: Clip.antiAlias,
       surfaceTintColor: Theme.of(context).canvasColor,
       semanticContainer: true,
-      shape: const RoundedRectangleBorder(
-        borderRadius: BorderRadius.all(
-          Radius.circular(4),
-        ),
-      ),
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(4)),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -64,6 +62,7 @@ class _CommonOrdersTextCardState extends State<CommonOrdersTextCard> {
               autofocus: false,
               readOnly: widget.readOnly ?? false,
               onTap: widget.onTap,
+              onFieldSubmitted: (_) => widget.onFieldSubmitted,
               controller: widget.controller,
               focusNode: widget.focusNode,
               keyboardType: widget.keyboardType ?? TextInputType.text,

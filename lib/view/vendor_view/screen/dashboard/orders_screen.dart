@@ -36,9 +36,7 @@ class OrderScreen extends StatelessWidget {
                 foregroundColor: Colors.white,
                 title: Text(ordersController.status != null ? ordersController.status.toString().capitalizeFirst.toString() : "Pending"),
                 leading: IconButton(
-                  icon: const Icon(
-                    Icons.arrow_back,
-                  ),
+                  icon: const Icon(Icons.arrow_back),
                   onPressed: () {
                     ordersController.willPopScope();
                   },
@@ -76,10 +74,7 @@ class OrderScreen extends StatelessWidget {
                     },
                     icon: Container(
                       color: ordersController.isSearch ? Colors.redAccent : Theme.of(context).primaryColor,
-                      child: Icon(
-                        ordersController.isSearch ? Icons.close : Icons.search,
-                        color: Colors.white,
-                      ),
+                      child: Icon(ordersController.isSearch ? Icons.close : Icons.search, color: Colors.white),
                     ),
                   ),
                 ],
@@ -188,7 +183,7 @@ class OrderScreen extends StatelessWidget {
                                       locations: e["orderStatus"] != "" ? e["orderStatus"].length.toString() : "",
                                       locationClick: () {
                                         if (e["orderStatus"] != null) {
-                                          ordersController.onLocationClick(e["orderStatus"]);
+                                          ordersController.onLocationClick(e["orderStatus"],e);
                                         } else {
                                           snackBar("No pacakge data found", Colors.deepOrange);
                                         }
@@ -201,28 +196,28 @@ class OrderScreen extends StatelessWidget {
                                               count: e['deliveryReport']["delivered"].length.toString(),
                                               status: e["deliveredCount"].toString(),
                                               color: Colors.green,
-                                              onTap: () => ordersController.onLocationClick(e["deliveryReport"]["delivered"]),
+                                              onTap: () => ordersController.onLocationClick(e["deliveryReport"]["delivered"],e),
                                             ),
                                           if (e["runningCount"] != null)
                                             CommonActionChip(
                                               count: e['deliveryReport']["running"].length.toString(),
                                               status: e["runningCount"].toString(),
                                               color: Colors.blueAccent,
-                                              onTap: () => ordersController.onLocationClick(e["deliveryReport"]["running"]),
+                                              onTap: () => ordersController.onLocationClick(e["deliveryReport"]["running"],e),
                                             ),
                                           if (e["returnedCount"] != null)
                                             CommonActionChip(
                                               count: e['deliveryReport']["returned"].length.toString(),
                                               status: e["returnedCount"].toString(),
                                               color: Colors.deepOrange.shade500,
-                                              onTap: () => ordersController.onLocationClick(e["deliveryReport"]["returned"]),
+                                              onTap: () => ordersController.onLocationClick(e["deliveryReport"]["returned"],e),
                                             ),
                                           if (e["cancelledCount"] != null)
                                             CommonActionChip(
                                               count: e['deliveryReport']["cancelled"].length.toString(),
                                               status: e["cancelledCount"].toString(),
                                               color: Colors.red,
-                                              onTap: () => ordersController.onLocationClick(e["deliveryReport"]["cancelled"]),
+                                              onTap: () => ordersController.onLocationClick(e["deliveryReport"]["cancelled"],e),
                                             ),
                                         ],
                                       ),

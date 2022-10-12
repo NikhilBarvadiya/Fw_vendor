@@ -1,7 +1,7 @@
 Map<String, dynamic> environment = {
   "serverConfig": {
-    'apiUrl': 'http://admin.fastwhistle.com:3100/v3/',
-    'baseUrl': 'http://admin.fatwhistle.com:3100',
+    'apiUrl': 'https://fastwhistle.com/v3/',
+    'baseUrl': 'https://fastwhistle.com',
     'apiVersion': 'v1',
     'accessToken': '292105248cc4118ee8f2ccb0a97cd54d',
     'playStoreURL': 'https://play.google.com/store/apps/details?id=com.appName',

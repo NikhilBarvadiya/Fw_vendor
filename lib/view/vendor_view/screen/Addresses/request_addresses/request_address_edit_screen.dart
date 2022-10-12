@@ -30,9 +30,7 @@ class _RequestAddressEditScreenState extends State<RequestAddressEditScreen> {
             foregroundColor: Colors.white,
             title: const Text("Request edit address"),
             leading: IconButton(
-              icon: const Icon(
-                Icons.arrow_back,
-              ),
+              icon: const Icon(Icons.arrow_back),
               onPressed: () {
                 Get.back();
               },
@@ -48,11 +46,7 @@ class _RequestAddressEditScreenState extends State<RequestAddressEditScreen> {
                         ? requestAddressEditController.routesSelected.capitalizeFirst.toString()
                         : "",
                     readOnly: true,
-                    suffixIcon: requestAddressEditController.routesSelected != ""
-                        ? null
-                        : const Icon(
-                            Icons.arrow_drop_down,
-                          ),
+                    suffixIcon: requestAddressEditController.routesSelected != "" ? null : const Icon(Icons.arrow_drop_down),
                     onTap: () {
                       commonBottomSheet(
                         context: context,

@@ -50,6 +50,7 @@ class _OrdersFromScreenState extends State<OrdersFromScreen> {
                     controller: ordersCreateController.txtName,
                     focusNode: ordersCreateController.txtNameFocus,
                     readOnly: true,
+                    suffixIcon: ordersCreateController.txtName.text != "" ? null : const Icon(Icons.arrow_drop_down),
                     onTap: () {
                       ordersCreateController.onCLear();
                       commonBottomSheet(
@@ -84,11 +85,7 @@ class _OrdersFromScreenState extends State<OrdersFromScreen> {
                     name: "Area",
                     hintText: ordersCreateController.routesSelected != "" ? ordersCreateController.routesSelected.capitalizeFirst.toString() : "",
                     readOnly: true,
-                    suffixIcon: ordersCreateController.routesSelected != ""
-                        ? null
-                        : const Icon(
-                            Icons.arrow_drop_down,
-                          ),
+                    suffixIcon: ordersCreateController.routesSelected != "" ? null : const Icon(Icons.arrow_drop_down),
                     onTap: () {
                       commonBottomSheet(
                         context: context,

@@ -66,6 +66,8 @@ dependencies:
   qr_code_scanner: ^1.0.1
   calendar_date_picker2: ^0.2.3
   vibration: ^1.7.6
+  audioplayers: ^0.20.1
+  record: ^4.4.1
 
   
 

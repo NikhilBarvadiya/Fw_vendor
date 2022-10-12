@@ -6,7 +6,7 @@ import 'package:open_file/open_file.dart';
 import 'package:path_provider/path_provider.dart';
 
 class AppUpdateController extends GetxController{
-  String downloadUrl = "http://admin.fastwhistle.com/vendor-pharma.apk";
+  String downloadUrl = "https://fastwhistle.com/vendor-pharma.apk";
   String progress = "0";
   bool isDownloaded = false;
   bool downloading = false;

@@ -22,12 +22,18 @@ import 'package:fw_vendor/view/vendor_view/screen/orders/create_global_orders/pl
 import 'package:fw_vendor/view/vendor_view/screen/orders/create_orders/orders_create_screen.dart';
 import 'package:fw_vendor/view/vendor_view/screen/orders/create_orders/orders_from_screen.dart';
 import 'package:fw_vendor/view/vendor_view/screen/dashboard/orders_screen.dart';
+import 'package:fw_vendor/view/vendor_view/screen/orders/create_orders/tickets_screen.dart';
 import 'package:fw_vendor/view/vendor_view/screen/orders/create_orders/show_address_book_screen.dart';
 import 'package:fw_vendor/view/vendor_view/screen/orders/draft_orders/draft_orders.dart';
 import 'package:fw_vendor/view/vendor_view/screen/orders/draft_orders/edit_selected_location.dart';
+import 'package:fw_vendor/view/vendor_view/screen/return/return_orders.dart';
 import 'package:fw_vendor/view/vendor_view/screen/settlement/bill_copy_settlement/bill_copy_settlement.dart';
 import 'package:fw_vendor/view/vendor_view/screen/settlement/cash_settlement/cash_settlement.dart';
 import 'package:fw_vendor/view/vendor_view/screen/settlement/return_settlement/return_order_settlement.dart';
+import 'package:fw_vendor/view/vendor_view/screen/tickets/complaint/complaint_screen.dart';
+import 'package:fw_vendor/view/vendor_view/screen/tickets/complaint/complaint_view_screen.dart';
+import 'package:fw_vendor/view/vendor_view/screen/tickets/request_complaint/request_complaint_edit_screen.dart';
+import 'package:fw_vendor/view/vendor_view/screen/tickets/request_complaint/request_complaint_screen.dart';
 import 'package:get/get.dart';
 
 class AppRoutes {
@@ -55,7 +61,13 @@ class AppRoutes {
   static String billCopySettlementScreen = "/billCopySettlementScreen";
   static String cashSettlementScreen = "/cashSettlementScreen";
   static String returnSettlementScreen = "/returnSettlementScreen";
+  static String returnOrdersScreen = "/returnOrdersScreen";
+  static String complaintScreen = "/complaintScreen";
+  static String complaintViewScreen = '/complaintViewScreen';
+  static String requestComplaintScreen = "/requestComplaintScreen";
+  static String requestComplaintEditScreen = "/requestComplaintEditScreen";
   static String chatScreen = "/chatScreen";
+  static String ticketsScreen = "/ticketsScreen";
   static String noInternet = "/noInternet";
   //Employe......
   static String employeHome = "/employeHome";
@@ -88,7 +100,13 @@ class AppRoutes {
     GetPage(name: billCopySettlementScreen, page: () => const BillCopySettlementScreen()),
     GetPage(name: cashSettlementScreen, page: () => const CashSettlementScreen()),
     GetPage(name: returnSettlementScreen, page: () => const ReturnOrderSettlementScreen()),
+    GetPage(name: returnOrdersScreen, page: () => const ReturnOrdersScreen()),
+    GetPage(name: complaintScreen, page: () => const ComplaintScreen()),
+    GetPage(name: complaintViewScreen, page: () => const ComplaintViewScreen()),
+    GetPage(name: requestComplaintScreen, page: () => const RequestComplaintScreen()),
+    GetPage(name: requestComplaintEditScreen, page: () => const RequestComplaintEditScreen()),
     GetPage(name: chatScreen, page: () => const ChatScreen()),
+    GetPage(name: ticketsScreen, page: () => const TicketsScreen()),
     GetPage(
       name: noInternet,
       page: () => const Scaffold(

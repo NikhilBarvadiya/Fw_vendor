@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:fw_vendor/view/auth_checking_view/controller/app_controller.dart';
 import 'package:fw_vendor/core/theme/index.dart';
+import 'package:get/get.dart';
 
 class NoDataWidget extends StatelessWidget {
   final String title;
@@ -14,12 +15,14 @@ class NoDataWidget extends StatelessWidget {
       padding: const EdgeInsets.all(20),
       alignment: Alignment.center,
       child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        mainAxisSize: MainAxisSize.min,
         children: [
-          Text(
-            title,
-            style: AppCss.h2.copyWith(color: AppController().appTheme.primary1),
-          ),
-          const SizedBox(height: 5),
+          if (title != "")
+            Text(
+              title,
+              style: AppCss.h2.copyWith(color: AppController().appTheme.primary1),
+            ).paddingOnly(bottom: 5),
           Text(
             body,
             style: AppCss.body3,

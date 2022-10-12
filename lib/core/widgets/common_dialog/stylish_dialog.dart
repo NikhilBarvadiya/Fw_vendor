@@ -10,6 +10,7 @@ dynamic stylishDialog({
   final String? titleText,
   final String? contentText,
   final String? txtCancelButton,
+  final String? txtOkButton,
   final Color? confirmButton,
   final Color? cancelButtonColor,
   final StylishDialogType? alertType,
@@ -50,9 +51,9 @@ dynamic stylishDialog({
       enabled: true,
       shape: BoxShape.rectangle,
       onPressed: onPressed ?? () {},
-      child: const Text(
-        'Ok',
-        style: TextStyle(
+      child: Text(
+        txtOkButton ?? 'Ok',
+        style: const TextStyle(
           fontSize: 18,
           fontWeight: FontWeight.w600,
           color: Colors.white,
@@ -60,4 +61,62 @@ dynamic stylishDialog({
       ),
     ),
   ).show();
+}
+
+dynamic successDialog({
+  final String? contentText,
+  final String? titleText,
+  final String? txtOkButton,
+  final void Function()? onPressed,
+  final void Function()? onCancel,
+}) {
+  dynamic context = Get.context;
+  stylishDialog(
+    context: context,
+    alertType: StylishDialogType.SUCCESS,
+    titleText: titleText ?? 'Update success',
+    contentText: contentText ?? "",
+    confirmButton: Colors.green,
+    onPressed: onPressed,
+    cancelButton: onCancel != null ? true : false,
+    onCancel: onCancel,
+    txtOkButton: txtOkButton,
+    cancelButtonColor: Colors.redAccent,
+  );
+}
+
+dynamic warningDialog({final String? contentText, final void Function()? onPressed}) {
+  dynamic context = Get.context;
+  stylishDialog(
+    context: context,
+    alertType: StylishDialogType.WARNING,
+    titleText: 'Warning',
+    contentText: contentText ?? "",
+    confirmButton: Colors.amber,
+    onPressed: onPressed,
+  );
+}
+
+dynamic infoDialog({final String? contentText, final String? titleText, final void Function()? onPressed}) {
+  dynamic context = Get.context;
+  stylishDialog(
+    context: context,
+    alertType: StylishDialogType.INFO,
+    titleText: titleText ?? "",
+    contentText: contentText ?? "",
+    confirmButton: Colors.blueGrey,
+    onPressed: onPressed,
+  );
+}
+
+dynamic errorDialog({final String? contentText, final void Function()? onPressed}) {
+  dynamic context = Get.context;
+  stylishDialog(
+    context: context,
+    alertType: StylishDialogType.ERROR,
+    titleText: 'error',
+    contentText: contentText ?? "",
+    confirmButton: Colors.red,
+    onPressed: onPressed,
+  );
 }
