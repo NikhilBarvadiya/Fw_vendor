@@ -18,7 +18,7 @@ class ComplaintController extends GetxController {
   bool isAreaON = false;
   String audioPath = "";
   String selectedTab = "Open";
-  List tabs = ["Open", "Resolved", "Reopen", "Processing"];
+  List tabs = ["Open", "Resolved", "Processing"];
   String startDateVendor = "";
   String endDateVendor = "";
   List getOrderTicketList = [];
@@ -220,11 +220,9 @@ class ComplaintController extends GetxController {
           ? "open"
           : selectedTab == "Resolved"
               ? "resolved"
-              : selectedTab == "Reopen"
-                  ? "reopen"
-                  : selectedTab == "Processing"
-                      ? "processing"
-                      : "open";
+              : selectedTab == "Processing"
+                  ? "processing"
+                  : "open";
       var request = {
         "fromDate": startDateVendor,
         "toDate": endDateVendor,
@@ -249,70 +247,6 @@ class ComplaintController extends GetxController {
       isLoading = false;
       update();
     }
-  }
-
-  onStatusCheck(item) {
-    successDialog(
-      titleText: "Update!",
-      contentText: "Do you change your status!",
-      txtOkButton: item["status"] == "open"
-          ? "Resolved"
-          : item["status"] == "resolved"
-              ? "reopen"
-              : "Open",
-      onPressed: () async {
-        Get.back();
-        await onStatusChange(item);
-      },
-      onCancel: () {
-        Get.back();
-      },
-    );
-  }
-
-  onStatusChange(item) async {
-    try {
-      isLoading = true;
-      update();
-      var status = item["status"] == "open"
-          ? "resolved"
-          : item["status"] == "resolved"
-              ? "reopen"
-              : "open";
-      var request = {
-        "vendorTicketId": item["_id"],
-        "status": status,
-      };
-      var response = await apis.call(apiMethods.updateOrderTicket, request, ApiType.post);
-      if (response.isSuccess == true) {
-        successDialog(
-          contentText: "${response.message.toString()}\n${item["status"] == "open" ? "Resolved" : item["status"] == "resolved" ? "Reopen" : "Open"}",
-          onPressed: () async {
-            await getOrderTicket();
-            Get.back();
-          },
-        );
-        update();
-      } else {
-        warningDialog(
-          contentText: response.message.toString(),
-          onPressed: () {
-            Get.back();
-          },
-        );
-      }
-    } catch (e) {
-      errorDialog(
-        contentText: e.toString(),
-        onPressed: () {
-          Get.back();
-        },
-      );
-      isLoading = false;
-      update();
-    }
-    isLoading = false;
-    update();
   }
 
   onTicketsView(arguments) async {

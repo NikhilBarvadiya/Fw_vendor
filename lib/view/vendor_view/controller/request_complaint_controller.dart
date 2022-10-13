@@ -9,10 +9,6 @@ class RequestComplaintController extends GetxController {
   bool isLoading = false;
   bool isSearch = true;
 
-  @override
-  void onInit() async {
-    super.onInit();
-  }
 
   willPopScope() {
     Get.offNamedUntil(AppRoutes.home, (route) => false);

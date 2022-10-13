@@ -114,6 +114,15 @@ class _ComplaintScreenState extends State<ComplaintScreen> {
             body: Column(
               children: [
                 if (!controller.isAdd) _tapList(),
+                if (!controller.isAdd && controller.startDateVendor != "" && controller.endDateVendor != "")
+                  Container(
+                    alignment: Alignment.topLeft,
+                    child: Text(
+                      "${controller.startDateVendor} "
+                      "- ${controller.endDateVendor}",
+                      style: AppCss.h3,
+                    ),
+                  ).paddingOnly(left: 8, top: 5),
                 if (controller.isAdd)
                   Expanded(
                     child: Column(
@@ -123,20 +132,20 @@ class _ComplaintScreenState extends State<ComplaintScreen> {
                           onTap: () => controller.onAreaModule(),
                           bottom: 0,
                         ).paddingOnly(top: 10, right: 10, left: 10),
+                        if (controller.startDateVendor != "" && controller.endDateVendor != "")
+                          Container(
+                            alignment: Alignment.topLeft,
+                            child: Text(
+                              "${controller.startDateVendor} "
+                              "- ${controller.endDateVendor}",
+                              style: AppCss.h3,
+                            ),
+                          ).paddingOnly(left: 8, top: 5),
                         if (controller.isAreaON) _vendorAreaList(),
                         if (!controller.isAreaON) _complaintAddList(),
                       ],
                     ),
                   ),
-                if (controller.startDateVendor != "" && controller.endDateVendor != "")
-                  Container(
-                    alignment: Alignment.topLeft,
-                    child: Text(
-                      "${controller.startDateVendor} "
-                      "- ${controller.endDateVendor}",
-                      style: AppCss.h3,
-                    ),
-                  ).paddingOnly(left: 8, top: 5),
                 if (!controller.isAdd) _complaintList(),
               ],
             ),
@@ -170,7 +179,7 @@ class _ComplaintScreenState extends State<ComplaintScreen> {
                 controller.tabs[i],
                 style: AppCss.h1.copyWith(
                   color: controller.selectedTab == controller.tabs[i] ? Theme.of(context).primaryColor : Colors.grey,
-                  fontSize: controller.selectedTab == controller.tabs[i] ? 19 : 16,
+                  fontSize: controller.selectedTab == controller.tabs[i] ? 17 : 16,
                   fontWeight: controller.selectedTab == controller.tabs[i] ? null : FontWeight.w400,
                 ),
               ),
@@ -192,11 +201,9 @@ class _ComplaintScreenState extends State<ComplaintScreen> {
               itemBuilder: (BuildContext context, int index) {
                 return CommonTicketsCard(
                   shopName: controller.getOrderTicketList[index]["addressId"]["name"],
-                  reOpenStatus: controller.getOrderTicketList[index]["status"].toString().capitalizeFirst.toString(),
                   orderNo: controller.getOrderTicketList[index]["vendorOrderNo"],
                   addressDate: getFormattedDate2(controller.getOrderTicketList[index]["updatedAt"].toString()),
                   onPressed: () => controller.onTicketsView(controller.getOrderTicketList[index]),
-                  onStatus: () => controller.onStatusCheck(controller.getOrderTicketList[index]),
                 ).paddingAll(10);
               },
             ),
@@ -205,7 +212,7 @@ class _ComplaintScreenState extends State<ComplaintScreen> {
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                if (!controller.isLoading)
+                if (controller.getOrderTicketList.isEmpty && !controller.isLoading)
                   const NoDataWidget(
                     title: "No data !",
                     body: "No orders available",
@@ -262,7 +269,7 @@ class _ComplaintScreenState extends State<ComplaintScreen> {
                     notes: e["notes"],
                     anyNote: e["addressId"]["anyNote"],
                     driverNotes: e["vendorOrderId"]["driverNotes"],
-                    onPressed: ()=>controller.resolvedOrders(e),
+                    onPressed: () => controller.resolvedOrders(e),
                   );
                 }).toList(),
               ],
@@ -272,7 +279,7 @@ class _ComplaintScreenState extends State<ComplaintScreen> {
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                if (!controller.isLoading)
+                if (controller.getOrderTicketList.isEmpty && !controller.isLoading)
                   const NoDataWidget(
                     title: "No data !",
                     body: "No orders available",

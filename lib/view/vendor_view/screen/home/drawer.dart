@@ -118,6 +118,12 @@ class _CustomDrawerState extends State<CustomDrawer> {
                         onPress: () => homeController.onDraftOrdersClick(),
                       ),
                       MenuCard(
+                        title: "Orders Statistics",
+                        icon: Icons.circle,
+                        iconSize: 8.0,
+                        onPress: () => homeController.onOrdersStatisticsClick(),
+                      ),
+                      MenuCard(
                         icon: Icons.circle,
                         title: "Orders view",
                         iconSize: 8.0,

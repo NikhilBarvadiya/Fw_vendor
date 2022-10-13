@@ -152,23 +152,28 @@ class HomeController extends GetxController {
     update();
   }
 
-  onReturnOrdersClick(){
+  onReturnOrdersClick() {
     Get.toNamed(AppRoutes.returnOrdersScreen);
     update();
   }
 
-  onComplaintClick(){
+  onComplaintClick() {
     Get.toNamed(AppRoutes.complaintScreen);
     update();
   }
 
-  onRequestComplaintClick(){
+  onRequestComplaintClick() {
     Get.toNamed(AppRoutes.requestComplaintScreen);
     update();
   }
 
   onDraftOrdersClick() {
     Get.toNamed(AppRoutes.draftOrdersScreen);
+    update();
+  }
+
+  onOrdersStatisticsClick() {
+    Get.toNamed(AppRoutes.orderStatisticScreen);
     update();
   }
 

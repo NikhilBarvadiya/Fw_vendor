@@ -90,16 +90,18 @@ class _CommonReturnOrderSettlementCardState extends State<CommonReturnOrderSettl
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Row(
-                  crossAxisAlignment: CrossAxisAlignment.end,
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     if (widget.personName != null && widget.personName != "")
-                      Text(
-                        widget.personName ?? "",
-                        style: AppCss.caption.copyWith(
-                          color: Colors.black,
-                          fontSize: 14,
-                        ),
-                      ).paddingOnly(right: 10),
+                      Expanded(
+                        child: Text(
+                          widget.personName ?? "",
+                          style: AppCss.caption.copyWith(
+                            color: Colors.black,
+                            fontSize: 14,
+                          ),
+                        ).paddingOnly(right: 10),
+                      ),
                     if (widget.mobile != null && widget.mobile != "")
                       Text(
                         widget.mobile ?? "",
@@ -107,7 +109,6 @@ class _CommonReturnOrderSettlementCardState extends State<CommonReturnOrderSettl
                           fontSize: 13,
                         ),
                       ),
-                    const Spacer(),
                   ],
                 ).paddingOnly(bottom: 8),
                 if (widget.address != null && widget.address != "")

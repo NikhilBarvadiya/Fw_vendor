@@ -4,7 +4,6 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:fw_vendor/core/theme/app_css.dart';
 import 'package:fw_vendor/core/widgets/common/common_chips.dart';
 import 'package:fw_vendor/core/widgets/common/common_filter_dropdown_card.dart';
-import 'package:fw_vendor/core/widgets/common/common_orders_text_card.dart';
 import 'package:fw_vendor/core/widgets/common/searchable_list.dart';
 import 'package:fw_vendor/core/widgets/common_bottom_sheet/common_bottom_sheet.dart';
 import 'package:fw_vendor/core/widgets/custom_widgets/custom_textformfield.dart';

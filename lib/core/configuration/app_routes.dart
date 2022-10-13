@@ -26,6 +26,7 @@ import 'package:fw_vendor/view/vendor_view/screen/orders/create_orders/tickets_s
 import 'package:fw_vendor/view/vendor_view/screen/orders/create_orders/show_address_book_screen.dart';
 import 'package:fw_vendor/view/vendor_view/screen/orders/draft_orders/draft_orders.dart';
 import 'package:fw_vendor/view/vendor_view/screen/orders/draft_orders/edit_selected_location.dart';
+import 'package:fw_vendor/view/vendor_view/screen/orders/orders_statistics/orders_statistics_screen.dart';
 import 'package:fw_vendor/view/vendor_view/screen/return/return_orders.dart';
 import 'package:fw_vendor/view/vendor_view/screen/settlement/bill_copy_settlement/bill_copy_settlement.dart';
 import 'package:fw_vendor/view/vendor_view/screen/settlement/cash_settlement/cash_settlement.dart';
@@ -64,6 +65,7 @@ class AppRoutes {
   static String returnOrdersScreen = "/returnOrdersScreen";
   static String complaintScreen = "/complaintScreen";
   static String complaintViewScreen = '/complaintViewScreen';
+  static String orderStatisticScreen = '/orderStatisticScreen';
   static String requestComplaintScreen = "/requestComplaintScreen";
   static String requestComplaintEditScreen = "/requestComplaintEditScreen";
   static String chatScreen = "/chatScreen";
@@ -103,6 +105,7 @@ class AppRoutes {
     GetPage(name: returnOrdersScreen, page: () => const ReturnOrdersScreen()),
     GetPage(name: complaintScreen, page: () => const ComplaintScreen()),
     GetPage(name: complaintViewScreen, page: () => const ComplaintViewScreen()),
+    GetPage(name: orderStatisticScreen, page: () => const OrdersStatisticsScreen()),
     GetPage(name: requestComplaintScreen, page: () => const RequestComplaintScreen()),
     GetPage(name: requestComplaintEditScreen, page: () => const RequestComplaintEditScreen()),
     GetPage(name: chatScreen, page: () => const ChatScreen()),

@@ -3,7 +3,6 @@ import 'package:fw_vendor/common/config.dart';
 import 'package:fw_vendor/core/configuration/app_routes.dart';
 import 'package:fw_vendor/core/widgets/common_dialog/scale_dialog.dart';
 import 'package:fw_vendor/networking/index.dart';
-import 'package:fw_vendor/view/vendor_view/controller/draft_orders_controller.dart';
 import 'package:get/get.dart';
 
 class DashboardController extends GetxController {

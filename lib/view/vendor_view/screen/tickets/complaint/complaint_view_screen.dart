@@ -32,13 +32,24 @@ class _ComplaintViewScreenState extends State<ComplaintViewScreen> {
             ComplaintView(
               shopName: controller.arguments["orderDetails"]["addressId"]["name"],
               orderNo: controller.arguments["orderDetails"]["vendorOrderNo"].toString(),
-              addressDate: getFormattedDate2(controller.arguments["view"][0]["date"].toString()),
-              images: controller.arguments["view"][0]["images"],
-              notes: controller.arguments["view"][0]["desc"],
+              addressDate: getFormattedDate2(controller.arguments["orderDetails"]["createdAt"].toString()),
+              images: controller.arguments["orderDetails"]["images"],
+              notes: controller.arguments["orderDetails"]["desc"] != ""
+                  ? controller.arguments["orderDetails"]["desc"].toString()
+                  : "Description not found...",
+              currentStatus: controller.arguments["orderDetails"]["status"].toString().capitalizeFirst.toString(),
+              reOpenStatus: controller.arguments["orderDetails"]["status"] == "open"
+                  ? "Resolve"
+                  : controller.arguments["orderDetails"]["status"] == "resolved"
+                      ? "reOpen"
+                      : controller.arguments["orderDetails"]["status"] == "reopen"
+                          ? "Resolve"
+                          : "Open",
+              onStatus: () => controller.onStatusCheck(controller.arguments["orderDetails"]),
             ),
             _activityCard(controller.arguments["view"]),
           ],
-        ).paddingAll(10),
+        ),
       ),
     );
   }
@@ -48,42 +59,54 @@ class _ComplaintViewScreenState extends State<ComplaintViewScreen> {
       child: ListView(
         shrinkWrap: true,
         children: [
+          Text(
+            "Status History",
+            style: AppCss.h1.copyWith(color: Colors.black, fontSize: 18),
+          ),
           ...activity.map(
-            (e) => Card(
-              elevation: 1,
-              child: Container(
-                width: double.infinity,
-                decoration: BoxDecoration(borderRadius: BorderRadius.circular(4)),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Text(
-                          e["userId"]["name"],
-                          style: AppCss.h3.copyWith(color: Colors.black, fontSize: 15),
-                        ),
-                        Card(
-                          color: e["status"] == "open" ? Colors.blue : Colors.deepOrangeAccent,
-                          elevation: 0,
-                          margin: EdgeInsets.zero,
-                          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(2)),
-                          child: Text(
-                            e["status"].toString(),
-                            style: const TextStyle(fontSize: 10, color: Colors.white),
-                          ).paddingOnly(left: 4, right: 4),
-                        ),
-                      ],
-                    ).paddingOnly(bottom: 2),
-                    Text(
-                      getFormattedDate2(e["userId"]["updatedAt"].toString()),
-                      style: const TextStyle(fontSize: 10),
-                    ).paddingOnly(bottom: 2),
-                    Text(
-                      e["userId"]["address"]["address_line"].toString(),
-                      style: const TextStyle(fontSize: 12),
-                    ).paddingOnly(bottom: 2),
+            (e) => Container(
+              width: double.infinity,
+              margin: const EdgeInsets.only(bottom: 10),
+              decoration: BoxDecoration(borderRadius: BorderRadius.circular(4)),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            e["userId"]["name"],
+                            style: AppCss.body1.copyWith(color: Colors.black, fontSize: 15),
+                          ),
+                          if (e["desc"] != null && e["desc"] != "") Text(e["desc"], style: AppCss.footnote),
+                        ],
+                      ),
+                      Column(
+                        crossAxisAlignment: CrossAxisAlignment.end,
+                        children: [
+                          Text(
+                            e["status"] == "open"
+                                ? "This is open!"
+                                : e["status"] == "resolved"
+                                    ? "Was resolved!"
+                                    : e["status"] == "reopen"
+                                        ? "Was reopen!"
+                                        : "",
+                            style: AppCss.footnote.copyWith(fontSize: 12),
+                          ),
+                          Text(
+                            getFormattedDate2(e["userId"]["updatedAt"].toString()),
+                            style: const TextStyle(fontSize: 10),
+                          ),
+                        ],
+                      )
+                    ],
+                  ).paddingOnly(bottom: 2),
+                  if (e["userId"]["images"] != null)
                     Wrap(
                       children: [
                         ClipRRect(
@@ -109,27 +132,29 @@ class _ComplaintViewScreenState extends State<ComplaintViewScreen> {
                         ),
                       ],
                     ).paddingAll(5),
+                  if (e["userId"]["audioNote"] != null)
                     CustomAudioPlayer(
                       margin: const EdgeInsets.only(bottom: 5),
                       borderRadius: 5,
                       padding: const EdgeInsets.only(left: 8, top: 5, bottom: 5, right: 8),
-                      audioPath: environment["imagesbaseUrl"] + e["audioNote"].toString(),
-                      clearRecording: () {
-                        e["audioNote"] = "";
-                      },
+                      audioPath: environment["imagesbaseUrl"] + e["userId"]["audioNote"].toString(),
+                      clearRecording: () => controller.clearRecording(e),
                     ),
-                    if (e["desc"] != null && e["desc"] != "")
-                      Padding(
-                        padding: const EdgeInsets.only(top: 2),
-                        child: Text(e["desc"], style: AppCss.footnote),
-                      ),
-                  ],
-                ).paddingAll(4),
-              ),
+                  Divider(
+                    color: e["status"] == "open"
+                        ? Colors.green
+                        : e["status"] == "resolved"
+                            ? Colors.amber
+                            : e["status"] == "reopen"
+                                ? Colors.blue
+                                : Colors.transparent,
+                  ),
+                ],
+              ).paddingAll(10),
             ),
           ),
         ],
-      ),
+      ).paddingAll(10),
     );
   }
 }

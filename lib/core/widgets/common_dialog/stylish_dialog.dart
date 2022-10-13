@@ -1,5 +1,8 @@
 import 'package:animated_button/animated_button.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:fw_vendor/core/theme/index.dart';
+import 'package:fw_vendor/view/auth_checking_view/controller/app_controller.dart';
 import 'package:get/get.dart';
 import 'package:stylish_dialog/stylish_dialog.dart';
 
@@ -63,17 +66,56 @@ dynamic stylishDialog({
   ).show();
 }
 
+informationDialog({message, backgroundColor, required VoidCallback onConfirm, title}) {
+  Get.defaultDialog(
+    barrierDismissible: false,
+    radius: 4,
+    title: "",
+    titleStyle: const TextStyle(fontSize: 10),
+    titlePadding: EdgeInsets.zero,
+    contentPadding: const EdgeInsets.symmetric(vertical: 0, horizontal: 12),
+    actions: [
+      TextButton(
+        onPressed: () {
+          Get.back();
+        },
+        child: const Text("Cancel"),
+      ),
+      TextButton(
+        onPressed: onConfirm,
+        child: const Text("Okay"),
+      ),
+    ],
+    content: Column(
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        CircleAvatar(
+          radius: 30,
+          backgroundColor: backgroundColor ?? Colors.white,
+          child: Icon(CupertinoIcons.info, size: 50, color: AppController().appTheme.primary1),
+        ),
+        const SizedBox(height: 10),
+        Text(
+          title,
+          style: AppCss.footnote.copyWith(fontSize: 15),
+        ),
+      ],
+    ),
+  );
+}
+
 dynamic successDialog({
   final String? contentText,
   final String? titleText,
   final String? txtOkButton,
+  final StylishDialogType? alertType,
   final void Function()? onPressed,
   final void Function()? onCancel,
 }) {
   dynamic context = Get.context;
   stylishDialog(
     context: context,
-    alertType: StylishDialogType.SUCCESS,
+    alertType: alertType ?? StylishDialogType.SUCCESS,
     titleText: titleText ?? 'Update success',
     contentText: contentText ?? "",
     confirmButton: Colors.green,

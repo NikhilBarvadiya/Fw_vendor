@@ -8,6 +8,8 @@ class CommonFilterDropDown extends StatefulWidget {
   final String? headerName;
   final String? selectedName;
   final double? bottom;
+  final Color? backgroundColor;
+  final Color? borderColor;
 
   const CommonFilterDropDown({
     Key? key,
@@ -15,6 +17,8 @@ class CommonFilterDropDown extends StatefulWidget {
     this.selectedName,
     this.headerName,
     this.bottom,
+    this.backgroundColor,
+    this.borderColor,
   }) : super(key: key);
 
   @override
@@ -37,17 +41,28 @@ class _CommonFilterDropDownState extends State<CommonFilterDropDown> {
           Container(
             padding: const EdgeInsets.all(10),
             decoration: BoxDecoration(
+              color: widget.backgroundColor,
               borderRadius: BorderRadiusDirectional.circular(4),
               border: Border.all(
-                color: Colors.blueGrey.withOpacity(0.8),
+                color: widget.borderColor ?? Colors.blueGrey.withOpacity(0.8),
               ),
             ),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Expanded(child: Text(widget.selectedName ?? "", style: AppCss.body1)),
-                Icon(Icons.arrow_drop_down, color: Colors.blueGrey.withOpacity(0.8)),
+                Expanded(
+                  child: Text(
+                    widget.selectedName ?? "",
+                    style: AppCss.body1.copyWith(
+                      color: widget.borderColor ?? Colors.black,
+                    ),
+                  ),
+                ),
+                Icon(
+                  Icons.arrow_drop_down,
+                  color: widget.borderColor ?? Colors.blueGrey.withOpacity(0.8),
+                ),
               ],
             ),
           ),

@@ -3,6 +3,7 @@ import 'package:fw_vendor/core/theme/index.dart';
 import 'package:fw_vendor/core/widgets/common/common_button.dart';
 import 'package:fw_vendor/core/widgets/common/common_filter_dropdown_card.dart';
 import 'package:fw_vendor/core/widgets/common/return_orders_card.dart';
+import 'package:fw_vendor/core/widgets/common_loading/loading.dart';
 import 'package:fw_vendor/core/widgets/custom_widgets/custom_nodata.dart';
 import 'package:fw_vendor/core/widgets/custom_widgets/custom_textformfield.dart';
 import 'package:fw_vendor/view/auth_checking_view/controller/app_controller.dart';
@@ -26,111 +27,114 @@ class _ReturnOrdersScreenState extends State<ReturnOrdersScreen> {
         onWillPop: () async {
           return controller.willPopScope();
         },
-        child: Scaffold(
-          appBar: AppBar(
-            elevation: 1,
-            automaticallyImplyLeading: false,
-            foregroundColor: Colors.white,
-            title: const Text("Return Orders"),
-            leading: IconButton(
-              icon: const Icon(Icons.arrow_back),
-              onPressed: () {
-                controller.willPopScope();
-              },
-            ),
-            actions: [
-              IconButton(
+        child: LoadingMode(
+          isLoading: controller.isLoading,
+          child: Scaffold(
+            appBar: AppBar(
+              elevation: 1,
+              automaticallyImplyLeading: false,
+              foregroundColor: Colors.white,
+              title: const Text("Return Orders"),
+              leading: IconButton(
+                icon: const Icon(Icons.arrow_back),
                 onPressed: () {
-                  controller.onFilterButtonTapped();
+                  controller.willPopScope();
                 },
-                icon: Icon(controller.isFilter ? Icons.filter_alt_off : Icons.filter_alt_sharp, color: Colors.white),
               ),
-              IconButton(
-                onPressed: () {
-                  controller.onSearchButtonTapped();
-                },
-                icon: Container(
-                  color: controller.isSearch ? Colors.redAccent : Theme.of(context).primaryColor,
-                  child: Icon(controller.isSearch ? Icons.close : Icons.search),
+              actions: [
+                IconButton(
+                  onPressed: () {
+                    controller.onFilterButtonTapped();
+                  },
+                  icon: Icon(controller.isFilter ? Icons.filter_alt_off : Icons.filter_alt_sharp, color: Colors.white),
                 ),
-              ),
-            ],
-            bottom: PreferredSize(
-              preferredSize: Size.fromHeight(controller.isSearch ? 50 : 0),
-              child: controller.isSearch
-                  ? Container(
-                      color: Colors.white,
-                      child: Row(
-                        children: [
-                          Expanded(
-                            child: CustomTextFormField(
-                              container: controller.txtSearch,
-                              focusNode: controller.txtSearchFocus,
-                              hintText: "Search".tr,
-                              fillColor: Colors.white,
-                              prefixIcon: GestureDetector(
-                                onTap: () => controller.onSearchOrders(),
-                                child: Icon(
-                                  Icons.search_rounded,
-                                  color: Colors.blueGrey.withOpacity(0.8),
-                                  size: controller.txtSearch.text != "" ? 15 : 20,
+                IconButton(
+                  onPressed: () {
+                    controller.onSearchButtonTapped();
+                  },
+                  icon: Container(
+                    color: controller.isSearch ? Colors.redAccent : Theme.of(context).primaryColor,
+                    child: Icon(controller.isSearch ? Icons.close : Icons.search),
+                  ),
+                ),
+              ],
+              bottom: PreferredSize(
+                preferredSize: Size.fromHeight(controller.isSearch ? 50 : 0),
+                child: controller.isSearch
+                    ? Container(
+                        color: Colors.white,
+                        child: Row(
+                          children: [
+                            Expanded(
+                              child: CustomTextFormField(
+                                container: controller.txtSearch,
+                                focusNode: controller.txtSearchFocus,
+                                hintText: "Search".tr,
+                                fillColor: Colors.white,
+                                prefixIcon: GestureDetector(
+                                  onTap: () => controller.onSearchOrders(),
+                                  child: Icon(
+                                    Icons.search_rounded,
+                                    color: Colors.blueGrey.withOpacity(0.8),
+                                    size: controller.txtSearch.text != "" ? 15 : 20,
+                                  ),
+                                ),
+                                padding: 15,
+                                radius: 0,
+                                counterText: "",
+                                validator: (value) {
+                                  if (value!.isEmpty) {
+                                    return "";
+                                  } else {
+                                    return null;
+                                  }
+                                },
+                                onEditingComplete: () => controller.onSearchOrders(),
+                              ),
+                            ),
+                            GestureDetector(
+                              onTap: () => controller.customDate(),
+                              child: Card(
+                                elevation: 0,
+                                child: Container(
+                                  padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
+                                  child: Icon(Icons.date_range, size: 25, color: Theme.of(context).primaryColor),
                                 ),
                               ),
-                              padding: 15,
-                              radius: 0,
-                              counterText: "",
-                              validator: (value) {
-                                if (value!.isEmpty) {
-                                  return "";
-                                } else {
-                                  return null;
-                                }
-                              },
-                              onEditingComplete: () => controller.onSearchOrders(),
                             ),
-                          ),
-                          GestureDetector(
-                            onTap: () => controller.customDate(),
-                            child: Card(
-                              elevation: 0,
-                              child: Container(
-                                padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
-                                child: Icon(Icons.date_range, size: 25, color: Theme.of(context).primaryColor),
-                              ),
-                            ),
-                          ),
-                        ],
-                      ),
-                    )
-                  : Container(),
-            ),
-          ),
-          body: Column(
-            children: [
-              Expanded(
-                child: Column(
-                  children: [
-                    if (controller.isFilter)
-                      CommonFilterDropDown(
-                        selectedName: 'Select Route',
-                        onTap: () => controller.onRoutesModule(),
-                        bottom: 0,
-                      ).paddingOnly(top: 10, right: 10, left: 10),
-                    if (controller.startDateVendor != "" && controller.endDateVendor != "")
-                      Container(
-                        alignment: Alignment.topLeft,
-                        child: Text(
-                          "${controller.startDateVendor} "
-                          "- ${controller.endDateVendor}",
-                          style: AppCss.h3,
+                          ],
                         ),
-                      ).paddingOnly(left: 10, top: 5),
-                    if (controller.isRoutesON) _routesList(),
-                    if (!controller.isRoutesON) _returnOrdersCard(),
-                  ],
-                ),
+                      )
+                    : Container(),
               ),
-            ],
+            ),
+            body: Column(
+              children: [
+                Expanded(
+                  child: Column(
+                    children: [
+                      if (controller.isFilter)
+                        CommonFilterDropDown(
+                          selectedName: 'Select Route',
+                          onTap: () => controller.onRoutesModule(),
+                          bottom: 0,
+                        ).paddingOnly(top: 10, right: 10, left: 10),
+                      if (controller.startDateVendor != "" && controller.endDateVendor != "")
+                        Container(
+                          alignment: Alignment.topLeft,
+                          child: Text(
+                            "${controller.startDateVendor} "
+                            "- ${controller.endDateVendor}",
+                            style: AppCss.h3,
+                          ),
+                        ).paddingOnly(left: 10, top: 5),
+                      if (controller.isRoutesON) _routesList(),
+                      if (!controller.isRoutesON) _returnOrdersCard(),
+                    ],
+                  ),
+                ),
+              ],
+            ),
           ),
         ),
       ),
