@@ -175,17 +175,10 @@ class _SearchableListViewState extends State<SearchableListView> {
                         },
                         title: Text(
                           widget.bindText != null ? e[widget.bindText].toString().capitalizeFirst : e,
-                          style: widget.bindTextStyle ??
-                              AppCss.body2.copyWith(
-                                fontSize: 12,
-                              ),
+                          style: widget.bindTextStyle ?? AppCss.body2.copyWith(fontSize: 12),
                         ),
                       ),
-                      widget.isDivider!
-                          ? const Divider(
-                              color: Colors.grey,
-                            )
-                          : Container(),
+                      widget.isDivider! ? const Divider(color: Colors.grey) : Container(),
                       if (resultList.isEmpty && itemList.isEmpty)
                         Column(
                           children: [

@@ -25,19 +25,36 @@ class _ComplaintViewScreenState extends State<ComplaintViewScreen> {
           elevation: 1,
           automaticallyImplyLeading: true,
           foregroundColor: Colors.white,
-          title: const Text("Complaint View", textScaleFactor: 1, textAlign: TextAlign.center),
+          title: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              const Text("Complaint View", textScaleFactor: 1, textAlign: TextAlign.center),
+              Text(
+                getFormattedDate2(controller.arguments["orderDetails"]["createdAt"].toString()),
+                style: const TextStyle(fontSize: 10),
+              ),
+            ],
+          ),
+          actions: [
+            Container(
+              alignment: Alignment.center,
+              padding: const EdgeInsets.only(right: 10),
+              child: Text(
+                controller.arguments["orderDetails"]["status"].toString().capitalizeFirst.toString(),
+                style: AppCss.h2,
+              ),
+            )
+          ],
         ),
         body: Column(
           children: [
             ComplaintView(
               shopName: controller.arguments["orderDetails"]["addressId"]["name"],
               orderNo: controller.arguments["orderDetails"]["vendorOrderNo"].toString(),
-              addressDate: getFormattedDate2(controller.arguments["orderDetails"]["createdAt"].toString()),
               images: controller.arguments["orderDetails"]["images"],
               notes: controller.arguments["orderDetails"]["desc"] != ""
                   ? controller.arguments["orderDetails"]["desc"].toString()
                   : "Description not found...",
-              currentStatus: controller.arguments["orderDetails"]["status"].toString().capitalizeFirst.toString(),
               reOpenStatus: controller.arguments["orderDetails"]["status"] == "open"
                   ? "Resolve"
                   : controller.arguments["orderDetails"]["status"] == "resolved"

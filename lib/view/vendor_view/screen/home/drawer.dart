@@ -165,12 +165,12 @@ class _CustomDrawerState extends State<CustomDrawer> {
                       child: Icon(FontAwesomeIcons.ticket, color: Colors.grey, size: 20),
                     ),
                     children: [
-                      MenuCard(
-                        title: "Request Complaint",
-                        icon: Icons.circle,
-                        iconSize: 8.0,
-                        onPress: () => homeController.onRequestComplaintClick(),
-                      ),
+                      // MenuCard(
+                      //   title: "Request Complaint",
+                      //   icon: Icons.circle,
+                      //   iconSize: 8.0,
+                      //   onPress: () => homeController.onRequestComplaintClick(),
+                      // ),
                       MenuCard(
                         title: "Complaint",
                         icon: Icons.circle,

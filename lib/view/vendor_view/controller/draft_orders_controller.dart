@@ -22,9 +22,14 @@ class DraftOrdersController extends GetxController {
   FocusNode txtSearchFocus = FocusNode();
   bool isSearch = true;
   bool isLoading = false;
-  bool isFilter = false;
+  bool isFilter = true;
+  bool isRoutesON = false;
+  bool isAreaON = false;
+  List vendorRoutesList = [];
+  List vendorAreaList = [];
   List getDraftOrderList = [];
   List selectedOrderList = [];
+  String selectedFilter = "Today";
   String startDateVendor = "";
   String endDateVendor = "";
   dynamic editData;
@@ -33,12 +38,12 @@ class DraftOrdersController extends GetxController {
     {
       "label": "All",
       "icon": Icons.all_inbox,
-      "isActive": true,
+      "isActive": false,
     },
     {
       "label": "Today",
       "icon": Icons.today,
-      "isActive": false,
+      "isActive": true,
     },
     {
       "label": "Yesterday",
@@ -72,9 +77,13 @@ class DraftOrdersController extends GetxController {
 
   @override
   void onInit() {
-    _getVendorDraftOrder();
+    _apiCallingStart();
     _autoSelector();
     super.onInit();
+  }
+
+  _apiCallingStart() async {
+    await _getVendorDraftOrder();
   }
 
   willPopScope() {
@@ -84,13 +93,18 @@ class DraftOrdersController extends GetxController {
   _screenFocus() {
     txtSearch.clear();
     txtSearchFocus.unfocus();
+    _onReset("all");
   }
 
   onChange(int i) async {
     for (int a = 0; a < dateFilter.length; a++) {
       if (a == i) {
         dateFilter[a]["isActive"] = true;
-        txtSearchFocus.unfocus();
+        selectedFilter = dateFilter[a]["label"];
+        isRoutesON = false;
+        isAreaON = false;
+        _screenFocus();
+        update();
       } else {
         dateFilter[a]["isActive"] = false;
       }
@@ -98,21 +112,42 @@ class DraftOrdersController extends GetxController {
     if (dateFilter[i]["label"] == "Custom") {
       customDate();
     } else {
-      await onSearchOrders();
+      await _getVendorDraftOrder();
     }
     update();
   }
 
   onSelectDropdown(String id, String title, String forWhom) async {
     isLoading = true;
-    if (forWhom == "area") {
-      filters["area"]!["id"] = id;
-      filters["area"]!["title"] = title;
-      _onReset("route");
-      // await _getRoutes();
-    } else if (forWhom == "route") {
+    _screenFocus();
+    if (forWhom == "route") {
       filters["route"]!["id"] = id;
-      filters["route"]!["title"] = title;
+      filters["route"]!["name"] = title;
+      for (int i = 0; i < vendorRoutesList.length; i++) {
+        if (vendorRoutesList[i]['_id'] == filters["route"]!["id"]) {
+          vendorRoutesList[i]['selected'] = true;
+        } else {
+          vendorRoutesList[i]['selected'] = false;
+        }
+        update();
+      }
+      if (filters["route"]!["id"] != null && filters["route"]!["id"] != "") {
+        await _getVendorDraftOrder();
+      }
+    } else if (forWhom == "area") {
+      filters["area"]!["id"] = id;
+      filters["area"]!["name"] = title;
+      for (int i = 0; i < vendorAreaList.length; i++) {
+        if (vendorAreaList[i]['_id'] == filters["area"]!["id"]) {
+          vendorAreaList[i]['selected'] = true;
+        } else {
+          vendorAreaList[i]['selected'] = false;
+        }
+        update();
+      }
+      if (filters["area"]!["id"] != null && filters["area"]!["id"] != "") {
+        await _getVendorDraftOrder();
+      }
     }
     isLoading = false;
     update();
@@ -128,12 +163,17 @@ class DraftOrdersController extends GetxController {
 
   onFilterButtonTapped() {
     isFilter = !isFilter;
+    isRoutesON = false;
+    isAreaON = false;
+    _screenFocus();
     update();
   }
 
   onSearchOrders() async {
     _screenFocus();
-    await _getVendorDraftOrder();
+    if (txtSearch.text != "") {
+      await _getVendorDraftOrder();
+    }
     update();
   }
 
@@ -161,8 +201,8 @@ class DraftOrdersController extends GetxController {
     return CalendarDatePicker2WithActionButtons(
       config: config,
       initialValue: [
+        DateTime.utc(DateTime.now().year, DateTime.now().month, 1),
         DateTime.now(),
-        DateTime.now().add(const Duration(days: 1)),
       ],
       onValueChanged: (values) async {
         selectedDate = values;
@@ -172,7 +212,7 @@ class DraftOrdersController extends GetxController {
             '${selectedDate[0]!.year}-${selectedDate[0]!.month.toString().padLeft(2, '0')}-${selectedDate[0]!.day.toString().padLeft(2, '0')}';
         endDateVendor =
             '${selectedDate[1]!.year}-${selectedDate[1]!.month.toString().padLeft(2, '0')}-${selectedDate[1]!.day.toString().padLeft(2, '0')}';
-        // await _getVendorDraftOrder();
+        await _getVendorDraftOrder();
         isLoading = false;
         update();
       },
@@ -182,20 +222,122 @@ class DraftOrdersController extends GetxController {
     );
   }
 
+  onRoutesModule() async {
+    _screenFocus();
+    isAreaON = false;
+    isRoutesON = !isRoutesON;
+    if (isRoutesON) {
+      getDraftOrderList.clear();
+      for (int i = 0; i < vendorRoutesList.length; i++) {
+        if (vendorRoutesList[i]["selected"] == true) {
+          vendorRoutesList[i]['selected'] = false;
+        }
+        update();
+      }
+    }
+    await _vendorRoutes();
+    update();
+  }
+
+  _vendorRoutes() async {
+    try {
+      isLoading = true;
+      update();
+      var body = {};
+      var resData = await apis.call(
+        apiMethods.vendorRoutes,
+        body,
+        ApiType.post,
+      );
+      if (resData.isSuccess && resData.data != 0) {
+        vendorRoutesList = resData.data;
+      }
+    } catch (e) {
+      snackBar("No pacakge data found", Colors.red);
+      isLoading = false;
+      update();
+    }
+    isLoading = false;
+    update();
+  }
+
   _getVendorDraftOrder() async {
     try {
       isLoading = true;
       update();
+      var data = {
+        "search": txtSearch.text,
+        "areaId": filters["area"]!["id"] != "" ? filters["area"]!["id"] : "",
+        "routeId": filters["route"]!["id"] != "" ? filters["route"]!["id"] : "",
+        "dateFilter": {
+          "type": selectedFilter != "" ? selectedFilter : "Today",
+          "dates": startDateVendor != "" && endDateVendor != ""
+              ? {
+                  "fromDate": startDateVendor,
+                  "toDate": endDateVendor,
+                }
+              : null,
+        },
+      };
       var resData = await apis.call(
         apiMethods.getVendorDraftOrder,
-        {},
+        data,
         ApiType.post,
       );
       if (resData.isSuccess && resData.data != 0) {
         getDraftOrderList = resData.data;
+        txtSearch.clear();
+        txtSearchFocus.unfocus();
+        isRoutesON = false;
+        isAreaON = false;
+        update();
       }
     } catch (e) {
       snackBar("No pacakge data found", Colors.red);
+      isLoading = false;
+      update();
+    }
+    isLoading = false;
+    update();
+  }
+
+  onAreaModule() async {
+    isRoutesON = false;
+    update();
+    _screenFocus();
+    isAreaON = !isAreaON;
+    if (isAreaON) {
+      getDraftOrderList.clear();
+      for (int i = 0; i < vendorAreaList.length; i++) {
+        if (vendorAreaList[i]["selected"] == true) {
+          vendorAreaList[i]['selected'] = false;
+        }
+        update();
+      }
+    }
+    await _vendorArea();
+    update();
+  }
+
+  _vendorArea() async {
+    try {
+      isLoading = true;
+      update();
+      var resData = await apis.call(
+        apiMethods.vendorAreas,
+        {},
+        ApiType.post,
+      );
+      if (resData.isSuccess && resData.data != 0) {
+        vendorAreaList = resData.data;
+      }
+    } catch (e) {
+      errorDialog(
+        contentText: e.toString(),
+        onPressed: () {
+          Get.back();
+        },
+      );
       isLoading = false;
       update();
     }

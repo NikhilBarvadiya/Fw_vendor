@@ -31,13 +31,9 @@ class GlobalDirectoryScreen extends StatelessWidget {
               elevation: 1,
               automaticallyImplyLeading: false,
               foregroundColor: Colors.white,
-              title: const Text(
-                "Global Directory",
-              ),
+              title: const Text("Global Directory"),
               leading: IconButton(
-                icon: const Icon(
-                  Icons.arrow_back,
-                ),
+                icon: const Icon(Icons.arrow_back),
                 onPressed: () {
                   globalDirectoryController.willPopScope();
                 },
@@ -50,45 +46,45 @@ class GlobalDirectoryScreen extends StatelessWidget {
                     },
                     icon: Container(
                       color: globalDirectoryController.isSearch ? Colors.redAccent : Theme.of(context).primaryColor,
-                      child: Icon(
-                        globalDirectoryController.isSearch ? Icons.close : Icons.search,
-                      ),
+                      child: Icon(globalDirectoryController.isSearch ? Icons.close : Icons.search),
                     ),
                   ),
               ],
-              bottom:globalDirectoryController.areaSelected != ""? PreferredSize(
-                preferredSize: Size.fromHeight(globalDirectoryController.isSearch ? 50 : 0),
-                child: globalDirectoryController.isSearch
-                    ? Container(
-                        color: Colors.white,
-                        child: CustomTextFormField(
-                          container: globalDirectoryController.txtSearch,
-                          focusNode: globalDirectoryController.txtSearchFocus,
-                          hintText: "Search".tr,
-                          fillColor: Colors.white,
-                          prefixIcon: GestureDetector(
-                            onTap: () => globalDirectoryController.onSearchGlobalAddress(),
-                            child: Icon(
-                              Icons.search_rounded,
-                              color: Colors.blueGrey.withOpacity(0.8),
-                              size: globalDirectoryController.txtSearch.text != "" ? 15 : 20,
-                            ),
-                          ),
-                          padding: 15,
-                          radius: 0,
-                          counterText: "",
-                          validator: (value) {
-                            if (value!.isEmpty) {
-                              return "";
-                            } else {
-                              return null;
-                            }
-                          },
-                          onEditingComplete: () => globalDirectoryController.onSearchGlobalAddress(),
-                        ),
-                      )
-                    : Container(),
-              ):null,
+              bottom: globalDirectoryController.areaSelected != ""
+                  ? PreferredSize(
+                      preferredSize: Size.fromHeight(globalDirectoryController.isSearch ? 50 : 0),
+                      child: globalDirectoryController.isSearch
+                          ? Container(
+                              color: Colors.white,
+                              child: CustomTextFormField(
+                                container: globalDirectoryController.txtSearch,
+                                focusNode: globalDirectoryController.txtSearchFocus,
+                                hintText: "Search".tr,
+                                fillColor: Colors.white,
+                                prefixIcon: GestureDetector(
+                                  onTap: () => globalDirectoryController.onSearchGlobalAddress(),
+                                  child: Icon(
+                                    Icons.search_rounded,
+                                    color: Colors.blueGrey.withOpacity(0.8),
+                                    size: globalDirectoryController.txtSearch.text != "" ? 15 : 20,
+                                  ),
+                                ),
+                                padding: 15,
+                                radius: 0,
+                                counterText: "",
+                                validator: (value) {
+                                  if (value!.isEmpty) {
+                                    return "";
+                                  } else {
+                                    return null;
+                                  }
+                                },
+                                onEditingComplete: () => globalDirectoryController.onSearchGlobalAddress(),
+                              ),
+                            )
+                          : Container(),
+                    )
+                  : null,
             ),
             body: Stack(
               children: [

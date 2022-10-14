@@ -124,8 +124,9 @@ class _OrdersStatisticsScreenState extends State<OrdersStatisticsScreen> {
                                 backgroundColor: controller.isRoutesON ? Theme.of(context).primaryColor : Colors.white,
                                 borderColor: controller.isRoutesON ? Colors.white : Colors.blueGrey.withOpacity(0.8),
                                 bottom: 0,
-                              ).paddingOnly(top: 10, right: 10, left: 10),
+                              ),
                             ),
+                            const SizedBox(width: 10),
                             Expanded(
                               child: CommonFilterDropDown(
                                 selectedName: 'Select Area',
@@ -133,10 +134,10 @@ class _OrdersStatisticsScreenState extends State<OrdersStatisticsScreen> {
                                 backgroundColor: controller.isAreaON ? Theme.of(context).primaryColor : Colors.white,
                                 borderColor: controller.isAreaON ? Colors.white : Colors.blueGrey.withOpacity(0.8),
                                 bottom: 0,
-                              ).paddingOnly(top: 10, right: 10, left: 10),
+                              ),
                             ),
                           ],
-                        ),
+                        ).paddingOnly(left: 10, right: 10,top: 10),
                       if (controller.startDateVendor != "" && controller.endDateVendor != "")
                         Container(
                           alignment: Alignment.topLeft,
@@ -271,7 +272,7 @@ class _OrdersStatisticsScreenState extends State<OrdersStatisticsScreen> {
             ),
           ),
         ],
-      ).paddingAll(10),
+      ),
     );
   }
 
