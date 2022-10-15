@@ -14,8 +14,6 @@ class GlobalDirectoryController extends GetxController {
   int limit = 10;
   bool isLoading = false;
   bool isSearch = true;
-  String areaSelected = "";
-  String areaSelectedId = "";
   List requestsList = [];
   List vendorAreaList = [];
   List selectedOrderTrueList = [];
@@ -29,9 +27,24 @@ class GlobalDirectoryController extends GetxController {
     super.onInit();
   }
 
+  var filters = {
+    "area": {"id": "", "name": ""}
+  };
+
+  _onReset(String by) {
+    if (by == "all") {
+      filters = {
+        "area": {"id": "", "name": ""},
+      };
+    } else {
+      filters[by]!["id"] = "";
+      filters[by]!["name"] = "";
+    }
+    update();
+  }
+
   _onClean() {
-    areaSelected = "";
-    areaSelectedId = "";
+    _onReset("all");
     globalAddressesList.clear();
     selectedOrderTrueList.clear();
     requestsList.clear();
@@ -39,7 +52,7 @@ class GlobalDirectoryController extends GetxController {
   }
 
   willPopScope() {
-    if (areaSelected != "") {
+    if (filters["area"]!["name"] != "") {
       _onClean();
       update();
     } else {
@@ -58,6 +71,17 @@ class GlobalDirectoryController extends GetxController {
   onSearchGlobalAddress() async {
     txtSearchFocus.unfocus();
     await _vendorGlobalAddresses();
+    update();
+  }
+
+  onAreaModule() async {
+    for (int i = 0; i < vendorAreaList.length; i++) {
+      if (vendorAreaList[i]["selected"] == true) {
+        vendorAreaList[i]['selected'] = false;
+      }
+      update();
+    }
+    await _vendorArea();
     update();
   }
 
@@ -82,30 +106,26 @@ class GlobalDirectoryController extends GetxController {
     update();
   }
 
-  onRouteSelected(String name, String id) async {
-    areaSelected = "";
-    areaSelectedId = "";
-    areaSelected = name;
-    areaSelectedId = id;
-    if (areaSelectedId != "") {
-      onOpenArea();
-    } else {
-      Get.snackbar(
-        "Error",
-        "Please try again ?",
-        backgroundColor: Colors.white,
-        colorText: Colors.black,
-      );
-      Get.back();
+  onSelectDropdown(String id, String title, String forWhom) async {
+    isLoading = true;
+    if (forWhom == "area") {
+      filters["area"]!["id"] = id;
+      filters["area"]!["name"] = title;
     }
-    update();
-  }
-
-  onOpenArea() async {
-    if (areaSelectedId != "" && areaSelected != "") {
+    for (int i = 0; i < vendorAreaList.length; i++) {
+      if (vendorAreaList[i]["_id"] == filters["area"]!["id"]) {
+        vendorAreaList[i]['selected'] = true;
+      } else {
+        vendorAreaList[i]['selected'] = false;
+      }
+      update();
+    }
+    if (filters["area"]!["id"] != null && filters["area"]!["id"] != "") {
       await _vendorGlobalAddresses();
       _autoSelector();
-    } else {}
+    }
+    isLoading = false;
+    update();
   }
 
   _screenFocus() {
@@ -134,15 +154,17 @@ class GlobalDirectoryController extends GetxController {
         "page": 1,
         "limit": limit,
         "search": txtSearch.text,
-        "areaId": areaSelected,
+        "areaId": filters["area"]!["id"],
       };
-      var resData = await apis.call(
-        apiMethods.vendorGlobalAddresses,
-        body,
-        ApiType.post,
-      );
+      var resData = await apis.call(apiMethods.vendorGlobalAddresses, body, ApiType.post);
       if (resData.isSuccess && resData.data != 0) {
         globalAddressesList = resData.data["docs"];
+        for (int i = 0; i < vendorAreaList.length; i++) {
+          if (vendorAreaList[i]["selected"] == true) {
+            vendorAreaList[i]['selected'] = false;
+          }
+          update();
+        }
       }
     } catch (e) {
       snackBar("No pacakge data found", Colors.red);
@@ -197,8 +219,7 @@ class GlobalDirectoryController extends GetxController {
                 _autoSelector();
                 Get.back();
                 if (selectedOrderTrueList.isEmpty) {
-                  areaSelected = "";
-                  areaSelectedId = "";
+                  _onReset("all");
                   Get.toNamed(AppRoutes.globalDirectoryScreen);
                 }
               },
@@ -237,11 +258,7 @@ class GlobalDirectoryController extends GetxController {
       var data = {
         "requests": requestsList,
       };
-      var resData = await apis.call(
-        apiMethods.vendorsaveAddress,
-        data,
-        ApiType.post,
-      );
+      var resData = await apis.call(apiMethods.vendorSaveAddress, data, ApiType.post);
       if (resData.isSuccess && resData.data != 0) {
         _onClean();
         Get.back();

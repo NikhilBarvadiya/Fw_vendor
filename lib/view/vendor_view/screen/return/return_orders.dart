@@ -156,6 +156,7 @@ class _ReturnOrdersScreenState extends State<ReturnOrdersScreen> {
                         onTap: () {
                           controller.onSelectDropdown(e["_id"], e["name"], "route");
                         },
+                        leading: Icon(e["selected"] != null && e["selected"] != false ? Icons.check_box : Icons.check_box_outline_blank),
                         selectedColor: e["selected"] != null ? Colors.blue : Colors.black,
                         selected: e["selected"] != false ? true : false,
                         title: Text(
@@ -185,7 +186,7 @@ class _ReturnOrdersScreenState extends State<ReturnOrdersScreen> {
             ),
           ),
         ],
-      ).paddingAll(10),
+      ),
     );
   }
 

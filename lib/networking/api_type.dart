@@ -21,7 +21,7 @@ class ApiMethods {
   final String vendorAreas = "vendor/areas";
   final String vendorGlobalAddresses = "vendor/globalAddresses";
   final String vendorRoutes = "vendor/vendorRoutes";
-  final String vendorsaveAddress = "vendor/saveAddress";
+  final String vendorSaveAddress = "vendor/saveAddress";
   final String vendorAddresses = "vendor/vendorAddresses";
   final String vendorDeleteAddress = "vendor/deleteAddress";
   final String vendorMappedAddress = "vendor/getMappedAddress";

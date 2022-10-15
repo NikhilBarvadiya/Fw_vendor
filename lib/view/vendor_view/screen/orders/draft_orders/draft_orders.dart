@@ -165,7 +165,7 @@ class _DraftOrderScreenState extends State<DraftOrderScreen> {
                             height: 50.0,
                           ),
                         ),
-                      if (controller.getDraftOrderList.isEmpty)
+                      if (controller.getDraftOrderList.isEmpty && !controller.isRoutesON && !controller.isAreaON)
                         Expanded(
                           child: Column(
                             mainAxisAlignment: MainAxisAlignment.center,
@@ -201,6 +201,7 @@ class _DraftOrderScreenState extends State<DraftOrderScreen> {
                   onTap: () {
                     controller.onSelectDropdown(e["_id"], e["name"], "route");
                   },
+                  leading: Icon(e["selected"] != null && e["selected"] != false ? Icons.check_box : Icons.check_box_outline_blank),
                   selectedColor: e["selected"] != null ? Colors.blue : Colors.black,
                   selected: e["selected"] != false ? true : false,
                   title: Text(
@@ -232,6 +233,7 @@ class _DraftOrderScreenState extends State<DraftOrderScreen> {
                   onTap: () {
                     controller.onSelectDropdown(e["_id"], e["name"], "area");
                   },
+                  leading: Icon(e["selected"] != null && e["selected"] != false ? Icons.check_box : Icons.check_box_outline_blank),
                   selectedColor: e["selected"] != null ? Colors.blue : Colors.black,
                   selected: e["selected"] != false ? true : false,
                   title: Text(

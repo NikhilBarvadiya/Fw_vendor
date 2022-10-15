@@ -16,8 +16,6 @@ class CreateGlobalOrdersController extends GetxController {
   List vendorAddressesByAreaList = [];
   List selectedOrderTrueList = [];
   List filteredList = [];
-  String areaSelected = "";
-  String areaSelectedId = "";
 
   @override
   void onInit() {
@@ -26,9 +24,24 @@ class CreateGlobalOrdersController extends GetxController {
     super.onInit();
   }
 
+  var filters = {
+    "area": {"id": "", "name": ""}
+  };
+
+  _onReset(String by) {
+    if (by == "all") {
+      filters = {
+        "area": {"id": "", "name": ""},
+      };
+    } else {
+      filters[by]!["id"] = "";
+      filters[by]!["name"] = "";
+    }
+    update();
+  }
+
   _onClean() {
-    areaSelected = "";
-    areaSelectedId = "";
+    _onReset("all");
     vendorAddressesByAreaList.clear();
     selectedOrderTrueList.clear();
     update();
@@ -41,7 +54,7 @@ class CreateGlobalOrdersController extends GetxController {
   }
 
   willPopScope() {
-    if (areaSelected != "") {
+    if (filters["area"]!["name"] != "") {
       _onClean();
       update();
     } else {
@@ -69,15 +82,22 @@ class CreateGlobalOrdersController extends GetxController {
     update();
   }
 
+  onAreaModule() async {
+    for (int i = 0; i < vendorAreaList.length; i++) {
+      if (vendorAreaList[i]["selected"] == true) {
+        vendorAreaList[i]['selected'] = false;
+      }
+      update();
+    }
+    await _vendorArea();
+    update();
+  }
+
   _vendorArea() async {
     try {
       isLoading = true;
       update();
-      var resData = await apis.call(
-        apiMethods.vendorAreas,
-        {},
-        ApiType.post,
-      );
+      var resData = await apis.call(apiMethods.vendorAreas, {}, ApiType.post);
       if (resData.isSuccess && resData.data != 0) {
         vendorAreaList = resData.data;
       }
@@ -90,30 +110,26 @@ class CreateGlobalOrdersController extends GetxController {
     update();
   }
 
-  onRouteSelected(String name, String id) async {
-    areaSelected = "";
-    areaSelectedId = "";
-    areaSelected = name;
-    areaSelectedId = id;
-    if (areaSelectedId != "") {
-      onOpenArea();
-    } else {
-      Get.snackbar(
-        "Error",
-        "Please try again ?",
-        backgroundColor: Colors.white,
-        colorText: Colors.black,
-      );
-      Get.back();
+  onSelectDropdown(String id, String title, String forWhom) async {
+    isLoading = true;
+    if (forWhom == "area") {
+      filters["area"]!["id"] = id;
+      filters["area"]!["name"] = title;
     }
-    update();
-  }
-
-  onOpenArea() async {
-    if (areaSelectedId != "" && areaSelected != "") {
+    for (int i = 0; i < vendorAreaList.length; i++) {
+      if (vendorAreaList[i]["_id"] == filters["area"]!["id"]) {
+        vendorAreaList[i]['selected'] = true;
+      } else {
+        vendorAreaList[i]['selected'] = false;
+      }
+      update();
+    }
+    if (filters["area"]!["id"] != null && filters["area"]!["id"] != "") {
       await _vendorAddressesByArea();
       _autoSelector();
-    } else {}
+    }
+    isLoading = false;
+    update();
   }
 
   _vendorAddressesByArea() async {
@@ -121,16 +137,18 @@ class CreateGlobalOrdersController extends GetxController {
       isLoading = true;
       update();
       var data = {
-        "areaId": areaSelected,
+        "areaId": filters["area"]!["id"],
       };
-      var resData = await apis.call(
-        apiMethods.vendorAddressesByArea,
-        data,
-        ApiType.post,
-      );
+      var resData = await apis.call(apiMethods.vendorAddressesByArea, data, ApiType.post);
       if (resData.isSuccess && resData.data != 0) {
         vendorAddressesByAreaList = resData.data;
         filteredList = resData.data;
+        for (int i = 0; i < vendorAreaList.length; i++) {
+          if (vendorAreaList[i]["selected"] == true) {
+            vendorAreaList[i]['selected'] = false;
+          }
+          update();
+        }
       }
     } catch (e) {
       snackBar("No pacakge data found", Colors.red);
@@ -185,8 +203,7 @@ class CreateGlobalOrdersController extends GetxController {
                 _autoSelector();
                 Get.back();
                 if (selectedOrderTrueList.isEmpty) {
-                  areaSelected = "";
-                  areaSelectedId = "";
+                  _onReset("all");
                   Get.toNamed(AppRoutes.createGlobalOrdersScreen);
                 }
               },
@@ -214,8 +231,7 @@ class CreateGlobalOrdersController extends GetxController {
   }
 
   onProceed(selectedAddress) {
-    areaSelected = "";
-    areaSelectedId = "";
+    _onReset("all");
     vendorAddressesByAreaList.clear();
     update();
     Get.toNamed(AppRoutes.placeOrderScreen, arguments: selectedAddress);

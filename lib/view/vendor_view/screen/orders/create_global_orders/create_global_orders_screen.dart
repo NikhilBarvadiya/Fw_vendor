@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:fw_vendor/core/widgets/common/common_filter_dropdown_card.dart';
 import 'package:fw_vendor/core/widgets/custom_widgets/custom_textformfield.dart';
 import 'package:fw_vendor/view/auth_checking_view/controller/app_controller.dart';
 import 'package:fw_vendor/core/theme/index.dart';
 import 'package:fw_vendor/core/widgets/common/common_button.dart';
 import 'package:fw_vendor/core/widgets/common/order_address_card.dart';
-import 'package:fw_vendor/core/widgets/common/searchable_list.dart';
 import 'package:fw_vendor/core/widgets/common_loading/loading.dart';
 import 'package:fw_vendor/core/widgets/custom_widgets/custom_nodata.dart';
 import 'package:fw_vendor/extensions/date_exensions.dart';
@@ -47,7 +47,7 @@ class _CreateGlobalOrdersScreenState extends State<CreateGlobalOrdersScreen> {
                 },
               ),
               actions: [
-                if (createGlobalOrdersController.areaSelectedId != "")
+                if (createGlobalOrdersController.filters["area"]!["id"] != "")
                   IconButton(
                     onPressed: () {
                       createGlobalOrdersController.onSearchButtonTapped();
@@ -60,7 +60,7 @@ class _CreateGlobalOrdersScreenState extends State<CreateGlobalOrdersScreen> {
                     ),
                   ),
               ],
-              bottom: createGlobalOrdersController.areaSelectedId != ""
+              bottom: createGlobalOrdersController.filters["area"]!["id"] != ""
                   ? PreferredSize(
                       preferredSize: Size.fromHeight(createGlobalOrdersController.isSearch ? 50 : 0),
                       child: createGlobalOrdersController.isSearch
@@ -98,27 +98,19 @@ class _CreateGlobalOrdersScreenState extends State<CreateGlobalOrdersScreen> {
             ),
             body: Stack(
               children: [
-                if (createGlobalOrdersController.vendorAreaList.isNotEmpty && createGlobalOrdersController.areaSelectedId == "")
-                  SearchableListView(
-                    isLive: false,
-                    isOnSearch: false,
-                    isOnheder: false,
-                    isDivider: true,
-                    itemList: createGlobalOrdersController.vendorAreaList,
-                    hederText: "Area",
-                    bindText: 'name',
-                    bindValue: '_id',
-                    hederColor: Theme.of(context).primaryColor,
-                    hederTxtColor: Colors.white,
-                    bindTextStyle: AppCss.body3.copyWith(
-                      color: Colors.black,
-                      fontSize: 15,
-                    ),
-                    onSelect: (val, text, e) {
-                      createGlobalOrdersController.onRouteSelected(val, text);
-                    },
-                  ),
-                if (createGlobalOrdersController.areaSelectedId != "")
+                Column(
+                  children: [
+                    if (createGlobalOrdersController.vendorAreaList.isNotEmpty && createGlobalOrdersController.filters["area"]!["id"] == "")
+                      CommonFilterDropDown(
+                        selectedName: 'Select Area',
+                        onTap: () => createGlobalOrdersController.onAreaModule(),
+                        bottom: 0,
+                      ).paddingOnly(top: 10, right: 10, left: 10),
+                    if (createGlobalOrdersController.vendorAreaList.isNotEmpty && createGlobalOrdersController.filters["area"]!["id"] == "")
+                      _vendorAreaList(),
+                  ],
+                ),
+                if (createGlobalOrdersController.filteredList.isNotEmpty)
                   Column(
                     children: [
                       Container(
@@ -126,7 +118,7 @@ class _CreateGlobalOrdersScreenState extends State<CreateGlobalOrdersScreen> {
                         width: double.infinity,
                         padding: const EdgeInsets.only(bottom: 5, left: 5),
                         child: Text(
-                          createGlobalOrdersController.areaSelectedId,
+                          createGlobalOrdersController.filters["area"]!["name"].toString(),
                           style: AppCss.footnote.copyWith(fontSize: 16),
                         ),
                       ),
@@ -158,7 +150,7 @@ class _CreateGlobalOrdersScreenState extends State<CreateGlobalOrdersScreen> {
                       ),
                     ],
                   ).paddingAll(10),
-                if (createGlobalOrdersController.areaSelectedId != "")
+                if (createGlobalOrdersController.filteredList.isNotEmpty)
                   Align(
                     alignment: Alignment.bottomCenter,
                     child: commonButton(
@@ -173,7 +165,7 @@ class _CreateGlobalOrdersScreenState extends State<CreateGlobalOrdersScreen> {
                     ),
                   ),
                 if (createGlobalOrdersController.filteredList.isEmpty &&
-                    createGlobalOrdersController.areaSelectedId != "" &&
+                    createGlobalOrdersController.filters["area"]!["id"] != "" &&
                     !createGlobalOrdersController.isLoading)
                   Column(
                     mainAxisAlignment: MainAxisAlignment.center,
@@ -191,4 +183,36 @@ class _CreateGlobalOrdersScreenState extends State<CreateGlobalOrdersScreen> {
       ),
     );
   }
+  _vendorAreaList() {
+    return Expanded(
+      child: ListView(
+        shrinkWrap: true,
+        children: [
+          ...createGlobalOrdersController.vendorAreaList.map(
+                (e) => Column(
+              children: [
+                ListTile(
+                  onTap: () {
+                    createGlobalOrdersController.onSelectDropdown(e["_id"], e["name"], "area");
+                  },
+                  leading: Icon(e["selected"] != null && e["selected"] != false ? Icons.check_box : Icons.check_box_outline_blank),
+                  selectedColor: e["selected"] != null ? Colors.blue : Colors.black,
+                  selected: e["selected"] != false ? true : false,
+                  title: Text(
+                    e["name"].toString().capitalizeFirst.toString(),
+                    style: AppCss.body2.copyWith(
+                      fontSize: e["selected"] != null && e["selected"] != false ? 14 : 12,
+                      fontWeight: e["selected"] != null && e["selected"] != false ? FontWeight.bold : FontWeight.normal,
+                    ),
+                  ),
+                ),
+                const Divider(color: Colors.grey),
+              ],
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
 }

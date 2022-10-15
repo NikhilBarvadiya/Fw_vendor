@@ -1,11 +1,11 @@
 // ignore_for_file: must_be_immutable
 
 import 'package:flutter/material.dart';
+import 'package:fw_vendor/core/widgets/common/common_filter_dropdown_card.dart';
 import 'package:fw_vendor/view/auth_checking_view/controller/app_controller.dart';
 import 'package:fw_vendor/core/theme/app_css.dart';
 import 'package:fw_vendor/core/widgets/common/common_button.dart';
 import 'package:fw_vendor/core/widgets/common/order_address_card.dart';
-import 'package:fw_vendor/core/widgets/common/searchable_list.dart';
 import 'package:fw_vendor/core/widgets/common_loading/loading.dart';
 import 'package:fw_vendor/core/widgets/custom_widgets/custom_nodata.dart';
 import 'package:fw_vendor/core/widgets/custom_widgets/custom_textformfield.dart';
@@ -39,7 +39,7 @@ class GlobalDirectoryScreen extends StatelessWidget {
                 },
               ),
               actions: [
-                if (globalDirectoryController.areaSelected != "")
+                if (globalDirectoryController.filters["area"]!["id"] != "")
                   IconButton(
                     onPressed: () {
                       globalDirectoryController.onSearchButtonTapped();
@@ -50,7 +50,7 @@ class GlobalDirectoryScreen extends StatelessWidget {
                     ),
                   ),
               ],
-              bottom: globalDirectoryController.areaSelected != ""
+              bottom: globalDirectoryController.filters["area"]!["id"] != ""
                   ? PreferredSize(
                       preferredSize: Size.fromHeight(globalDirectoryController.isSearch ? 50 : 0),
                       child: globalDirectoryController.isSearch
@@ -88,37 +88,26 @@ class GlobalDirectoryScreen extends StatelessWidget {
             ),
             body: Stack(
               children: [
-                if (globalDirectoryController.vendorAreaList.isNotEmpty && globalDirectoryController.areaSelected == "")
-                  SearchableListView(
-                    isLive: false,
-                    isOnSearch: false,
-                    isOnheder: false,
-                    isDivider: true,
-                    itemList: globalDirectoryController.vendorAreaList,
-                    hederText: "Area",
-                    bindText: 'name',
-                    bindValue: '_id',
-                    hederColor: Theme.of(context).primaryColor,
-                    hederTxtColor: Colors.white,
-                    bindTextStyle: AppCss.body3.copyWith(
-                      color: Colors.black,
-                      fontSize: 15,
-                    ),
-                    onSelect: (val, text, e) {
-                      globalDirectoryController.onRouteSelected(val, text);
-                    },
-                  ),
-                if (globalDirectoryController.areaSelected != "")
+                Column(
+                  children: [
+                    if (globalDirectoryController.vendorAreaList.isNotEmpty && globalDirectoryController.filters["area"]!["id"] == "")
+                      CommonFilterDropDown(
+                        selectedName: 'Select Area',
+                        onTap: () => globalDirectoryController.onAreaModule(),
+                        bottom: 0,
+                      ).paddingOnly(top: 10, right: 10, left: 10),
+                    if (globalDirectoryController.vendorAreaList.isNotEmpty && globalDirectoryController.filters["area"]!["id"] == "")
+                      _vendorAreaList(),
+                  ],
+                ),
+                if (globalDirectoryController.globalAddressesList.isNotEmpty)
                   Column(
                     children: [
                       Container(
                         color: Colors.white,
                         width: double.infinity,
                         padding: const EdgeInsets.only(bottom: 5, left: 5),
-                        child: Text(
-                          globalDirectoryController.areaSelectedId,
-                          style: AppCss.footnote.copyWith(fontSize: 16),
-                        ),
+                        child: Text(globalDirectoryController.filters["area"]!["name"].toString(), style: AppCss.footnote.copyWith(fontSize: 16)),
                       ),
                       Expanded(
                         child: RefreshIndicator(
@@ -126,10 +115,7 @@ class GlobalDirectoryScreen extends StatelessWidget {
                             globalDirectoryController.onRefresh();
                           },
                           child: ListView(
-                            padding: EdgeInsets.only(
-                              top: 10,
-                              bottom: MediaQuery.of(context).size.height * 0.06,
-                            ),
+                            padding: EdgeInsets.only(top: 10, bottom: MediaQuery.of(context).size.height * 0.06),
                             children: [
                               if (globalDirectoryController.globalAddressesList.isNotEmpty)
                                 ...globalDirectoryController.globalAddressesList.map(
@@ -153,7 +139,7 @@ class GlobalDirectoryScreen extends StatelessWidget {
                       ),
                     ],
                   ).paddingAll(10),
-                if (globalDirectoryController.areaSelected != "")
+                if (globalDirectoryController.globalAddressesList.isNotEmpty)
                   Align(
                     alignment: Alignment.bottomCenter,
                     child: commonButton(
@@ -168,7 +154,7 @@ class GlobalDirectoryScreen extends StatelessWidget {
                     ),
                   ),
                 if (globalDirectoryController.globalAddressesList.isEmpty &&
-                    globalDirectoryController.areaSelected != "" &&
+                    globalDirectoryController.filters["area"]!["id"] != "" &&
                     !globalDirectoryController.isLoading)
                   Column(
                     mainAxisAlignment: MainAxisAlignment.center,
@@ -183,6 +169,38 @@ class GlobalDirectoryScreen extends StatelessWidget {
             ),
           ),
         ),
+      ),
+    );
+  }
+
+  _vendorAreaList() {
+    return Expanded(
+      child: ListView(
+        shrinkWrap: true,
+        children: [
+          ...globalDirectoryController.vendorAreaList.map(
+            (e) => Column(
+              children: [
+                ListTile(
+                  onTap: () {
+                    globalDirectoryController.onSelectDropdown(e["_id"], e["name"], "area");
+                  },
+                  leading: Icon(e["selected"] != null && e["selected"] != false ? Icons.check_box : Icons.check_box_outline_blank),
+                  selectedColor: e["selected"] != null ? Colors.blue : Colors.black,
+                  selected: e["selected"] != false ? true : false,
+                  title: Text(
+                    e["name"].toString().capitalizeFirst.toString(),
+                    style: AppCss.body2.copyWith(
+                      fontSize: e["selected"] != null && e["selected"] != false ? 14 : 12,
+                      fontWeight: e["selected"] != null && e["selected"] != false ? FontWeight.bold : FontWeight.normal,
+                    ),
+                  ),
+                ),
+                const Divider(color: Colors.grey),
+              ],
+            ),
+          ),
+        ],
       ),
     );
   }
