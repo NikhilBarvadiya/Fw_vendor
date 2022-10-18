@@ -234,7 +234,7 @@ class _ComplaintScreenState extends State<ComplaintScreen> {
                   onTap: () {
                     controller.onSelectDropdown(e["_id"], e["name"], "area");
                   },
-                  leading: Icon(e["selected"] != null && e["selected"] != false ? Icons.check_box : Icons.check_box_outline_blank),
+                  leading: Icon(e["selected"] != null && e["selected"] != false ? Icons.radio_button_on_outlined : Icons.radio_button_off_sharp),
                   selectedColor: e["selected"] != null ? Colors.blue : Colors.black,
                   selected: e["selected"] != false ? true : false,
                   title: Text(
