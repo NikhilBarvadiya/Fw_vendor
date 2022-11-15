@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:fw_vendor/core/theme/app_css.dart';
 import 'package:fw_vendor/core/widgets/common/complaint_view_card.dart';
+import 'package:fw_vendor/core/widgets/common_loading/loading.dart';
 import 'package:fw_vendor/core/widgets/custom_widgets/custom_audio_player.dart';
 import 'package:fw_vendor/env.dart';
 import 'package:fw_vendor/extensions/date_exensions.dart';
@@ -20,52 +21,55 @@ class _ComplaintViewScreenState extends State<ComplaintViewScreen> {
   @override
   Widget build(BuildContext context) {
     return GetBuilder<ComplaintViewController>(
-      builder: (_) => Scaffold(
-        appBar: AppBar(
-          elevation: 1,
-          automaticallyImplyLeading: true,
-          foregroundColor: Colors.white,
-          title: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              const Text("Complaint View", textScaleFactor: 1, textAlign: TextAlign.center),
-              Text(
-                getFormattedDate2(controller.arguments["orderDetails"]["createdAt"].toString()),
-                style: const TextStyle(fontSize: 10),
-              ),
+      builder: (_) => LoadingMode(
+        isLoading: controller.isLoading,
+        child: Scaffold(
+          appBar: AppBar(
+            elevation: 1,
+            automaticallyImplyLeading: true,
+            foregroundColor: Colors.white,
+            title: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                const Text("Complaint View", textScaleFactor: 1, textAlign: TextAlign.center),
+                Text(
+                  getFormattedDate2(controller.arguments["orderDetails"]["createdAt"].toString()),
+                  style: const TextStyle(fontSize: 10),
+                ),
+              ],
+            ),
+            actions: [
+              Container(
+                alignment: Alignment.center,
+                padding: const EdgeInsets.only(right: 10),
+                child: Text(
+                  controller.arguments["orderDetails"]["status"].toString().capitalizeFirst.toString(),
+                  style: AppCss.h2,
+                ),
+              )
             ],
           ),
-          actions: [
-            Container(
-              alignment: Alignment.center,
-              padding: const EdgeInsets.only(right: 10),
-              child: Text(
-                controller.arguments["orderDetails"]["status"].toString().capitalizeFirst.toString(),
-                style: AppCss.h2,
+          body: Column(
+            children: [
+              ComplaintView(
+                shopName: controller.arguments["orderDetails"]["addressId"]["name"],
+                orderNo: controller.arguments["orderDetails"]["vendorOrderNo"].toString(),
+                images: controller.arguments["orderDetails"]["images"],
+                notes: controller.arguments["orderDetails"]["desc"] != ""
+                    ? controller.arguments["orderDetails"]["desc"].toString()
+                    : "Description not found...",
+                reOpenStatus: controller.arguments["orderDetails"]["status"] == "open"
+                    ? "Resolve"
+                    : controller.arguments["orderDetails"]["status"] == "resolved"
+                    ? "reOpen"
+                    : controller.arguments["orderDetails"]["status"] == "reopen"
+                    ? "Resolve"
+                    : "Open",
+                onStatus: () => controller.onStatusCheck(controller.arguments["orderDetails"]),
               ),
-            )
-          ],
-        ),
-        body: Column(
-          children: [
-            ComplaintView(
-              shopName: controller.arguments["orderDetails"]["addressId"]["name"],
-              orderNo: controller.arguments["orderDetails"]["vendorOrderNo"].toString(),
-              images: controller.arguments["orderDetails"]["images"],
-              notes: controller.arguments["orderDetails"]["desc"] != ""
-                  ? controller.arguments["orderDetails"]["desc"].toString()
-                  : "Description not found...",
-              reOpenStatus: controller.arguments["orderDetails"]["status"] == "open"
-                  ? "Resolve"
-                  : controller.arguments["orderDetails"]["status"] == "resolved"
-                      ? "reOpen"
-                      : controller.arguments["orderDetails"]["status"] == "reopen"
-                          ? "Resolve"
-                          : "Open",
-              onStatus: () => controller.onStatusCheck(controller.arguments["orderDetails"]),
-            ),
-            _activityCard(controller.arguments["view"]),
-          ],
+              _activityCard(controller.arguments["view"]),
+            ],
+          ),
         ),
       ),
     );

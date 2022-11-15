@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:fw_vendor/core/theme/app_css.dart';
-import 'package:get/get_utils/src/extensions/widget_extensions.dart';
+import 'package:get/get.dart';
 
 class CustomLocationCard extends StatelessWidget {
   final String? shopName;
@@ -83,10 +83,7 @@ class CustomLocationCard extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           if (shopName != null)
-            Text(
-              shopName ?? "",
-              style: AppCss.h3.copyWith(color: Colors.black, fontSize: 15),
-            ).paddingOnly(bottom: 5),
+            Text(shopName.toString().capitalizeFirst.toString(), style: AppCss.h3.copyWith(color: Colors.black, fontSize: 15)).paddingOnly(bottom: 5),
           Row(
             children: [
               if (personName != null && personName != "")
@@ -95,26 +92,15 @@ class CustomLocationCard extends StatelessWidget {
                   style: AppCss.body1.copyWith(color: Colors.black, fontSize: 12, fontWeight: FontWeight.w500),
                 ).paddingOnly(right: 8),
               if (mobileNumber != null)
-                Text(
-                  mobileNumber ?? "",
-                  style: AppCss.body1.copyWith(color: Colors.black, fontSize: 12, fontWeight: FontWeight.w500),
-                ),
+                Text(mobileNumber ?? "", style: AppCss.body1.copyWith(color: Colors.black, fontSize: 12, fontWeight: FontWeight.w500)),
             ],
           ).paddingOnly(bottom: 5),
           if (address != null)
             Row(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Expanded(
-                  child: Text(
-                    address ?? "",
-                    style: AppCss.poppins.copyWith(color: Colors.black, fontSize: 12),
-                  ),
-                ),
-                Text(
-                  date ?? "",
-                  style: AppCss.footnote.copyWith(color: Colors.black),
-                ).paddingOnly(left: 8),
+                Expanded(child: Text(address ?? "", style: AppCss.poppins.copyWith(color: Colors.black, fontSize: 12))),
+                Text(date ?? "", style: AppCss.footnote.copyWith(color: Colors.black)).paddingOnly(left: 8),
               ],
             ).paddingOnly(bottom: 8),
           if (imageShow != null) Container(child: imageShow),
@@ -160,16 +146,8 @@ class CustomLocationCard extends StatelessWidget {
                         mainAxisSize: MainAxisSize.min,
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          Text(
-                            "Driver name : ",
-                            style: AppCss.body1.copyWith(color: Colors.black, fontSize: 12, fontWeight: FontWeight.bold),
-                          ),
-                          Expanded(
-                            child: Text(
-                              driverName ?? "",
-                              style: AppCss.body1.copyWith(color: Colors.black, fontSize: 12),
-                            ),
-                          ),
+                          Text("Driver name : ", style: AppCss.body1.copyWith(color: Colors.black, fontSize: 12, fontWeight: FontWeight.bold)),
+                          Expanded(child: Text(driverName ?? "", style: AppCss.body1.copyWith(color: Colors.black, fontSize: 12))),
                         ],
                       ).paddingOnly(top: 8, left: 2),
                     if (driverNote != null && driverNote != "")
@@ -177,16 +155,8 @@ class CustomLocationCard extends StatelessWidget {
                         mainAxisSize: MainAxisSize.min,
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          Text(
-                            "Driver notes : ",
-                            style: AppCss.body1.copyWith(color: Colors.black, fontSize: 12, fontWeight: FontWeight.bold),
-                          ),
-                          Expanded(
-                            child: Text(
-                              driverNote ?? "",
-                              style: AppCss.body1.copyWith(color: Colors.black, fontSize: 12),
-                            ),
-                          ),
+                          Text("Driver notes : ", style: AppCss.body1.copyWith(color: Colors.black, fontSize: 12, fontWeight: FontWeight.bold)),
+                          Expanded(child: Text(driverNote ?? "", style: AppCss.body1.copyWith(color: Colors.black, fontSize: 12))),
                         ],
                       ).paddingOnly(left: 2, top: 5),
                     if (notes != null && notes != "")
@@ -194,16 +164,8 @@ class CustomLocationCard extends StatelessWidget {
                         mainAxisSize: MainAxisSize.min,
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          Text(
-                            "Notes : ",
-                            style: AppCss.body1.copyWith(color: Colors.black, fontSize: 12, fontWeight: FontWeight.bold),
-                          ),
-                          Expanded(
-                            child: Text(
-                              notes ?? "",
-                              style: AppCss.body1.copyWith(color: Colors.black, fontSize: 12),
-                            ),
-                          ),
+                          Text("Notes : ", style: AppCss.body1.copyWith(color: Colors.black, fontSize: 12, fontWeight: FontWeight.bold)),
+                          Expanded(child: Text(notes ?? "", style: AppCss.body1.copyWith(color: Colors.black, fontSize: 12))),
                         ],
                       ).paddingOnly(left: 2, top: 5),
                   ],
@@ -218,10 +180,7 @@ class CustomLocationCard extends StatelessWidget {
                     shadowColor: Colors.deepOrange.shade500,
                     shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(4)),
                     backgroundColor: Colors.white,
-                    label: Text(
-                      tickets ?? "",
-                      style: AppCss.poppins.copyWith(color: Colors.deepOrange.shade500, fontWeight: FontWeight.bold),
-                    ),
+                    label: Text(tickets ?? "", style: AppCss.poppins.copyWith(color: Colors.deepOrange.shade500, fontWeight: FontWeight.bold)),
                   ).paddingOnly(top: 5),
                 ),
             ],
@@ -260,10 +219,7 @@ class CustomLocationCard extends StatelessWidget {
             header,
             style: AppCss.caption.copyWith(fontWeight: FontWeight.bold, color: billAmount != "₹0.00" ? Colors.green : Colors.black),
           ).paddingOnly(bottom: 2),
-          Text(
-            amount,
-            style: AppCss.caption.copyWith(fontWeight: FontWeight.bold),
-          ),
+          Text(amount, style: AppCss.caption.copyWith(fontWeight: FontWeight.bold)),
         ],
       ).paddingSymmetric(horizontal: 10, vertical: 4),
     );

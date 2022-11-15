@@ -307,6 +307,7 @@ class _DraftOrderScreenState extends State<DraftOrderScreen> {
                   notes: e["anyNote"] != null && e["anyNote"] != "" ? e["anyNote"].toString() : "",
                   type: e["type"] != null && e["type"] != "" ? e["type"].toString().capitalizeFirst.toString() : "",
                   color: e['selected'] == true ? Colors.greenAccent[100] : Colors.white,
+                  cardColor: e['selected'] == true ? Colors.grey[100] : Colors.white,
                 ),
               );
             },

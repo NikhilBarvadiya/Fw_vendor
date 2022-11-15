@@ -1,5 +1,6 @@
 // ignore_for_file: must_be_immutable
 import 'package:flutter/material.dart';
+import 'package:fw_vendor/common/config.dart';
 import 'package:fw_vendor/core/assets/index.dart';
 import 'package:fw_vendor/core/theme/app_css.dart';
 import 'package:fw_vendor/core/utilities/index.dart';
@@ -36,11 +37,7 @@ class _LoginScreenState extends State<LoginScreen> {
                       mainAxisSize: MainAxisSize.min,
                       crossAxisAlignment: CrossAxisAlignment.center,
                       children: [
-                        Image.asset(
-                          imageAssets.logo,
-                          fit: BoxFit.scaleDown,
-                          scale: 8,
-                        ),
+                        Image.asset(imageAssets.logo, fit: BoxFit.scaleDown, scale: 8),
                         _uiTxtView(),
                         Row(
                           mainAxisAlignment: MainAxisAlignment.center,
@@ -52,10 +49,7 @@ class _LoginScreenState extends State<LoginScreen> {
                                   value: loginController.isEmploye,
                                   onChanged: (value) => loginController.employeLogin(value),
                                 ),
-                                Text(
-                                  "Employee",
-                                  style: AppCss.h1,
-                                ),
+                                Text("Employee", style: AppCss.h1),
                               ],
                             ),
                             SizedBox(width: appScreenUtil.screenHeight(MediaQuery.of(context).size.height) * 0.02),
@@ -66,10 +60,7 @@ class _LoginScreenState extends State<LoginScreen> {
                                   value: loginController.isVendor,
                                   onChanged: (value) => loginController.vendorLogin(value),
                                 ),
-                                Text(
-                                  "Vendor",
-                                  style: AppCss.h1,
-                                )
+                                Text("Vendor", style: AppCss.h1)
                               ],
                             ),
                           ],
@@ -83,6 +74,13 @@ class _LoginScreenState extends State<LoginScreen> {
                 ],
               ),
             ),
+            floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
+            floatingActionButton: loginController.isTimer == true
+                ? CustomFloatingActionButton(
+                    isShowFab: loginController.isBottomSheet,
+                    isType: loginController.isVendor,
+                  )
+                : Container(),
           ),
         ),
       ),
@@ -96,19 +94,11 @@ class _LoginScreenState extends State<LoginScreen> {
       children: [
         Text(
           "${loginController.isVendor != true ? "Employee" : "Vendor"} Panel",
-          style: TextStyle(
-            color: Theme.of(context).primaryColor,
-            fontSize: appScreenUtil.fontSize(20),
-            fontWeight: FontWeight.w800,
-          ),
+          style: TextStyle(color: Theme.of(context).primaryColor, fontSize: appScreenUtil.fontSize(20), fontWeight: FontWeight.w800),
         ),
         Text(
           "Please login to start your ${loginController.isVendor != true ? "employee" : "vendor"} session.",
-          style: TextStyle(
-            color: Colors.grey[700],
-            fontSize: appScreenUtil.fontSize(12),
-            fontWeight: FontWeight.w400,
-          ),
+          style: TextStyle(color: Colors.grey[700], fontSize: appScreenUtil.fontSize(12), fontWeight: FontWeight.w400),
         ),
       ],
     ).paddingSymmetric(horizontal: 25, vertical: 10);
@@ -117,9 +107,7 @@ class _LoginScreenState extends State<LoginScreen> {
   _txtCard({name, icon, controller, obscureText, focusNode}) {
     return Card(
       elevation: 2,
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(8.0),
-      ),
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8.0)),
       child: TextFormField(
         autofocus: false,
         controller: controller,
@@ -128,17 +116,11 @@ class _LoginScreenState extends State<LoginScreen> {
         keyboardType: TextInputType.emailAddress,
         obscureText: obscureText,
         decoration: InputDecoration(
-          icon: Padding(
-            padding: const EdgeInsets.only(left: 15),
-            child: Icon(icon),
-          ),
+          icon: Padding(padding: const EdgeInsets.only(left: 15), child: Icon(icon)),
           border: InputBorder.none,
           hintText: name,
           counterText: "",
-          hintStyle: const TextStyle(
-            fontSize: 14,
-            color: Colors.grey,
-          ),
+          hintStyle: const TextStyle(fontSize: 14, color: Colors.grey),
         ),
       ),
     ).paddingOnly(left: 20, right: 20);
@@ -196,20 +178,115 @@ class _LoginScreenState extends State<LoginScreen> {
           child: Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              const Text(
-                "Continue",
-                style: TextStyle(
-                  fontSize: 18,
-                ),
-              ),
-              SizedBox(
-                width: appScreenUtil.size(5),
-              ),
+              const Text("Continue", style: TextStyle(fontSize: 18)),
+              SizedBox(width: appScreenUtil.size(5)),
               const Icon(Icons.arrow_forward_sharp, color: Colors.white),
             ],
           ),
         ),
       ),
     );
+  }
+}
+
+class CustomFloatingActionButton extends StatefulWidget {
+  bool isShowFab;
+  bool isType;
+
+  CustomFloatingActionButton({Key? key, required this.isShowFab, required this.isType}) : super(key: key);
+
+  @override
+  State<CustomFloatingActionButton> createState() => _CustomFloatingActionButtonState();
+}
+
+class _CustomFloatingActionButtonState extends State<CustomFloatingActionButton> {
+  @override
+  initState() {
+    onHistoryClick();
+    super.initState();
+  }
+
+  List loginAs = [];
+  List employeeLoginAs = [];
+  dynamic employeUserData;
+
+  onHistoryClick() async {
+    loginAs = await getStorage(Session.loginAs);
+    employeeLoginAs = await getStorage(Session.employeeLoginAs);
+    employeUserData = await getStorage(Session.employeUserData);
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return FloatingActionButton(
+      elevation: 0,
+      onPressed: () {
+        if (!widget.isShowFab) {
+          showFloatingActionButton(true);
+          if (widget.isShowFab) {
+            var bottomSheetController = showBottomSheet(
+              context: context,
+              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
+              elevation: 0,
+              backgroundColor: Colors.transparent,
+              builder: (context) => Container(
+                decoration: const BoxDecoration(borderRadius: BorderRadius.vertical(top: Radius.circular(8.0)), color: Colors.white, boxShadow: [
+                  BoxShadow(color: Colors.grey, offset: Offset(0.0, 1.0), blurRadius: 5.0),
+                ]),
+                margin: EdgeInsets.zero,
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    const Text("Login As", style: TextStyle(fontSize: 18, fontWeight: FontWeight.w600)).paddingOnly(bottom: 10, left: 15),
+                    if (widget.isType == true)
+                      ...loginAs.map((e) {
+                        return ListTile(
+                          onTap: () {
+                            LoginController loginController = Get.put(LoginController());
+                            loginController.onLoginAsClick(e);
+                          },
+                          title: Text(e["emailId"].toString()),
+                          subtitle: Row(
+                            children: [
+                              for (int i = 0; i < 5; i++) const Icon(Icons.circle_rounded, size: 10).paddingOnly(right: 1),
+                            ],
+                          ),
+                        );
+                      }),
+                    if (widget.isType != true)
+                      ...employeeLoginAs.map((e) {
+                        return ListTile(
+                          onTap: () {
+                            LoginController loginController = Get.put(LoginController());
+                            loginController.onEmployeeLoginAsClick(e);
+                          },
+                          title: Text(e["mobile"].toString()),
+                          subtitle: Text(
+                            employeUserData["name"].toString().capitalizeFirst.toString(),
+                            style: const TextStyle(fontWeight: FontWeight.w600),
+                          ),
+                        );
+                      }),
+                  ],
+                ).paddingOnly(top: 10, left: 10, right: 10),
+              ).paddingSymmetric(vertical: 2),
+            );
+            bottomSheetController.closed.then((value) {
+              showFloatingActionButton(false);
+            });
+          }
+        }
+      },
+      backgroundColor: widget.isShowFab == false ? Colors.amber[300] : Colors.white,
+      foregroundColor: Colors.black87,
+      child: const Icon(Icons.lock),
+    );
+  }
+
+  void showFloatingActionButton(bool value) {
+    setState(() {
+      widget.isShowFab = value;
+    });
   }
 }

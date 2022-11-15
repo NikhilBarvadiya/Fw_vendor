@@ -6,6 +6,7 @@ import 'package:fw_vendor/core/configuration/app_routes.dart';
 import 'package:fw_vendor/core/utilities/storage_utils.dart';
 import 'package:fw_vendor/core/widgets/common_dialog/scale_dialog.dart';
 import 'package:fw_vendor/networking/index.dart';
+import 'package:fw_vendor/view/auth_checking_view/controller/login_controller.dart';
 import 'package:fw_vendor/view/vendor_view/screen/dashboard/dashboard_screen.dart';
 import 'package:get/get.dart';
 
@@ -197,9 +198,21 @@ class HomeController extends GetxController {
           actions: [
             TextButton(
               child: const Text("Ok"),
-              onPressed: () {
-                clearStorage();
+              onPressed: () async {
+                var loginAs = await getStorage(Session.loginAs);
+                var employeUserData = await getStorage(Session.employeUserData);
+                var employeeLoginAs = await getStorage(Session.employeeLoginAs);
+                await clearStorage();
+                await writeStorage(Session.loginAs, loginAs);
+                await writeStorage(Session.employeUserData, employeUserData);
+                await writeStorage(Session.employeeLoginAs, employeeLoginAs);
                 Get.offNamedUntil(AppRoutes.login, (Route<dynamic> route) => false);
+                var data = await getStorage(Session.loginAs);
+                var data1 = await getStorage(Session.employeeLoginAs);
+                var data2 = await getStorage(Session.employeUserData);
+                print(data);
+                print(data1);
+                print(data2);
               },
             ),
             TextButton(

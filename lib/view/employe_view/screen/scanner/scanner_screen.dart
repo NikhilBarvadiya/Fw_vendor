@@ -51,11 +51,7 @@ class _ScannerScreenState extends State<ScannerScreen> {
           onPermissionSet: (ctrl, p) => scannerController.onPermissionSet(context, ctrl, p),
         ),
         if (scannerController.isSuccess == true)
-          Container(
-            height: MediaQuery.of(context).size.height,
-            width: MediaQuery.of(context).size.width,
-            color: Colors.red.withOpacity(0.2),
-          ),
+          Container(height: MediaQuery.of(context).size.height, width: MediaQuery.of(context).size.width, color: Colors.red.withOpacity(0.2)),
         Padding(
           padding: const EdgeInsets.all(10),
           child: Align(
@@ -64,14 +60,7 @@ class _ScannerScreenState extends State<ScannerScreen> {
               onTap: () => scannerController.onFlash(),
               child: Card(
                 color: Theme.of(context).primaryColor,
-                child: const SizedBox(
-                  height: 50,
-                  width: 50,
-                  child: Icon(
-                    Icons.flash_on_rounded,
-                    color: Colors.white,
-                  ),
-                ),
+                child: const SizedBox(height: 50, width: 50, child: Icon(Icons.flash_on_rounded, color: Colors.white)),
               ),
             ),
           ),

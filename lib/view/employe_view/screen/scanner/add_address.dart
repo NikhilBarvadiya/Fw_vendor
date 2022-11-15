@@ -22,18 +22,11 @@ class _AddOrderScreenState extends State<AddOrderScreen> {
       builder: (_) => LoadingMode(
         isLoading: controller.isLoading,
         child: Scaffold(
-          appBar: AppBar(
-            elevation: 1,
-            foregroundColor: Colors.white,
-            title: const Text("Add order"),
-          ),
+          appBar: AppBar(elevation: 1, foregroundColor: Colors.white, title: const Text("Add order")),
           body: Stack(
             children: [
               _addressCard(),
-              Align(
-                alignment: Alignment.bottomCenter,
-                child: _addOrder(),
-              ),
+              Align(alignment: Alignment.bottomCenter, child: _addOrder()),
             ],
           ),
         ),
@@ -74,32 +67,16 @@ class _AddOrderScreenState extends State<AddOrderScreen> {
     return Container(
       margin: const EdgeInsets.only(top: 30, bottom: 30),
       padding: const EdgeInsets.only(top: 20, bottom: 20),
-      decoration: BoxDecoration(
-        border: Border.all(
-          color: Colors.black26,
-        ),
-      ),
+      decoration: BoxDecoration(border: Border.all(color: Colors.black26)),
       child: Column(
         mainAxisSize: MainAxisSize.min,
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
-          Text(
-            controller.arguments["shopName"].toString(),
-            textAlign: TextAlign.center,
-            style: AppCss.h1.copyWith(fontSize: 25),
-          ),
+          Text(controller.arguments["shopName"].toString(), textAlign: TextAlign.center, style: AppCss.h1.copyWith(fontSize: 25)),
           Container(
-            decoration: BoxDecoration(
-              border: Border.all(
-                color: Colors.black26,
-              ),
-            ),
+            decoration: BoxDecoration(border: Border.all(color: Colors.black26)),
             padding: const EdgeInsets.symmetric(horizontal: 10),
-            child: Text(
-              controller.arguments["partyCode"].toString(),
-              textAlign: TextAlign.center,
-              style: AppCss.caption.copyWith(fontSize: 12),
-            ),
+            child: Text(controller.arguments["partyCode"].toString(), textAlign: TextAlign.center, style: AppCss.caption.copyWith(fontSize: 12)),
           ).paddingAll(8),
           Row(
             mainAxisSize: MainAxisSize.min,
@@ -110,14 +87,8 @@ class _AddOrderScreenState extends State<AddOrderScreen> {
                 padding: const EdgeInsets.only(top: 2, bottom: 2),
                 child: Column(
                   children: [
-                    Text(
-                      "Bill No",
-                      style: AppCss.h2,
-                    ),
-                    Text(
-                      controller.arguments["billNo"].toString(),
-                      style: AppCss.footnote.copyWith(fontSize: 12),
-                    ),
+                    Text("Bill No", style: AppCss.h2),
+                    Text(controller.arguments["billNo"].toString(), style: AppCss.footnote.copyWith(fontSize: 12)),
                   ],
                 ),
               ),
@@ -127,14 +98,8 @@ class _AddOrderScreenState extends State<AddOrderScreen> {
                 padding: const EdgeInsets.only(top: 2, bottom: 2),
                 child: Column(
                   children: [
-                    Text(
-                      "Amount",
-                      style: AppCss.h2,
-                    ),
-                    Text(
-                      "₹ ${controller.arguments["amount"].toString()}",
-                      style: AppCss.footnote.copyWith(fontSize: 12),
-                    ),
+                    Text("Amount", style: AppCss.h2),
+                    Text("₹ ${controller.arguments["amount"].toString()}", style: AppCss.footnote.copyWith(fontSize: 12)),
                   ],
                 ),
               ),
@@ -153,10 +118,7 @@ class _AddOrderScreenState extends State<AddOrderScreen> {
       onPressed: () => controller.addOrderClick(),
       child: const Padding(
         padding: EdgeInsets.all(10),
-        child: Text(
-          "Confirm",
-          style: TextStyle(fontSize: 18),
-        ),
+        child: Text("Confirm", style: TextStyle(fontSize: 18)),
       ),
     );
   }

@@ -15,13 +15,7 @@ class LocationScreen extends StatelessWidget {
     return GetBuilder<LocationController>(
       builder: (_) {
         return Scaffold(
-          appBar: AppBar(
-            elevation: 1,
-            foregroundColor: Colors.white,
-            title: const Text(
-              "Location Detail",
-            ),
-          ),
+          appBar: AppBar(elevation: 1, foregroundColor: Colors.white, title: const Text("Location Detail")),
           body: ListView(
             children: [
               ...locationController.status["location"].map(

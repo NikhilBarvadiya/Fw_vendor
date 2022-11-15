@@ -12,6 +12,7 @@ class EmployeHomeController extends GetxController with GetSingleTickerProviderS
   FocusNode txtSearchFocus = FocusNode();
   dynamic employeUserData;
   bool isLoading = false;
+  bool isSearch = false;
   TabController? tabController;
   List draftList = [];
   List myDraftList = [];
@@ -30,10 +31,23 @@ class EmployeHomeController extends GetxController with GetSingleTickerProviderS
 
   // Tap Click......
   onTapClick(selectedIndex) async {
+    isSearch = false;
     txtSearch.text = "";
     txtSearchFocus.unfocus();
     type = selectedIndex == 1 ? "my" : " all";
     await draftOrders(type);
+    update();
+  }
+
+  onSearchClick() {
+    txtSearch.text = "";
+    txtSearchFocus.unfocus();
+    isSearch = !isSearch;
+    update();
+  }
+
+  onEditingComplete() {
+    isSearch = false;
     update();
   }
 
@@ -55,9 +69,21 @@ class EmployeHomeController extends GetxController with GetSingleTickerProviderS
           actions: [
             TextButton(
               child: const Text("Ok"),
-              onPressed: () {
-                clearStorage();
-                Get.offNamedUntil(AppRoutes.login, (route) => false);
+              onPressed: () async {
+                var loginAs = await getStorage(Session.loginAs);
+                var employeUserData = await getStorage(Session.employeUserData);
+                var employeeLoginAs = await getStorage(Session.employeeLoginAs);
+                await clearStorage();
+                await writeStorage(Session.loginAs, loginAs);
+                await writeStorage(Session.employeUserData, employeUserData);
+                await writeStorage(Session.employeeLoginAs, employeeLoginAs);
+                Get.offNamedUntil(AppRoutes.login, (Route<dynamic> route) => false);
+                var data = await getStorage(Session.loginAs);
+                var data1 = await getStorage(Session.employeeLoginAs);
+                var data2 = await getStorage(Session.employeUserData);
+                print(data);
+                print(data1);
+                print(data2);
               },
             ),
             TextButton(
@@ -99,8 +125,8 @@ class EmployeHomeController extends GetxController with GetSingleTickerProviderS
           allFilteredList = resData.data;
           draftList = resData.data;
         } else {
-          myDraftList = resData.data;
           myFilteredList = resData.data;
+          myDraftList = resData.data;
         }
       }
       isLoading = false;

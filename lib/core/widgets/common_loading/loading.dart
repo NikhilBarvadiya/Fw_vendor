@@ -2,6 +2,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:fw_vendor/core/theme/app_css.dart';
+import 'package:loading_animation_widget/loading_animation_widget.dart';
 
 class LoadingMode extends StatefulWidget {
   bool isLoading = false;
@@ -34,25 +35,11 @@ class _LoadingModeState extends State<LoadingMode> {
                 children: [
                   Container(
                     padding: const EdgeInsets.all(15),
-                    decoration: BoxDecoration(
-                      color: Colors.white,
-                      borderRadius: BorderRadius.circular(8),
-                      boxShadow: kElevationToShadow[2],
-                    ),
+                    decoration: BoxDecoration(color: Colors.white, borderRadius: BorderRadius.circular(8), boxShadow: kElevationToShadow[2]),
                     child: Column(
                       children: [
-                        const CupertinoActivityIndicator(
-                          color: Colors.black,
-                          animating: true,
-                          radius: 10,
-                        ),
-                        Text(
-                          "Loading",
-                          style: AppCss.h3.copyWith(
-                            color: Colors.black,
-                            decoration: TextDecoration.none,
-                          ),
-                        ),
+                        LoadingAnimationWidget.fourRotatingDots(color: Theme.of(context).primaryColor, size: 30),
+                        Text("Loading", style: AppCss.h3.copyWith(color: Colors.black, decoration: TextDecoration.none)),
                       ],
                     ),
                   ),

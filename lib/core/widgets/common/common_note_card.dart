@@ -25,17 +25,12 @@ class CommonNoteCard extends StatelessWidget {
         children: [
           Text(
             "Note",
-            style: AppCss.h1.copyWith(
-              fontWeight: FontWeight.bold,
-              color: AppController().appTheme.primary1.withOpacity(0.3),
-            ),
+            style: AppCss.h1.copyWith(fontWeight: FontWeight.bold, color: AppController().appTheme.primary1.withOpacity(0.3)),
           ).paddingOnly(bottom: 10),
           Expanded(
             child: ListView(
               children: [
-                Html(
-                  data: note,
-                ),
+                Html(data: note),
               ],
             ),
           )

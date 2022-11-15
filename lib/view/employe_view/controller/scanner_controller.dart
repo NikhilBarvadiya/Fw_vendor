@@ -35,6 +35,21 @@ class ScannerController extends GetxController {
     update();
     controller.scannedDataStream.listen((scanData) async {
       result = scanData;
+      var json = "${result!.code}";
+      var newJson = json.replaceAll(RegExp(r'[^a-zA-Z0-9 ()\s+]'), ",");
+      var finalJSON = {
+        "ShopName": newJson.split(",")[0].substring(0).replaceAll(RegExp(r'\s+\b|\b\s'), " "),
+        "Address": newJson.split(",")[1].substring(0).replaceAll(RegExp(r'\s+\b|\b\s'), " "),
+        "Mobile": newJson.split(",")[3].substring(0).replaceAll(RegExp(r'\s+\b|\b\s'), " "),
+        "BillNo": newJson.split(",")[5].substring(0).replaceAll(RegExp(r'\s+\b|\b\s'), " "),
+      };
+      var req = {
+        "ShopName": finalJSON["ShopName"].toString().trimRight(),
+        "Address": finalJSON["Address"].toString().trimRight(),
+        "Mobile": finalJSON["Mobile"].toString().trimRight(),
+        "BillNo": finalJSON["BillNo"].toString().trimRight(),
+      };
+      log(req.toString());
       if (result != null) {
         if (result!.code!.contains("partyCode")) {
           try {
@@ -46,9 +61,32 @@ class ScannerController extends GetxController {
           } catch (e) {
             stylishDialog(
               context: Get.context,
-              alertType: StylishDialogType.ERROR,
+              backgroundColor: Colors.redAccent.shade200,
+              alertType: StylishDialogType.INFO,
               contentText: "Invalid Format",
-              confirmButton: Colors.redAccent,
+              confirmButton: Colors.white,
+              contentStyle: const TextStyle(fontSize: 18, fontWeight: FontWeight.w600, color: Colors.white),
+              confirmButtonStyle: TextStyle(fontSize: 18, fontWeight: FontWeight.w600, color: Colors.redAccent.shade200),
+              onPressed: () {
+                Get.back();
+                qrViewController!.resumeCamera();
+              },
+            );
+          }
+        } else if (req["ShopName"] != null && req["Address"] != null && req["BillNo"] != null) {
+          try {
+            qrViewController!.stopCamera();
+            Vibration.vibrate(duration: 300);
+            await _verifyOrder(req);
+          } catch (e) {
+            stylishDialog(
+              context: Get.context,
+              backgroundColor: Colors.redAccent.shade200,
+              alertType: StylishDialogType.INFO,
+              contentText: "Invalid Format",
+              confirmButton: Colors.white,
+              contentStyle: const TextStyle(fontSize: 18, fontWeight: FontWeight.w600, color: Colors.white),
+              confirmButtonStyle: TextStyle(fontSize: 18, fontWeight: FontWeight.w600, color: Colors.redAccent.shade200),
               onPressed: () {
                 Get.back();
                 qrViewController!.resumeCamera();
@@ -59,9 +97,12 @@ class ScannerController extends GetxController {
           qrViewController!.stopCamera();
           stylishDialog(
             context: Get.context,
-            alertType: StylishDialogType.ERROR,
-            contentText: "Invalid OR Detected",
-            confirmButton: Colors.redAccent,
+            backgroundColor: Colors.redAccent.shade200,
+            alertType: StylishDialogType.INFO,
+            contentText: "Invalid QR Detected",
+            confirmButton: Colors.white,
+            contentStyle: const TextStyle(fontSize: 18, fontWeight: FontWeight.w600, color: Colors.white),
+            confirmButtonStyle: TextStyle(fontSize: 18, fontWeight: FontWeight.w600, color: Colors.redAccent.shade200),
             onPressed: () {
               Get.back();
               qrViewController!.resumeCamera();
@@ -89,18 +130,14 @@ class ScannerController extends GetxController {
 
   // Api calling by scanner......
 
-  _verifyOrder(shopName) async {
+  _verifyOrder(req) async {
     try {
-      var request = shopName;
-      var resData = await apis.call(
-        apiMethods.verifyOrder,
-        request,
-        ApiType.post,
-      );
+      var request = req;
+      var resData = await apis.call(apiMethods.verifyOrder, request, ApiType.post);
       if (resData.isSuccess == true && resData.data != 0) {
         qrViewController!.pauseCamera();
         Get.toNamed(AppRoutes.verifyOrder, arguments: {
-          "shopName": shopName,
+          "shopName": req["ShopName"],
           "data": resData.data,
         })!
             .then((value) {
@@ -110,9 +147,12 @@ class ScannerController extends GetxController {
         isSuccess = true;
         stylishDialog(
           context: Get.context,
-          alertType: StylishDialogType.ERROR,
+          backgroundColor: Colors.redAccent.shade200,
+          alertType: StylishDialogType.INFO,
           contentText: resData.message.toString(),
-          confirmButton: Colors.redAccent,
+          confirmButton: Colors.white,
+          contentStyle: const TextStyle(fontSize: 18, fontWeight: FontWeight.w600, color: Colors.white),
+          confirmButtonStyle: TextStyle(fontSize: 18, fontWeight: FontWeight.w600, color: Colors.redAccent.shade200),
           onPressed: () {
             Get.back();
             qrViewController!.resumeCamera();
@@ -124,9 +164,12 @@ class ScannerController extends GetxController {
     } catch (e) {
       stylishDialog(
         context: Get.context,
+        backgroundColor: Colors.redAccent.shade200,
         alertType: StylishDialogType.INFO,
         contentText: e.toString(),
-        confirmButton: Colors.green,
+        confirmButton: Colors.white,
+        contentStyle: const TextStyle(fontSize: 18, fontWeight: FontWeight.w600, color: Colors.white),
+        confirmButtonStyle: TextStyle(fontSize: 18, fontWeight: FontWeight.w600, color: Colors.redAccent.shade200),
         onPressed: () {
           Get.back();
           qrViewController!.resumeCamera();

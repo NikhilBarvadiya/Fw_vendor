@@ -163,30 +163,19 @@ class _ProfileScreenState extends State<ProfileScreen> {
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           crossAxisAlignment: CrossAxisAlignment.end,
           children: [
-            Image.asset(
-              imageAssets.avatar,
-              width: 80,
-              fit: BoxFit.fitWidth,
-            ),
+            Image.asset(imageAssets.avatar, width: profileController.isEdit ? 40 : 80, fit: BoxFit.fitWidth),
             CommonChips(
               text: "Edit",
               onTap: () => profileController.onEdit(),
               padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
               color: Theme.of(context).primaryColor,
-              style: AppCss.h2.copyWith(
-                fontWeight: FontWeight.w500,
-                color: Colors.white,
-              ),
+              style: AppCss.h2.copyWith(fontWeight: FontWeight.w500, color: Colors.white),
             ),
           ],
         ).paddingAll(10),
         if (profileController.isEdit != true)
           Container(
-            decoration: const BoxDecoration(
-              borderRadius: BorderRadius.vertical(
-                top: Radius.circular(40),
-              ),
-            ),
+            decoration: const BoxDecoration(borderRadius: BorderRadius.vertical(top: Radius.circular(40))),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
@@ -195,41 +184,22 @@ class _ProfileScreenState extends State<ProfileScreen> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     mainAxisSize: MainAxisSize.min,
                     children: [
-                      Text(
-                        "PERSONAL INFO",
-                        style: AppCss.h1.copyWith(
-                          color: Colors.black,
-                        ),
-                      ).paddingOnly(bottom: 10),
+                      Text("PERSONAL INFO", style: AppCss.h1.copyWith(color: Colors.black)).paddingOnly(bottom: 10),
                       Row(
                         mainAxisAlignment: MainAxisAlignment.start,
                         children: [
                           SizedBox(
                             width: 80,
-                            child: Text(
-                              "Name",
-                              style: AppCss.h2.copyWith(
-                                color: Colors.black,
-                              ),
-                            ),
+                            child: Text("Name", style: AppCss.h2.copyWith(color: Colors.black)),
                           ),
                           Expanded(
                             child: Row(
                               children: [
                                 Text(
                                   ": ${profileController.profileData["ownerName"].toString()}",
-                                  style: AppCss.poppins.copyWith(
-                                    color: Colors.black,
-                                    fontWeight: FontWeight.bold,
-                                  ),
+                                  style: AppCss.poppins.copyWith(color: Colors.black, fontWeight: FontWeight.bold),
                                 ).paddingOnly(right: 5),
-                                Text(
-                                  "[OWNER]",
-                                  style: AppCss.h3.copyWith(
-                                    color: Colors.black,
-                                    letterSpacing: 1,
-                                  ),
-                                ),
+                                Text("[OWNER]", style: AppCss.h3.copyWith(color: Colors.black, letterSpacing: 1)),
                               ],
                             ),
                           ),
@@ -261,12 +231,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     mainAxisSize: MainAxisSize.min,
                     children: [
-                      Text(
-                        "BUSINESS INFO",
-                        style: AppCss.h1.copyWith(
-                          color: Colors.black,
-                        ),
-                      ).paddingOnly(bottom: 10),
+                      Text("BUSINESS INFO", style: AppCss.h1.copyWith(color: Colors.black)).paddingOnly(bottom: 10),
                       _commonNewRow(
                         title: "Shop Name",
                         txt: profileController.profileData["name"].toString(),
@@ -421,22 +386,10 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 child: Column(
                   mainAxisSize: MainAxisSize.min,
                   children: [
-                    const Text(
-                      "Outlet timings are empty!",
-                      style: TextStyle(
-                        fontWeight: FontWeight.w600,
-                      ),
-                    ),
+                    const Text("Outlet timings are empty!", style: TextStyle(fontWeight: FontWeight.w600)),
                     Row(
                       mainAxisSize: MainAxisSize.min,
-                      children: const [
-                        Text("Please tap on "),
-                        Icon(
-                          Icons.add,
-                          size: 18,
-                        ),
-                        Text(" icon")
-                      ],
+                      children: const [Text("Please tap on "), Icon(Icons.add, size: 18), Text(" icon")],
                     )
                   ],
                 ),
@@ -448,10 +401,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
             onPressed: () {
               _showSheet(false, null);
             },
-            child: const Icon(
-              Icons.add,
-              color: Colors.white,
-            ),
+            child: const Icon(Icons.add, color: Colors.white),
           ),
         ).paddingAll(10),
       ],
@@ -461,10 +411,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
   _showSheet(bool isEdit, dynamic data) {
     showModalBottomSheet(
       shape: const RoundedRectangleBorder(
-        borderRadius: BorderRadius.only(
-          topLeft: Radius.circular(8),
-          topRight: Radius.circular(8),
-        ),
+        borderRadius: BorderRadius.only(topLeft: Radius.circular(8), topRight: Radius.circular(8)),
       ),
       backgroundColor: Colors.white,
       context: context,

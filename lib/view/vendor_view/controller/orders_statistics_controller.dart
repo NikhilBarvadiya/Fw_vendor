@@ -180,6 +180,7 @@ class OrdersStatisticsController extends GetxController {
         update();
       }
       if (filters["area"]!["id"] != null && filters["area"]!["id"] != "") {
+        isAreaON = false;
         await statisticsOrderDetails();
       }
     }
@@ -207,6 +208,7 @@ class OrdersStatisticsController extends GetxController {
 
   onSelected() async {
     if(routeIdList.isNotEmpty){
+      isRoutesON = false;
       await statisticsOrderDetails();
     }
     update();

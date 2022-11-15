@@ -9,17 +9,22 @@ dynamic stylishDialog({
   final void Function()? onCancel,
   final String? contentText,
   final String? txtCancelButton,
+  final Color? backgroundColor,
   final Color? confirmButton,
   final Color? cancelButtonColor,
   final StylishDialogType? alertType,
   final Widget? addView,
   final bool cancelButton = false,
+  final TextStyle? contentStyle,
+  final TextStyle? confirmButtonStyle,
 }) {
   return StylishDialog(
     context: context!,
     addView: addView,
     alertType: alertType,
     contentText: contentText,
+    backgroundColor: backgroundColor,
+    contentStyle: contentStyle,
     dismissOnTouchOutside: false,
     cancelButton: cancelButton != false
         ? AnimatedButton(
@@ -32,11 +37,7 @@ dynamic stylishDialog({
             onPressed: onCancel ?? () {},
             child: Text(
               txtCancelButton ?? 'Cancel',
-              style: const TextStyle(
-                fontSize: 18,
-                fontWeight: FontWeight.w600,
-                color: Colors.white,
-              ),
+              style: const TextStyle(fontSize: 18, fontWeight: FontWeight.w600, color: Colors.white),
             ),
           )
         : null,
@@ -48,13 +49,9 @@ dynamic stylishDialog({
       enabled: true,
       shape: BoxShape.rectangle,
       onPressed: onPressed ?? () {},
-      child: const Text(
+      child: Text(
         'Ok',
-        style: TextStyle(
-          fontSize: 18,
-          fontWeight: FontWeight.w600,
-          color: Colors.white,
-        ),
+        style: confirmButtonStyle ?? const TextStyle(fontSize: 18, fontWeight: FontWeight.w600, color: Colors.white),
       ),
     ),
   ).show();
