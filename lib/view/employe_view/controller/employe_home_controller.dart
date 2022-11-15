@@ -78,12 +78,6 @@ class EmployeHomeController extends GetxController with GetSingleTickerProviderS
                 await writeStorage(Session.employeUserData, employeUserData);
                 await writeStorage(Session.employeeLoginAs, employeeLoginAs);
                 Get.offNamedUntil(AppRoutes.login, (Route<dynamic> route) => false);
-                var data = await getStorage(Session.loginAs);
-                var data1 = await getStorage(Session.employeeLoginAs);
-                var data2 = await getStorage(Session.employeUserData);
-                print(data);
-                print(data1);
-                print(data2);
               },
             ),
             TextButton(

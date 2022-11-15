@@ -4,10 +4,12 @@ import 'package:fw_vendor/common/config.dart';
 import 'package:fw_vendor/core/assets/index.dart';
 import 'package:fw_vendor/core/theme/app_css.dart';
 import 'package:fw_vendor/core/utilities/index.dart';
+import 'package:fw_vendor/core/widgets/common_employe_widgets/custom_stylish_dialog.dart';
 import 'package:fw_vendor/core/widgets/common_employe_widgets/custom_textfield.dart';
 import 'package:fw_vendor/core/widgets/common_loading/loading.dart';
 import 'package:fw_vendor/view/auth_checking_view/controller/login_controller.dart';
 import 'package:get/get.dart';
+import 'package:stylish_dialog/stylish_dialog.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({Key? key}) : super(key: key);
@@ -214,79 +216,125 @@ class _CustomFloatingActionButtonState extends State<CustomFloatingActionButton>
     loginAs = await getStorage(Session.loginAs);
     employeeLoginAs = await getStorage(Session.employeeLoginAs);
     employeUserData = await getStorage(Session.employeUserData);
+    setState(() {});
   }
 
   @override
   Widget build(BuildContext context) {
-    return FloatingActionButton(
-      elevation: 0,
-      onPressed: () {
-        if (!widget.isShowFab) {
-          showFloatingActionButton(true);
-          if (widget.isShowFab) {
-            var bottomSheetController = showBottomSheet(
-              context: context,
-              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
-              elevation: 0,
-              backgroundColor: Colors.transparent,
-              builder: (context) => Container(
-                decoration: const BoxDecoration(borderRadius: BorderRadius.vertical(top: Radius.circular(8.0)), color: Colors.white, boxShadow: [
-                  BoxShadow(color: Colors.grey, offset: Offset(0.0, 1.0), blurRadius: 5.0),
-                ]),
-                margin: EdgeInsets.zero,
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    const Text("Login As", style: TextStyle(fontSize: 18, fontWeight: FontWeight.w600)).paddingOnly(bottom: 10, left: 15),
-                    if (widget.isType == true)
-                      ...loginAs.map((e) {
-                        return ListTile(
-                          onTap: () {
-                            LoginController loginController = Get.put(LoginController());
-                            loginController.onLoginAsClick(e);
-                          },
-                          title: Text(e["emailId"].toString()),
-                          subtitle: Row(
-                            children: [
-                              for (int i = 0; i < 5; i++) const Icon(Icons.circle_rounded, size: 10).paddingOnly(right: 1),
-                            ],
-                          ),
-                        );
-                      }),
-                    if (widget.isType != true)
-                      ...employeeLoginAs.map((e) {
-                        return ListTile(
-                          onTap: () {
-                            LoginController loginController = Get.put(LoginController());
-                            loginController.onEmployeeLoginAsClick(e);
-                          },
-                          title: Text(e["mobile"].toString()),
-                          subtitle: Text(
-                            employeUserData["name"].toString().capitalizeFirst.toString(),
-                            style: const TextStyle(fontWeight: FontWeight.w600),
-                          ),
-                        );
-                      }),
-                  ],
-                ).paddingOnly(top: 10, left: 10, right: 10),
-              ).paddingSymmetric(vertical: 2),
-            );
-            bottomSheetController.closed.then((value) {
-              showFloatingActionButton(false);
-            });
-          }
-        }
-      },
-      backgroundColor: widget.isShowFab == false ? Colors.amber[300] : Colors.white,
-      foregroundColor: Colors.black87,
-      child: const Icon(Icons.lock),
-    );
+    return (widget.isType == true && loginAs.isNotEmpty) || (widget.isType != true && employeeLoginAs.isNotEmpty)
+        ? FloatingActionButton(
+            elevation: 0,
+            onPressed: () {
+              if (!widget.isShowFab) {
+                showFloatingActionButton(true);
+                if (widget.isShowFab) {
+                  var bottomSheetController = showBottomSheet(
+                    context: context,
+                    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
+                    elevation: 0,
+                    backgroundColor: Colors.transparent,
+                    builder: (context) => Container(
+                      decoration:
+                          const BoxDecoration(borderRadius: BorderRadius.vertical(top: Radius.circular(8.0)), color: Colors.white, boxShadow: [
+                        BoxShadow(color: Colors.grey, offset: Offset(0.0, 1.0), blurRadius: 5.0),
+                      ]),
+                      margin: EdgeInsets.zero,
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          const Text("Login As", style: TextStyle(fontSize: 18, fontWeight: FontWeight.w600)).paddingOnly(bottom: 10, left: 15),
+                          if (widget.isType == true)
+                            ...loginAs.map((e) {
+                              var index = loginAs.indexOf(e);
+                              return ListTile(
+                                onTap: () {
+                                  LoginController loginController = Get.put(LoginController());
+                                  loginController.onLoginAsClick(e);
+                                },
+                                trailing: IconButton(
+                                  onPressed: () {
+                                    onRemoveLoginAsClick(index);
+                                  },
+                                  icon: const Icon(Icons.close, size: 18, color: Colors.red),
+                                ),
+                                title: Text(e["emailId"].toString()),
+                                subtitle: Row(
+                                  children: [
+                                    for (int i = 0; i < 5; i++) const Icon(Icons.circle_rounded, size: 10).paddingOnly(right: 1),
+                                  ],
+                                ),
+                              );
+                            }),
+                          if (widget.isType != true)
+                            ...employeeLoginAs.map((e) {
+                              var index = employeeLoginAs.indexOf(e);
+                              return ListTile(
+                                onTap: () {
+                                  LoginController loginController = Get.put(LoginController());
+                                  loginController.onEmployeeLoginAsClick(e);
+                                },
+                                trailing: IconButton(
+                                  onPressed: () {
+                                    onRemoveEmployeeLoginAsClick(index);
+                                  },
+                                  icon: const Icon(Icons.close, size: 18, color: Colors.red),
+                                ),
+                                title: Text(e["mobile"].toString()),
+                                subtitle: Text(
+                                  employeUserData["name"].toString().capitalizeFirst.toString(),
+                                  style: const TextStyle(fontWeight: FontWeight.w600),
+                                ),
+                              );
+                            }),
+                        ],
+                      ).paddingOnly(top: 10, left: 10, right: 10),
+                    ).paddingSymmetric(vertical: 2),
+                  );
+                  bottomSheetController.closed.then((value) {
+                    showFloatingActionButton(false);
+                  });
+                }
+              }
+            },
+            backgroundColor: widget.isShowFab == false ? Colors.amber[300] : Colors.white,
+            foregroundColor: Colors.black87,
+            child: const Icon(Icons.lock),
+          )
+        : Container();
   }
 
   void showFloatingActionButton(bool value) {
     setState(() {
       widget.isShowFab = value;
     });
+  }
+
+  onRemoveLoginAsClick(index) async {
+    List loginAsList = [];
+    loginAs = await getStorage(Session.loginAs);
+    loginAsList = loginAs;
+    for (int i = 0; i < loginAsList.length; i++) {
+      if (index == i) {
+        loginAsList.removeAt(i);
+      }
+    }
+    await writeStorage(Session.loginAs, loginAsList);
+    setState(() {});
+    Get.back();
+  }
+
+  onRemoveEmployeeLoginAsClick(index) async {
+    List employeeLoginAsList = [];
+    employeeLoginAs = await getStorage(Session.employeeLoginAs);
+    employeeLoginAsList = employeeLoginAs;
+    for (int i = 0; i < employeeLoginAsList.length; i++) {
+      if (index == i) {
+        employeeLoginAsList.removeAt(i);
+      }
+    }
+    await writeStorage(Session.employeeLoginAs, employeeLoginAsList);
+    setState(() {});
+    Get.back();
   }
 }
