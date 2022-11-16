@@ -34,8 +34,8 @@ class VerifyOrderController extends GetxController {
     txtShopName.text = arguments["data"]["globalAddressId"]["name"];
     txtMobileNumber.text = arguments["data"]["globalAddressId"]["mobile"];
     txtAddress.text = arguments["data"]["globalAddressId"]["address"];
-    txtAmount.text = arguments["shopName"]["amount"];
-    txtBillNumber.text = arguments["shopName"]["billNo"];
+    txtAmount.text = arguments["shopName"]["amount"] ?? "0";
+    txtBillNumber.text = arguments["shopName"]["billNo"] ?? arguments["shopName"]["BillNo"];
     txtPersonName.text = arguments["data"]["globalAddressId"]["person"];
     txtPKG.text = "1";
     txtBOX.text = "0";

@@ -109,15 +109,16 @@ class _VerifyOrderScreenState extends State<VerifyOrderScreen> {
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
           Text(controller.txtShopName.text, textAlign: TextAlign.center, style: AppCss.h1.copyWith(fontSize: 25)),
-          Container(
-            decoration: BoxDecoration(border: Border.all(color: Colors.black26)),
-            padding: const EdgeInsets.symmetric(horizontal: 10),
-            child: Text(
-              controller.arguments["shopName"]["partyCode"].toString(),
-              textAlign: TextAlign.center,
-              style: AppCss.caption.copyWith(fontSize: 12),
-            ),
-          ).paddingOnly(bottom: 5),
+          if (controller.arguments["shopName"]["partyCode"] != null && controller.arguments["shopName"]["partyCode"] != "")
+            Container(
+              decoration: BoxDecoration(border: Border.all(color: Colors.black26)),
+              padding: const EdgeInsets.symmetric(horizontal: 10),
+              child: Text(
+                controller.arguments["shopName"]["partyCode"].toString(),
+                textAlign: TextAlign.center,
+                style: AppCss.caption.copyWith(fontSize: 12),
+              ),
+            ).paddingOnly(bottom: 5),
           Container(
             padding: const EdgeInsets.symmetric(horizontal: 10),
             child: Text(controller.txtAddress.text, textAlign: TextAlign.center, style: AppCss.poppins.copyWith(fontSize: 12)),

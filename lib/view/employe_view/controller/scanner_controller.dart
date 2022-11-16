@@ -137,7 +137,7 @@ class ScannerController extends GetxController {
       if (resData.isSuccess == true && resData.data != 0) {
         qrViewController!.pauseCamera();
         Get.toNamed(AppRoutes.verifyOrder, arguments: {
-          "shopName": req["ShopName"],
+          "shopName": req,
           "data": resData.data,
         })!
             .then((value) {
