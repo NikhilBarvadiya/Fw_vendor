@@ -4,12 +4,10 @@ import 'package:fw_vendor/common/config.dart';
 import 'package:fw_vendor/core/assets/index.dart';
 import 'package:fw_vendor/core/theme/app_css.dart';
 import 'package:fw_vendor/core/utilities/index.dart';
-import 'package:fw_vendor/core/widgets/common_employe_widgets/custom_stylish_dialog.dart';
 import 'package:fw_vendor/core/widgets/common_employe_widgets/custom_textfield.dart';
 import 'package:fw_vendor/core/widgets/common_loading/loading.dart';
 import 'package:fw_vendor/view/auth_checking_view/controller/login_controller.dart';
 import 'package:get/get.dart';
-import 'package:stylish_dialog/stylish_dialog.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({Key? key}) : super(key: key);
@@ -106,7 +104,7 @@ class _LoginScreenState extends State<LoginScreen> {
     ).paddingSymmetric(horizontal: 25, vertical: 10);
   }
 
-  _txtCard({name, icon, controller, obscureText, focusNode}) {
+  _txtCard({name, icon, controller, obscureText, focusNode, onChanged}) {
     return Card(
       elevation: 2,
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8.0)),
@@ -117,6 +115,7 @@ class _LoginScreenState extends State<LoginScreen> {
         textAlign: TextAlign.start,
         keyboardType: TextInputType.emailAddress,
         obscureText: obscureText,
+        onChanged: onChanged,
         decoration: InputDecoration(
           icon: Padding(padding: const EdgeInsets.only(left: 15), child: Icon(icon)),
           border: InputBorder.none,
@@ -137,6 +136,11 @@ class _LoginScreenState extends State<LoginScreen> {
           keyboardType: TextInputType.number,
           controller: loginController.txtMobileNumber,
           focusNode: loginController.focusMobileNumber,
+          onChanged: (_) {
+            if (loginController.isBottomSheetClose == true) {
+              Get.back();
+            }
+          },
         ),
         SizedBox(height: appScreenUtil.screenHeight(MediaQuery.of(context).size.height) * 0.02),
         _loginView(onPressed: () => loginController.onEmployeeLogin()),
@@ -153,6 +157,11 @@ class _LoginScreenState extends State<LoginScreen> {
           icon: Icons.email,
           controller: loginController.txtEmailController,
           focusNode: loginController.focusEmailNumber,
+          onChanged: (_) {
+            if (loginController.isBottomSheetClose == true) {
+              Get.back();
+            }
+          },
         ),
         _txtCard(
           name: "Password",
@@ -160,6 +169,11 @@ class _LoginScreenState extends State<LoginScreen> {
           icon: Icons.lock,
           controller: loginController.txtPasswordController,
           focusNode: loginController.focusPasswordNumber,
+          onChanged: (_) {
+            if (loginController.isBottomSheetClose == true) {
+              Get.back();
+            }
+          },
         ),
         SizedBox(height: appScreenUtil.screenHeight(MediaQuery.of(context).size.height) * 0.02),
         _loginView(onPressed: () => loginController.onVendorLogin()),
@@ -195,13 +209,19 @@ class CustomFloatingActionButton extends StatefulWidget {
   bool isShowFab;
   bool isType;
 
-  CustomFloatingActionButton({Key? key, required this.isShowFab, required this.isType}) : super(key: key);
+  CustomFloatingActionButton({
+    Key? key,
+    required this.isShowFab,
+    required this.isType,
+  }) : super(key: key);
 
   @override
   State<CustomFloatingActionButton> createState() => _CustomFloatingActionButtonState();
 }
 
 class _CustomFloatingActionButtonState extends State<CustomFloatingActionButton> {
+  LoginController loginController = Get.put(LoginController());
+
   @override
   initState() {
     onHistoryClick();
@@ -213,31 +233,33 @@ class _CustomFloatingActionButtonState extends State<CustomFloatingActionButton>
   dynamic employeUserData;
 
   onHistoryClick() async {
-    loginAs = await getStorage(Session.loginAs);
     employeeLoginAs = await getStorage(Session.employeeLoginAs);
     employeUserData = await getStorage(Session.employeUserData);
+    loginAs = await getStorage(Session.loginAs);
     setState(() {});
   }
+
+  PersistentBottomSheetController<void>? bottomSheetController;
 
   @override
   Widget build(BuildContext context) {
     return (widget.isType == true && loginAs.isNotEmpty) || (widget.isType != true && employeeLoginAs.isNotEmpty)
         ? FloatingActionButton(
             elevation: 0,
+            autofocus: false,
             onPressed: () {
-              if (!widget.isShowFab) {
+              if (!loginController.isBottomSheetClose) {
                 showFloatingActionButton(true);
-                if (widget.isShowFab) {
-                  var bottomSheetController = showBottomSheet(
-                    context: context,
-                    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
-                    elevation: 0,
-                    backgroundColor: Colors.transparent,
-                    builder: (context) => Container(
-                      decoration:
-                          const BoxDecoration(borderRadius: BorderRadius.vertical(top: Radius.circular(8.0)), color: Colors.white, boxShadow: [
-                        BoxShadow(color: Colors.grey, offset: Offset(0.0, 1.0), blurRadius: 5.0),
-                      ]),
+                if (loginController.isBottomSheetClose) {
+                  bottomSheetController = Scaffold.of(context).showBottomSheet<void>(
+                    (context) => Container(
+                      decoration: const BoxDecoration(
+                        borderRadius: BorderRadius.vertical(top: Radius.circular(8.0)),
+                        color: Colors.white,
+                        boxShadow: [
+                          BoxShadow(color: Colors.grey, offset: Offset(0.0, 1.0), blurRadius: 5.0),
+                        ],
+                      ),
                       margin: EdgeInsets.zero,
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
@@ -249,7 +271,6 @@ class _CustomFloatingActionButtonState extends State<CustomFloatingActionButton>
                               var index = loginAs.indexOf(e);
                               return ListTile(
                                 onTap: () {
-                                  LoginController loginController = Get.put(LoginController());
                                   loginController.onLoginAsClick(e);
                                 },
                                 trailing: IconButton(
@@ -271,7 +292,6 @@ class _CustomFloatingActionButtonState extends State<CustomFloatingActionButton>
                               var index = employeeLoginAs.indexOf(e);
                               return ListTile(
                                 onTap: () {
-                                  LoginController loginController = Get.put(LoginController());
                                   loginController.onEmployeeLoginAsClick(e);
                                 },
                                 trailing: IconButton(
@@ -291,13 +311,15 @@ class _CustomFloatingActionButtonState extends State<CustomFloatingActionButton>
                       ).paddingOnly(top: 10, left: 10, right: 10),
                     ).paddingSymmetric(vertical: 2),
                   );
-                  bottomSheetController.closed.then((value) {
+                  bottomSheetController!.closed.then((value) {
                     showFloatingActionButton(false);
                   });
+                } else {
+                  bottomSheetController!.close();
                 }
               }
             },
-            backgroundColor: widget.isShowFab == false ? Colors.amber[300] : Colors.white,
+            backgroundColor: loginController.isBottomSheetClose == false ? Colors.amber[300] : Colors.white,
             foregroundColor: Colors.black87,
             child: const Icon(Icons.lock),
           )
@@ -307,6 +329,14 @@ class _CustomFloatingActionButtonState extends State<CustomFloatingActionButton>
   void showFloatingActionButton(bool value) {
     setState(() {
       widget.isShowFab = value;
+      if (widget.isShowFab == true) {
+        loginController.isBottomSheetClose = true;
+        loginController.update();
+      }
+      if (widget.isShowFab == false) {
+        loginController.isBottomSheetClose = false;
+        loginController.update();
+      }
     });
   }
 
