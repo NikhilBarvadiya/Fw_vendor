@@ -68,7 +68,7 @@ class _EmployeHomeScreenState extends State<EmployeHomeScreen> {
                                       style: const TextStyle(color: Colors.white, fontSize: 8),
                                       textAlign: TextAlign.center,
                                     ),
-                                  ).paddingOnly(left: 26, bottom: 18),
+                                  ).paddingOnly(left: 30, bottom: 18),
                                 )
                               : Container()
                         ],
@@ -91,7 +91,7 @@ class _EmployeHomeScreenState extends State<EmployeHomeScreen> {
                                       style: const TextStyle(color: Colors.white, fontSize: 8),
                                       textAlign: TextAlign.center,
                                     ),
-                                  ).paddingOnly(left: 26, bottom: 18),
+                                  ).paddingOnly(left: 125, bottom: 18),
                                 )
                               : Container()
                         ],

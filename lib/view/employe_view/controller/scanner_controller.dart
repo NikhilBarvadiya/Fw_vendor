@@ -36,18 +36,13 @@ class ScannerController extends GetxController {
     controller.scannedDataStream.listen((scanData) async {
       result = scanData;
       var json = "${result!.code}";
-      var newJson = json.replaceAll(RegExp(r'[^a-zA-Z0-9 ()\s+]'), ",");
-      var finalJSON = {
-        "ShopName": newJson.split(",")[0].substring(0).replaceAll(RegExp(r'\s+\b|\b\s'), " "),
-        "Address": newJson.split(",")[1].substring(0).replaceAll(RegExp(r'\s+\b|\b\s'), " "),
-        "Mobile": newJson.split(",")[3].substring(0).replaceAll(RegExp(r'\s+\b|\b\s'), " "),
-        "BillNo": newJson.split(",")[5].substring(0).replaceAll(RegExp(r'\s+\b|\b\s'), " "),
-      };
+      var Mobile = json.split("\$")[2].substring(0).replaceAll(RegExp(r'\s+\b|\b\s'), " ").toString().trimRight();
+      var BillNo = json.split("\$")[3].substring(0).replaceAll(RegExp(r'\s+\b|\b\s'), " ").toString().trimRight();
       var req = {
-        "ShopName": finalJSON["ShopName"].toString().trimRight(),
-        "Address": finalJSON["Address"].toString().trimRight(),
-        "Mobile": finalJSON["Mobile"].toString().trimRight(),
-        "BillNo": finalJSON["BillNo"].toString().trimRight(),
+        "ShopName": json.split("\$")[0].substring(0).replaceAll(RegExp(r'\s+\b|\b\s'), " ").toString().trimRight(),
+        "Address": json.split("\$")[1].substring(0).replaceAll(RegExp(r'\s+\b|\b\s'), " ").toString().trimRight(),
+        "Mobile": Mobile.replaceAll("Phone:", "").toString().trimLeft(),
+        "BillNo": BillNo.replaceAll("Bill No.", "").toString().trimLeft(),
       };
       log(req.toString());
       if (result != null) {
