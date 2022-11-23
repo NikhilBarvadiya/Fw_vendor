@@ -33,23 +33,26 @@ class ScannerController extends GetxController {
     }
     qrViewController!.resumeCamera();
     update();
+    dynamic req;
     controller.scannedDataStream.listen((scanData) async {
       result = scanData;
-      var json = "${result!.code}";
-      var Mobile = json.split("\$")[2].substring(0).replaceAll(RegExp(r'\s+\b|\b\s'), " ").toString().trimRight();
-      var BillNo = json.split("\$")[3].substring(0).replaceAll(RegExp(r'\s+\b|\b\s'), " ").toString().trimRight();
-      var req = {
-        "ShopName": json.split("\$")[0].substring(0).replaceAll(RegExp(r'\s+\b|\b\s'), " ").toString().trimRight(),
-        "Address": json.split("\$")[1].substring(0).replaceAll(RegExp(r'\s+\b|\b\s'), " ").toString().trimRight(),
-        "Mobile": Mobile.replaceAll("Phone:", "").toString().trimLeft(),
-        "BillNo": BillNo.replaceAll("Bill No.", "").toString().trimLeft(),
-      };
-      log(req.toString());
+      if (result!.code!.contains("partyCode") == false) {
+        var json = "${result!.code}";
+        var Mobile = json.split("\$")[2].substring(0).replaceAll(RegExp(r'\s+\b|\b\s'), " ").toString().trimRight();
+        var BillNo = json.split("\$")[3].substring(0).replaceAll(RegExp(r'\s+\b|\b\s'), " ").toString().trimRight();
+        req = {
+          "ShopName": json.split("\$")[0].substring(0).replaceAll(RegExp(r'\s+\b|\b\s'), " ").toString().trimRight(),
+          "Address": json.split("\$")[1].substring(0).replaceAll(RegExp(r'\s+\b|\b\s'), " ").toString().trimRight(),
+          "Mobile": Mobile.replaceAll("Phone:", "").toString().trimLeft(),
+          "BillNo": BillNo.replaceAll("Bill No.", "").toString().trimLeft(),
+        };
+        log(req.toString());
+      }
       if (result != null) {
         if (result!.code!.contains("partyCode")) {
           try {
             var json = result!.code;
-            var finalJSON = "${json!.substring(0, json.length - 2)}}";
+            dynamic finalJSON = "${json!.substring(0, json.length - 2)}}";
             qrViewController!.stopCamera();
             Vibration.vibrate(duration: 300);
             await _verifyOrder(jsonDecode(finalJSON));
@@ -127,6 +130,15 @@ class ScannerController extends GetxController {
 
   _verifyOrder(req) async {
     try {
+      if (req['shopName'] != null) {
+        req = {
+          "ShopName": req["shopName"],
+          "partyCode": req['partyCode'],
+          'BillNo': req['billNo'],
+          'Amount': req['amount'],
+          'FirmGSTIN': req['firmGSTIN']
+        };
+      }
       var request = req;
       var resData = await apis.call(apiMethods.verifyOrder, request, ApiType.post);
       if (resData.isSuccess == true && resData.data != 0) {
