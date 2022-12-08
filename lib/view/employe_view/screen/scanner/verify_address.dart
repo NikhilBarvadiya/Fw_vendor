@@ -22,10 +22,14 @@ class _VerifyOrderScreenState extends State<VerifyOrderScreen> {
       builder: (_) => LoadingMode(
         isLoading: controller.isLoading,
         child: Scaffold(
-          appBar: AppBar(elevation: 1, foregroundColor: Colors.white, title: const Text("Verify order")),
+          appBar: AppBar(
+            elevation: 1,
+            foregroundColor: Colors.white,
+            title: Text(controller.arguments["index"] == 0 ? "Verify order" : "Request address"),
+          ),
           body: Stack(
             children: [
-              _addressCard(),
+              controller.arguments["index"] == 0 ? _addressCard() : _requestAddressCard(),
               Align(alignment: Alignment.bottomCenter, child: _draftOrder()),
             ],
           ),
@@ -39,7 +43,62 @@ class _VerifyOrderScreenState extends State<VerifyOrderScreen> {
       height: Get.height,
       child: ListView(
         children: [
-          _textView(),
+          Container(
+            margin: const EdgeInsets.only(top: 30, bottom: 30),
+            padding: const EdgeInsets.only(top: 20, bottom: 20),
+            decoration: BoxDecoration(border: Border.all(color: Colors.black26)),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                Text(controller.txtShopName.text, textAlign: TextAlign.center, style: AppCss.h1.copyWith(fontSize: 25)),
+                if (controller.arguments["scannerData"]["partyCode"] != null && controller.arguments["scannerData"]["partyCode"] != "")
+                  Container(
+                    decoration: BoxDecoration(border: Border.all(color: Colors.black26)),
+                    padding: const EdgeInsets.symmetric(horizontal: 10),
+                    child: Text(
+                      controller.arguments["scannerData"]["partyCode"].toString(),
+                      textAlign: TextAlign.center,
+                      style: AppCss.caption.copyWith(fontSize: 12),
+                    ),
+                  ).paddingOnly(bottom: 5),
+                Container(
+                  padding: const EdgeInsets.symmetric(horizontal: 10),
+                  child: Text(controller.txtAddress.text, textAlign: TextAlign.center, style: AppCss.poppins.copyWith(fontSize: 12)),
+                ),
+                const SizedBox(height: 5),
+                Text(controller.txtMobileNumber.text, textAlign: TextAlign.center, style: AppCss.footnote.copyWith(fontSize: 14)),
+                const SizedBox(height: 10),
+                Row(
+                  mainAxisSize: MainAxisSize.min,
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Container(
+                      width: 100,
+                      padding: const EdgeInsets.only(top: 2, bottom: 2),
+                      child: Column(
+                        children: [
+                          Text("Bill No", style: AppCss.h2),
+                          Text(controller.txtBillNumber.text, style: AppCss.footnote.copyWith(fontSize: 12)),
+                        ],
+                      ),
+                    ),
+                    const SizedBox(width: 8),
+                    Container(
+                      width: 100,
+                      padding: const EdgeInsets.only(top: 2, bottom: 2),
+                      child: Column(
+                        children: [
+                          Text("Amount", style: AppCss.h2),
+                          Text("₹ ${controller.txtAmount.text}", style: AppCss.footnote.copyWith(fontSize: 12)),
+                        ],
+                      ),
+                    ),
+                  ],
+                ),
+              ],
+            ),
+          ),
           Column(
             children: [
               Row(
@@ -86,74 +145,96 @@ class _VerifyOrderScreenState extends State<VerifyOrderScreen> {
     );
   }
 
+  _requestAddressCard() {
+    return ListView(
+      children: [
+        Column(
+          children: [
+            commonTextField(
+              labelText: "Shop name",
+              controller: controller.txtShopName,
+              focusNode: controller.txtShopFocus,
+              keyboardType: TextInputType.number,
+              isError: controller.isError,
+            ),
+            commonTextField(
+              labelText: "Address",
+              controller: controller.txtAddress,
+              focusNode: controller.txtAddressFocus,
+              keyboardType: TextInputType.streetAddress,
+              isError: controller.isError,
+            ),
+            commonTextField(
+              maxLength: 10,
+              labelText: "Mobile number",
+              controller: controller.txtMobileNumber,
+              focusNode: controller.txtMobileFocus,
+              keyboardType: TextInputType.number,
+            ),
+            Row(
+              children: [
+                Expanded(
+                  child: commonTextField(
+                    labelText: "Bill number",
+                    controller: controller.txtBillNumber,
+                    focusNode: controller.txtBillNumberFocus,
+                    keyboardType: TextInputType.number,
+                    isError: controller.isError,
+                  ),
+                ),
+                const SizedBox(width: 8),
+                Expanded(
+                  child: commonTextField(
+                    labelText: "Amount",
+                    controller: controller.txtAmount,
+                    focusNode: controller.txtAmountFocus,
+                    keyboardType: TextInputType.number,
+                  ),
+                ),
+              ],
+            ),
+            Row(
+              children: [
+                Expanded(
+                  child: commonTextField(
+                    labelText: "PKG",
+                    controller: controller.txtPKG,
+                    focusNode: controller.txtPKGFocus,
+                    keyboardType: TextInputType.number,
+                  ),
+                ),
+                const SizedBox(width: 8),
+                Expanded(
+                  child: commonTextField(
+                    labelText: "BOX",
+                    controller: controller.txtBOX,
+                    focusNode: controller.txtBOXFocus,
+                    keyboardType: TextInputType.number,
+                  ),
+                ),
+              ],
+            ),
+            commonTextField(
+              labelText: "Note",
+              controller: controller.txtNote,
+              focusNode: controller.txtNoteFocus,
+              height: 100.0,
+            ),
+          ],
+        ),
+      ],
+    ).paddingAll(10);
+  }
+
   _draftOrder() {
     return MaterialButton(
       textColor: Colors.white,
       minWidth: double.infinity,
       color: controller.isLoading ? AppController().appTheme.primary1.withOpacity(0.5) : AppController().appTheme.primary1,
-      onPressed: () => controller.draftOrderClick(),
+      onPressed: () => controller.confirmClick(),
       child: const Padding(
         padding: EdgeInsets.all(10),
         child: Text("Confirm", style: TextStyle(fontSize: 18)),
-      ),
-    );
-  }
-
-  _textView() {
-    return Container(
-      margin: const EdgeInsets.only(top: 30, bottom: 30),
-      padding: const EdgeInsets.only(top: 20, bottom: 20),
-      decoration: BoxDecoration(border: Border.all(color: Colors.black26)),
-      child: Column(
-        mainAxisSize: MainAxisSize.min,
-        crossAxisAlignment: CrossAxisAlignment.center,
-        children: [
-          Text(controller.txtShopName.text, textAlign: TextAlign.center, style: AppCss.h1.copyWith(fontSize: 25)),
-          if (controller.arguments["shopName"]["partyCode"] != null && controller.arguments["shopName"]["partyCode"] != "")
-            Container(
-              decoration: BoxDecoration(border: Border.all(color: Colors.black26)),
-              padding: const EdgeInsets.symmetric(horizontal: 10),
-              child: Text(
-                controller.arguments["shopName"]["partyCode"].toString(),
-                textAlign: TextAlign.center,
-                style: AppCss.caption.copyWith(fontSize: 12),
-              ),
-            ).paddingOnly(bottom: 5),
-          Container(
-            padding: const EdgeInsets.symmetric(horizontal: 10),
-            child: Text(controller.txtAddress.text, textAlign: TextAlign.center, style: AppCss.poppins.copyWith(fontSize: 12)),
-          ),
-          const SizedBox(height: 5),
-          Text(controller.txtMobileNumber.text, textAlign: TextAlign.center, style: AppCss.footnote.copyWith(fontSize: 14)),
-          const SizedBox(height: 10),
-          Row(
-            mainAxisSize: MainAxisSize.min,
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Container(
-                width: 100,
-                padding: const EdgeInsets.only(top: 2, bottom: 2),
-                child: Column(
-                  children: [
-                    Text("Bill No", style: AppCss.h2),
-                    Text(controller.txtBillNumber.text, style: AppCss.footnote.copyWith(fontSize: 12)),
-                  ],
-                ),
-              ),
-              const SizedBox(width: 8),
-              Container(
-                width: 100,
-                padding: const EdgeInsets.only(top: 2, bottom: 2),
-                child: Column(
-                  children: [
-                    Text("Amount", style: AppCss.h2),
-                    Text("₹ ${controller.txtAmount.text}", style: AppCss.footnote.copyWith(fontSize: 12)),
-                  ],
-                ),
-              ),
-            ],
-          ),
-        ],
       ),
     );
   }

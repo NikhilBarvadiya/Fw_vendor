@@ -6,6 +6,7 @@ import 'package:fw_vendor/core/configuration/app_routes.dart';
 import 'package:fw_vendor/core/utilities/storage_utils.dart';
 import 'package:fw_vendor/networking/index.dart';
 import 'package:get/get.dart';
+import 'package:vibration/vibration.dart';
 
 class EmployeHomeController extends GetxController with GetSingleTickerProviderStateMixin {
   TextEditingController txtSearch = TextEditingController();
@@ -34,6 +35,7 @@ class EmployeHomeController extends GetxController with GetSingleTickerProviderS
     isSearch = false;
     txtSearch.text = "";
     txtSearchFocus.unfocus();
+    Vibration.vibrate(duration: 10);
     type = selectedIndex == 1 ? "my" : " all";
     await draftOrders(type);
     update();

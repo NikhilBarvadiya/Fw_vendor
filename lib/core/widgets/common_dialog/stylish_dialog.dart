@@ -14,9 +14,12 @@ dynamic stylishDialog({
   final String? contentText,
   final String? txtCancelButton,
   final String? txtOkButton,
+  final Color? backgroundColor,
   final Color? confirmButton,
   final Color? cancelButtonColor,
   final StylishDialogType? alertType,
+  final TextStyle? contentStyle,
+  final TextStyle? confirmButtonStyle,
   final Widget? addView,
   final bool cancelButton = false,
 }) {
@@ -26,6 +29,8 @@ dynamic stylishDialog({
     alertType: alertType,
     titleText: titleText,
     contentText: contentText,
+    contentStyle: contentStyle,
+    backgroundColor: backgroundColor,
     dismissOnTouchOutside: false,
     cancelButton: cancelButton != false
         ? AnimatedButton(
@@ -38,11 +43,7 @@ dynamic stylishDialog({
             onPressed: onCancel ?? () {},
             child: Text(
               txtCancelButton ?? 'Cancel',
-              style: const TextStyle(
-                fontSize: 18,
-                fontWeight: FontWeight.w600,
-                color: Colors.white,
-              ),
+              style: const TextStyle(fontSize: 18, fontWeight: FontWeight.w600, color: Colors.white),
             ),
           )
         : null,
@@ -56,11 +57,7 @@ dynamic stylishDialog({
       onPressed: onPressed ?? () {},
       child: Text(
         txtOkButton ?? 'Ok',
-        style: const TextStyle(
-          fontSize: 18,
-          fontWeight: FontWeight.w600,
-          color: Colors.white,
-        ),
+        style: confirmButtonStyle ?? const TextStyle(fontSize: 18, fontWeight: FontWeight.w600, color: Colors.white),
       ),
     ),
   ).show();
@@ -81,10 +78,7 @@ informationDialog({message, backgroundColor, required VoidCallback onConfirm, ti
         },
         child: const Text("Cancel"),
       ),
-      TextButton(
-        onPressed: onConfirm,
-        child: const Text("Okay"),
-      ),
+      TextButton(onPressed: onConfirm, child: const Text("Okay")),
     ],
     content: Column(
       mainAxisSize: MainAxisSize.min,
@@ -95,10 +89,7 @@ informationDialog({message, backgroundColor, required VoidCallback onConfirm, ti
           child: Icon(CupertinoIcons.info, size: 50, color: AppController().appTheme.primary1),
         ),
         const SizedBox(height: 10),
-        Text(
-          title,
-          style: AppCss.footnote.copyWith(fontSize: 15),
-        ),
+        Text(title, style: AppCss.footnote.copyWith(fontSize: 15)),
       ],
     ),
   );
@@ -139,14 +130,22 @@ dynamic warningDialog({final String? contentText, final void Function()? onPress
   );
 }
 
-dynamic infoDialog({final String? contentText, final String? titleText, final void Function()? onPressed}) {
+dynamic infoDialog({
+  final String? contentText,
+  final String? titleText,
+  final void Function()? onPressed,
+  final Color? backgroundColor,
+  final Color? confirmButton,
+  final TextStyle? contentStyle,
+  final TextStyle? confirmButtonStyle,
+}) {
   dynamic context = Get.context;
   stylishDialog(
     context: context,
     alertType: StylishDialogType.INFO,
-    titleText: titleText ?? "",
+    titleText: titleText ?? "Information",
     contentText: contentText ?? "",
-    confirmButton: Colors.blueGrey,
+    confirmButton: confirmButton ?? Colors.blueGrey,
     onPressed: onPressed,
   );
 }
@@ -159,6 +158,20 @@ dynamic errorDialog({final String? contentText, final void Function()? onPressed
     titleText: 'error',
     contentText: contentText ?? "",
     confirmButton: Colors.red,
+    onPressed: onPressed,
+  );
+}
+
+dynamic scannerErrorDialog({final void Function()? onPressed, final String? contentText}) {
+  dynamic context = Get.context;
+  stylishDialog(
+    context: context,
+    backgroundColor: Colors.redAccent.shade200,
+    alertType: StylishDialogType.INFO,
+    contentText: contentText,
+    confirmButton: Colors.white,
+    contentStyle: const TextStyle(fontSize: 18, fontWeight: FontWeight.w600, color: Colors.white),
+    confirmButtonStyle: TextStyle(fontSize: 18, fontWeight: FontWeight.w600, color: Colors.redAccent.shade200),
     onPressed: onPressed,
   );
 }

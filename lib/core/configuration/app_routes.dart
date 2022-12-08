@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:fw_vendor/core/widgets/custom_widgets/custom_nodata.dart';
 import 'package:fw_vendor/view/employe_view/screen/draft/employe_home.dart';
-import 'package:fw_vendor/view/employe_view/screen/scanner/add_address.dart';
 import 'package:fw_vendor/view/employe_view/screen/scanner/scanner_screen.dart';
 import 'package:fw_vendor/view/employe_view/screen/scanner/verify_address.dart';
 import 'package:fw_vendor/view/vendor_view/screen/Addresses/global_directory/global_directory_details_screen.dart';
@@ -74,7 +73,6 @@ class AppRoutes {
   //Employe......
   static String employeHome = "/employeHome";
   static String verifyOrder = "/verifyOrder";
-  static String addOrder = "/addOrder";
   static String scanner = "/scanner";
 
 
@@ -123,7 +121,6 @@ class AppRoutes {
     ),
     GetPage(name: employeHome, page: () => const EmployeHomeScreen()),
     GetPage(name: verifyOrder, page: () => const VerifyOrderScreen()),
-    GetPage(name: addOrder, page: () => const AddOrderScreen()),
     GetPage(name: scanner, page: () => const ScannerScreen()),
   ];
 }

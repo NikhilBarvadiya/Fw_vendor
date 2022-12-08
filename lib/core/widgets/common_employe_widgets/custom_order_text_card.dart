@@ -16,31 +16,24 @@ Widget commonTextField({
   dynamic maxLines,
   dynamic contentPadding,
   bool readOnly = false,
+  bool isError = false,
 }) {
   return Column(
     crossAxisAlignment: CrossAxisAlignment.start,
     children: [
-      Text(
-        labelText ?? '',
-        style: AppCss.h3,
-      ),
+      Text(labelText ?? '', style: AppCss.h3),
       Card(
         elevation: 1,
         margin: EdgeInsets.zero,
         color: readOnly == true ? Colors.grey.shade300 : Colors.white,
-        shape: const RoundedRectangleBorder(
-          borderRadius: BorderRadius.all(
-            Radius.circular(2),
-          ),
+        shape: RoundedRectangleBorder(
+          borderRadius: const BorderRadius.all(Radius.circular(2)),
+          side: isError ? const BorderSide(color: Colors.red) : BorderSide.none,
         ),
         child: Container(
           height: height,
           width: width,
-          decoration: const BoxDecoration(
-            borderRadius: BorderRadius.all(
-              Radius.circular(8),
-            ),
-          ),
+          decoration: const BoxDecoration(borderRadius: BorderRadius.all(Radius.circular(8))),
           child: TextFormField(
             autofocus: false,
             controller: controller,

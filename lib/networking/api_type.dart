@@ -58,5 +58,6 @@ class ApiMethods {
   final String getDraftOrders = "vendorEmployee/getDraftOrders";
   final String verifyOrder = "vendorEmployee/getScanData/mappedAddress";
   final String draftOrder = "vendorEmployee/setScanData/draftOrder";
+  final String addRequest = "vendorEmployee/setScanData/addRequest";
   final String addOrder = "vendorEmployee/setScanData/addOrder";
 }
