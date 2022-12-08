@@ -189,16 +189,16 @@ class VerifyOrderController extends GetxController {
       await _draftOrder();
     } else {
       update();
-      // if (txtShopName.text.isNotEmpty && txtAddress.text.isNotEmpty && txtBillNumber.text.isNotEmpty) {
-      //   await _draftOrderWithRequestAddress();
-      // } else {
-      //   errorDialog(
-      //     contentText: "Something wrong please try again!",
-      //     onPressed: () {
-      //       Get.back();
-      //     },
-      //   );
-      // }
+      if (txtShopName.text.isNotEmpty && txtAddress.text.isNotEmpty && txtBillNumber.text.isNotEmpty) {
+        await _draftOrderWithRequestAddress();
+      } else {
+        errorDialog(
+          contentText: "Something wrong please try again!",
+          onPressed: () {
+            Get.back();
+          },
+        );
+      }
     }
     update();
   }
