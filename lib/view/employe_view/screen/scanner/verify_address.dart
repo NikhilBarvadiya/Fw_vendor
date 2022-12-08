@@ -155,12 +155,14 @@ class _VerifyOrderScreenState extends State<VerifyOrderScreen> {
               controller: controller.txtShopName,
               focusNode: controller.txtShopFocus,
               keyboardType: TextInputType.number,
+              isError: controller.errorList[0]["isActive"],
             ),
             commonTextField(
               labelText: "Address",
               controller: controller.txtAddress,
               focusNode: controller.txtAddressFocus,
               keyboardType: TextInputType.streetAddress,
+              isError: controller.errorList[1]["isActive"],
             ),
             commonTextField(
               maxLength: 10,
@@ -184,6 +186,7 @@ class _VerifyOrderScreenState extends State<VerifyOrderScreen> {
                     controller: controller.txtBillNumber,
                     focusNode: controller.txtBillNumberFocus,
                     keyboardType: TextInputType.number,
+                    isError: controller.errorList[2]["isActive"],
                   ),
                 ),
                 const SizedBox(width: 8),

@@ -150,12 +150,12 @@ dynamic infoDialog({
   );
 }
 
-dynamic errorDialog({final String? contentText, final void Function()? onPressed}) {
+dynamic errorDialog({final String? contentText, final String? titleText, final void Function()? onPressed}) {
   dynamic context = Get.context;
   stylishDialog(
     context: context,
     alertType: StylishDialogType.ERROR,
-    titleText: 'error',
+    titleText: titleText ?? 'error',
     contentText: contentText ?? "",
     confirmButton: Colors.red,
     onPressed: onPressed,

@@ -36,7 +36,20 @@ class VerifyOrderController extends GetxController {
 
   bool isLoading = false;
   bool isAdd = false;
-  bool isError = false;
+  List errorList = [
+    {
+      "label": "shopName",
+      "isActive": false,
+    },
+    {
+      "label": "address",
+      "isActive": false,
+    },
+    {
+      "label": "billNumber",
+      "isActive": false,
+    },
+  ];
 
   dynamic employeUserData;
 
@@ -57,10 +70,10 @@ class VerifyOrderController extends GetxController {
       txtBillNumber.text = arguments["scannerData"]["billNo"] ?? arguments["scannerData"]["BillNo"];
       txtPersonName.text = arguments["data"]["globalAddressId"]["person"];
     } else if (arguments["index"] == 1) {
-      txtShopName.text = arguments["scannerData"]["ShopName"].toString();
-      txtAddress.text = arguments["scannerData"]["Address"].toString();
-      txtMobileNumber.text = arguments["scannerData"]["Mobile"].toString();
-      txtBillNumber.text = arguments["scannerData"]["BillNo"].toString();
+      txtShopName.text = arguments["scannerData"]["ShopName"] != null ? arguments["scannerData"]["ShopName"].toString() : "";
+      txtAddress.text = arguments["scannerData"]["Address"] != null ? arguments["scannerData"]["Address"].toString() : "";
+      txtMobileNumber.text = arguments["scannerData"]["Mobile"] != null ? arguments["scannerData"]["Mobile"].toString() : "";
+      txtBillNumber.text = arguments["scannerData"]["BillNo"] != null ? arguments["scannerData"]["BillNo"].toString() : "";
       txtAmount.text = arguments["scannerData"]["Amount"] != null ? arguments["scannerData"]["Amount"].toString() : "0";
     }
     txtPKG.text = "1";
@@ -155,6 +168,7 @@ class VerifyOrderController extends GetxController {
         "loose": (txtPKG.text != 0.toString() || txtBOX.text != 0.toString()) ? txtPKG.text.toString() : "1",
         "box": txtBOX.text.toString(),
         "note": txtNote.text.toString(),
+        "vendorId": employeUserData["vendorId"]["_id"],
       };
       log(request.toString());
       var resData = await apis.call(apiMethods.addRequest, request, ApiType.post);
@@ -163,10 +177,19 @@ class VerifyOrderController extends GetxController {
         update();
         successDialog(
           alertType: StylishDialogType.SUCCESS,
-          contentText: "Add request address success!",
+          contentText: "${txtShopName.text}\nadd request address success!",
           onPressed: () {
             Get.back();
             Get.offNamedUntil(AppRoutes.employeHome, (route) => false);
+          },
+        );
+      } else {
+        infoDialog(
+          contentText: "${txtShopName.text}\nthis requested address already available!",
+          confirmButton: Colors.amber,
+          onPressed: () {
+            Get.back();
+            Get.back();
           },
         );
       }
@@ -183,6 +206,24 @@ class VerifyOrderController extends GetxController {
     }
   }
 
+  _validation() {
+    if (txtShopName.text.isEmpty) {
+      errorList[0]["isActive"] = true;
+    } else {
+      errorList[0]["isActive"] = false;
+    }
+    if (txtAddress.text.isEmpty) {
+      errorList[1]["isActive"] = true;
+    } else {
+      errorList[1]["isActive"] = false;
+    }
+    if (txtBillNumber.text.isEmpty) {
+      errorList[2]["isActive"] = true;
+    } else {
+      errorList[2]["isActive"] = false;
+    }
+  }
+
   confirmClick() async {
     _screenFocus();
     if (arguments["index"] == 0) {
@@ -192,8 +233,10 @@ class VerifyOrderController extends GetxController {
       if (txtShopName.text.isNotEmpty && txtAddress.text.isNotEmpty && txtBillNumber.text.isNotEmpty) {
         await _draftOrderWithRequestAddress();
       } else {
+        _validation();
         errorDialog(
-          contentText: "Something wrong please try again!",
+          titleText: "Validate",
+          contentText: "Please enter mandatory fields!",
           onPressed: () {
             Get.back();
           },

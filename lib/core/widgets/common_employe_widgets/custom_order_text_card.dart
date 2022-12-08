@@ -28,14 +28,11 @@ Widget commonTextField({
         elevation: 1,
         margin: EdgeInsets.zero,
         color: readOnly == true ? Colors.grey.shade300 : Colors.white,
-        shape: RoundedRectangleBorder(
-          borderRadius: const BorderRadius.all(Radius.circular(2)),
-          side: isError ? const BorderSide(color: Colors.red) : BorderSide.none,
-        ),
+        shape: const RoundedRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(2))),
         child: Container(
           height: height,
           width: width,
-          decoration: const BoxDecoration(borderRadius: BorderRadius.all(Radius.circular(8))),
+          decoration: BoxDecoration(border: Border(bottom: BorderSide(color: isError ? Colors.red : Colors.white, width: isError ? 2 : 0))),
           child: TextFormField(
             autofocus: false,
             controller: controller,

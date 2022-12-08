@@ -121,15 +121,26 @@ class ScannerController extends GetxController {
       }
       var request = req;
       var resData = await apis.call(apiMethods.verifyOrder, request, ApiType.post);
-      if (resData.isSuccess == true && resData.data != 0) {
+      if (resData.isSuccess == true && resData.data != 0 && resData.data != 2) {
         qrViewController!.pauseCamera();
         Get.toNamed(AppRoutes.verifyOrder, arguments: {"scannerData": req, "index": 0, "data": resData.data})!.then((value) {
           qrViewController!.resumeCamera();
         });
+      } else if (resData.isSuccess == true && resData.data == 2) {
+        successDialog(
+          titleText: "Information",
+          contentText: "This requested address already available!",
+          alertType: StylishDialogType.INFO,
+          onPressed: () {
+            Get.back();
+            qrViewController!.resumeCamera();
+            update();
+          },
+        );
       } else {
         successDialog(
           titleText: "Information",
-          contentText: "This party is in requesting.....\nplease add!",
+          contentText: "This address is not mapped please add request to continue!",
           alertType: StylishDialogType.INFO,
           onCancel: () {
             Get.back();

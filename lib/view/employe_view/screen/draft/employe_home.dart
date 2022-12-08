@@ -6,6 +6,7 @@ import 'package:fw_vendor/core/theme/app_css.dart';
 import 'package:fw_vendor/core/widgets/common_loading/loading.dart';
 import 'package:fw_vendor/core/widgets/custom_widgets/custom_nodata.dart';
 import 'package:fw_vendor/view/auth_checking_view/controller/app_controller.dart';
+import 'package:fw_vendor/view/auth_checking_view/controller/splash_controller.dart';
 import 'package:fw_vendor/view/employe_view/controller/employe_home_controller.dart';
 import 'package:fw_vendor/view/employe_view/screen/draft/drawer.dart';
 import 'package:get/get.dart';
@@ -20,6 +21,7 @@ class EmployeHomeScreen extends StatefulWidget {
 
 class _EmployeHomeScreenState extends State<EmployeHomeScreen> {
   EmployeHomeController homeController = Get.put(EmployeHomeController());
+  SplashController splashController = Get.put(SplashController());
 
   @override
   Widget build(BuildContext context) {
@@ -42,6 +44,7 @@ class _EmployeHomeScreenState extends State<EmployeHomeScreen> {
               name: "${homeController.employeUserData["name"]}",
               vendorName: "${homeController.employeUserData["vendorId"]["name"]}",
               mobile: homeController.employeUserData["mobile"],
+              appVersion: splashController.appVersion,
               onPressed: () => homeController.onLogout(context),
             ),
             body: Column(
