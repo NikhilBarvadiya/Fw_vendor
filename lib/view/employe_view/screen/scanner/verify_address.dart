@@ -155,20 +155,25 @@ class _VerifyOrderScreenState extends State<VerifyOrderScreen> {
               controller: controller.txtShopName,
               focusNode: controller.txtShopFocus,
               keyboardType: TextInputType.number,
-              isError: controller.isError,
             ),
             commonTextField(
               labelText: "Address",
               controller: controller.txtAddress,
               focusNode: controller.txtAddressFocus,
               keyboardType: TextInputType.streetAddress,
-              isError: controller.isError,
             ),
             commonTextField(
               maxLength: 10,
               labelText: "Mobile number",
               controller: controller.txtMobileNumber,
               focusNode: controller.txtMobileFocus,
+              keyboardType: TextInputType.number,
+            ),
+            commonTextField(
+              maxLength: 10,
+              labelText: "WhatsApp number",
+              controller: controller.txtWhatsAppNumber,
+              focusNode: controller.txtWhatsAppNumberFocus,
               keyboardType: TextInputType.number,
             ),
             Row(
@@ -179,7 +184,6 @@ class _VerifyOrderScreenState extends State<VerifyOrderScreen> {
                     controller: controller.txtBillNumber,
                     focusNode: controller.txtBillNumberFocus,
                     keyboardType: TextInputType.number,
-                    isError: controller.isError,
                   ),
                 ),
                 const SizedBox(width: 8),
@@ -201,6 +205,24 @@ class _VerifyOrderScreenState extends State<VerifyOrderScreen> {
                     controller: controller.txtPKG,
                     focusNode: controller.txtPKGFocus,
                     keyboardType: TextInputType.number,
+                    onEditingComplete: () {
+                      if (controller.txtPKG.text == "") {
+                        controller.txtPKG.text = "0";
+                        controller.txtPKGFocus.unfocus();
+                      } else {
+                        controller.txtPKG;
+                        controller.txtPKGFocus.unfocus();
+                      }
+                    },
+                    onChanged: (value) {
+                      if (controller.txtPKG.text != 0.toString() && controller.txtPKG.text != "" ||
+                          controller.txtBOX.text != 0.toString() && controller.txtBOX.text != "") {
+                        controller.txtPKG;
+                      } else {
+                        controller.txtPKG.text = "1";
+                        controller.txtPKGFocus.unfocus();
+                      }
+                    },
                   ),
                 ),
                 const SizedBox(width: 8),
@@ -210,6 +232,24 @@ class _VerifyOrderScreenState extends State<VerifyOrderScreen> {
                     controller: controller.txtBOX,
                     focusNode: controller.txtBOXFocus,
                     keyboardType: TextInputType.number,
+                    onEditingComplete: () {
+                      if (controller.txtBOX.text == "") {
+                        controller.txtBOX.text = "0";
+                        controller.txtBOXFocus.unfocus();
+                      } else {
+                        controller.txtBOX;
+                        controller.txtBOXFocus.unfocus();
+                      }
+                    },
+                    onChanged: (value) {
+                      if (controller.txtBOX.text != 0.toString() && controller.txtBOX.text != "" ||
+                          controller.txtPKG.text != 0.toString() && controller.txtPKG.text != "") {
+                        controller.txtBOX;
+                      } else {
+                        controller.txtBOX.text = "1";
+                        controller.txtBOXFocus.unfocus();
+                      }
+                    },
                   ),
                 ),
               ],

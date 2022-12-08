@@ -26,6 +26,8 @@ class VerifyOrderController extends GetxController {
   TextEditingController txtPersonName = TextEditingController();
 
   /// request Address
+  TextEditingController txtWhatsAppNumber = TextEditingController();
+  FocusNode txtWhatsAppNumberFocus = FocusNode();
   FocusNode txtShopFocus = FocusNode();
   FocusNode txtAddressFocus = FocusNode();
   FocusNode txtMobileFocus = FocusNode();
@@ -144,14 +146,15 @@ class VerifyOrderController extends GetxController {
       isLoading = true;
       update();
       var request = {
-        "shopName": txtShopName.text,
-        "address": txtAddress.text,
+        "shopName": txtShopName.text.toString(),
+        "address": txtAddress.text.toString(),
         "mobile": txtMobileNumber.text,
         "billNo": txtBillNumber.text,
         "amount": txtAmount.text,
-        "anyNote": txtNote.text.toString(),
-        "nOfBoxes": txtBOX.text.toString(),
-        "nOfPackages": txtPKG.text.toString(),
+        "whatsappNo": txtWhatsAppNumber.text.toString(),
+        "loose": (txtPKG.text != 0.toString() || txtBOX.text != 0.toString()) ? txtPKG.text.toString() : "1",
+        "box": txtBOX.text.toString(),
+        "note": txtNote.text.toString(),
       };
       log(request.toString());
       var resData = await apis.call(apiMethods.addRequest, request, ApiType.post);
@@ -185,9 +188,17 @@ class VerifyOrderController extends GetxController {
     if (arguments["index"] == 0) {
       await _draftOrder();
     } else {
-      if (txtShopName.text.isNotEmpty && txtAddress.text.isNotEmpty && txtBillNumber.text.isNotEmpty) {
-        await _draftOrderWithRequestAddress();
-      }
+      update();
+      // if (txtShopName.text.isNotEmpty && txtAddress.text.isNotEmpty && txtBillNumber.text.isNotEmpty) {
+      //   await _draftOrderWithRequestAddress();
+      // } else {
+      //   errorDialog(
+      //     contentText: "Something wrong please try again!",
+      //     onPressed: () {
+      //       Get.back();
+      //     },
+      //   );
+      // }
     }
     update();
   }

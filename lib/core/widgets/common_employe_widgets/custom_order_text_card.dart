@@ -15,6 +15,8 @@ Widget commonTextField({
   dynamic minLines,
   dynamic maxLines,
   dynamic contentPadding,
+  dynamic onChanged,
+  dynamic onEditingComplete,
   bool readOnly = false,
   bool isError = false,
 }) {
@@ -44,6 +46,8 @@ Widget commonTextField({
             maxLines: maxLines,
             readOnly: readOnly,
             style: AppCss.body1.copyWith(fontSize: 13, fontWeight: FontWeight.w600),
+            onChanged: onChanged,
+            onEditingComplete: onEditingComplete,
             decoration: InputDecoration(
               counterText: '',
               hintText: hintText,
